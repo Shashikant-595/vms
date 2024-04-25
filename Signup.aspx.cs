@@ -26,8 +26,8 @@ namespace VMS
         }
         protected void btn_submit_Click(object sender, EventArgs e)
         {
-           // string connectionString = "Data Source=localhost\\sqlexpress;Initial Catalog=VMS;Integrated Security=True;";
-               string connectionString = "Data Source=192.168.20.70,1433;Initial Catalog=vms;User ID=vms;Password=Vms@123;";
+            string connectionString = "Data Source=localhost\\sqlexpress;Initial Catalog=VMS;Integrated Security=True;";
+           //    string connectionString = "Data Source=192.168.20.70,1433;Initial Catalog=vms;User ID=vms;Password=Vms@123;";
 
         SqlConnection connection = new SqlConnection(connectionString);
             string query = "INSERT INTO Visitor_Registration (Name, Mobile_No, Email, Company) VALUES (@Name, @Mobil_No, @Email, @Company)";

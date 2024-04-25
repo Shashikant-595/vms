@@ -14,8 +14,11 @@ namespace VMS
 
         }
 
+
         protected void loginbtn_Click(object sender, EventArgs e)
         {
+            // here create 3 session variable as object and pass on forward for further aplication authentication 
+
             if (txtUsername.Text == "Admin@vms" && txtPassword.Text == "Fores@123")
             {
                 // Set role as admin and redirect to entry screen

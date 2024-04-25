@@ -9,7 +9,7 @@ using System.Web.UI.WebControls;
 
 namespace VMS
 {
-    [Authorize]
+    
     public partial class Employee_Signup : System.Web.UI.Page
     {
         protected void Page_Load(object sender, EventArgs e)
@@ -27,11 +27,13 @@ namespace VMS
 
         protected void btn_save_Click(object sender, EventArgs e)
         {
-            string connectionString = "Data Source=192.168.20.70,1433;Initial Catalog=vms;User ID=vms;Password=Vms@123;";
-           // string connectionString = "Data Source=localhost\\sqlexpress;Initial Catalog=VMS;Integrated Security=True;";
-            //
+            ListItem selectedItem = usertype.SelectedItem;
+            string itemText = selectedItem.Text;
+            //string connectionString = "Data Source=192.168.20.70,1433;Initial Catalog=vms;User ID=vms;Password=Vms@123;";
+            string connectionString = "Data Source=localhost\\sqlexpress;Initial Catalog=VMS;Integrated Security=True;";
+            System.Diagnostics.Trace.WriteLine($" connection done ; ");
             SqlConnection connection = new SqlConnection(connectionString);
-            string query = "INSERT INTO Employ_Registration (Name, Mobile_No, Email, Department) VALUES (@Name, @Mobil_No, @Email, @Department)";
+            string query = "INSERT INTO Employ_Registration (Name, Mobile_No, Email, Department,password,user_type) VALUES (@Name, @Mobil_No, @Email, @Department,@password,@user_type)";
             try
             {
                 connection.Open();
@@ -40,7 +42,9 @@ namespace VMS
                 command.Parameters.AddWithValue("@Mobil_No", txteMbNo.Text);
                 command.Parameters.AddWithValue("@Email", txteemail.Text);
                 command.Parameters.AddWithValue("@Department", txteDepartment.Text);
-
+                command.Parameters.AddWithValue("@password", txtpassword.Text);
+                command.Parameters.AddWithValue("@user_type", itemText);
+                System.Diagnostics.Trace.WriteLine($" usertype is  ; "+ usertype.SelectedItem);
                 command.ExecuteNonQuery();
                 connection.Close();
                 

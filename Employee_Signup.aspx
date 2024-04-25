@@ -6,8 +6,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
+    <link href="Content/bootstrap.min.css" rel="stylesheet" />
     <title style="font:bold">SIGN UP</title>
     <link rel="icon" href="https://foreselastomech.com/wp-content/uploads/2019/03/FORES-Logo.png">
+    <script src="Scripts/bootstrap.min.js"></script>
     <style>
              body {
     font-family: 'Poppins', sans-serif;
@@ -32,7 +34,7 @@ header img {
 .header-name {
     text-align: center;
     flex-grow: 1;
-    font-size: 14px;
+    font-size: 30px;
     font-weight: bold;
 }
 
@@ -97,17 +99,19 @@ header img {
             text-align: center;
             margin-top: 90px;
         }
-
-            .center-container label {
+        Label {
+             font-size: 16px;
+        }
+            /*.center-container label {
                 padding: 8px 12px;
                 font-size: 16px;
                 border: 1px solid #ccc;
                 border-radius: 5px;
                 margin-bottom: 10px;
                 display: inline-block;
-                text-align: right; /* Align textboxes to the right */
-                flex: 1; /* Take up remaining space */
-            }
+                text-align: right;*/ /* Align textboxes to the right */
+                /*flex: 1;*/ /* Take up remaining space */
+            /*}
 
             .center-container input[type="text"] {
                 width: 300px;
@@ -116,10 +120,10 @@ header img {
                 border: 1px solid #ccc;
                 border-radius: 8px;
                 margin-bottom: 10px;
-                display: inline-block; /* Display textboxes inline */
-                text-align: center;
+                display: inline-block;*/ /* Display textboxes inline */
+                /*text-align: center;
                 margin-left: 10px;
-            }
+            }*/
              span:hover {
     animation: blink 1s infinite;
     color: #0066ff; /* Change this color to suit your background */
@@ -130,8 +134,11 @@ header img {
 <body>
     <form id="form1" runat="server">
         <header>
+            <link href="Content/bootstrap.min.css" rel="stylesheet" />
+
+
             <img src="https://foreselastomech.com/wp-content/uploads/2019/03/FORES-Logo.png" alt="Logo" />
-            <div class="header-name">NEW EMPLOYEE REGISTRATION</div>
+            <div class="header-name">Create New User</div>
         </header>
         <div class="icon-sidebar">
             <a href="Entry_Screen.aspx">
@@ -144,25 +151,62 @@ header img {
             </a>
         </div>
 
-        <div class="center-container">
-            <div style="margin-bottom: 20px; margin-left: -48px">
-                <asp:Label ID="lbleName" runat="server" Text="Employee Name : "></asp:Label>
-                <asp:TextBox ID="txteName" runat="server"></asp:TextBox>
+      <div class="container "  style="margin-left:200px">
+                <div class="form-group col-sm-3 mt-5">
+                    <asp:Label ID="lbleName" runat="server" Text="Employee Name : "></asp:Label>
+                    <asp:TextBox ID="txteName" runat="server" CssClass="form-control"></asp:TextBox>
+                </div>
+                <div class="form-group col-sm-3">
+                    <asp:Label ID="lbleMbNo" runat="server" Text="Mobile No : "></asp:Label>
+                   
+                    <asp:TextBox ID="txteMbNo"  runat="server" CssClass="form-control"></asp:TextBox>
+                </div>
+                <div class="form-group  col-sm-3">
+                    <asp:Label ID="Label1" runat="server" Text="Email : "></asp:Label>
+                    <asp:TextBox ID="txteemail" runat="server" CssClass="form-control"></asp:TextBox>
+                </div>
+                <div class="form-group  col-sm-3">
+                    <asp:Label ID="Labele2" runat="server" Text="Employee-Code : "></asp:Label>
+                    <asp:TextBox ID="txteDepartment" runat="server" CssClass="form-control"></asp:TextBox>
+                </div>
+                <div class="form-group col-sm-3" style="position: relative;">
+    <asp:Label ID="Label13" runat="server" Text="Password: "></asp:Label>
+    <asp:TextBox ID="txtpassword" type="password" runat="server" CssClass="form-control" onfocus="showIcon(this)" onblur="hideIcon(this)"></asp:TextBox>
+    <span id="eyeIcon" class="toggle-password" onclick="togglePasswordVisibility()" style="position: absolute; top: 70%; transform: translateY(-50%); right: 10px; cursor: pointer;"><i class="fa fa-eye"></i></span>
+</div>
+                <div class="form-group  col-sm-3">
+                    <asp:Label ID="Label4" runat="server" Text="User-Type"></asp:Label>
+                    <asp:DropDownList ID="usertype" runat="server" CssClass="form-control">
+                        <asp:ListItem Enabled="true">SupperAdmin</asp:ListItem>
+                        <asp:ListItem Enabled="true">Admin</asp:ListItem>
+                        <asp:ListItem Enabled="true">User</asp:ListItem>
+                    </asp:DropDownList>
+                </div>
+                <div class="form-group col-sm-3 mt-5">
+                <asp:Button ID="btn_save" runat="server" Text="Register" CssClass="btn btn-primary" OnClick="btn_save_Click" />
+
+
+                </div>
             </div>
-            <div style="margin-bottom: 20px; margin-left: -24px;">
-                <asp:Label ID="lbleMbNo" runat="server" Text="Mobile No : "></asp:Label>
-                <asp:TextBox ID="txteMbNo" runat="server"></asp:TextBox>
-            </div>
-            <div style="margin-bottom: 20px; margin-left: 10px;">
-                <asp:Label ID="Label1" runat="server" Text="Email : "></asp:Label>
-                <asp:TextBox ID="txteemail" runat="server"></asp:TextBox>
-            </div>
-            <div style="margin-bottom: 20px; margin-left: -52px;">
-                <asp:Label ID="Labele2" runat="server" Text="Employee-Code : "></asp:Label>
-                <asp:TextBox ID="txteDepartment" runat="server"></asp:TextBox>
-            </div>
-            <asp:Button ID="btn_save" runat="server" Text="Register" Style="font-size: 14px; padding: 12px 24px; margin-left: 15px" OnClick="btn_save_Click" />
-        </div>
+       
     </form>
+    <script src="Scripts/bootstrap.min.js"></script>
+    <script src="Scripts/jquery-3.7.1.min.js"></script>
+
+    <script>
+        function togglePasswordVisibility() {
+            var passwordField = document.getElementById("<%= txtpassword.ClientID %>");
+        var icon = document.getElementById("eyeIcon");
+
+        if (passwordField.type === "password") {
+            passwordField.type = "text";
+            icon.innerHTML = '<i class="fa fa-eye-slash"></i>';
+        } else {
+            passwordField.type = "password";
+            icon.innerHTML = '<i class="fa fa-eye"></i>';
+        }
+    }
+    </script>
+
 </body>
 </html>
