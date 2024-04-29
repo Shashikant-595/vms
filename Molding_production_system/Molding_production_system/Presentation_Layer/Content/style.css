@@ -1,0 +1,56 @@
+﻿/* Common styles for both desktop and mobile */
+body {
+    margin: 0;
+    padding: 0;
+}
+
+#header {
+    background-color: lightgray;
+    color: black;
+    text-align: center;
+    padding: 15px;
+}
+
+#sidebar {
+    width: 60px;
+    height: 100vh;
+    background-color: lightgray;
+    transition: width 0.3s ease;
+    padding-top: 20px;
+}
+
+    #sidebar:hover {
+        width: 200px;
+    }
+
+.dropdown:hover .dropdown-menu {
+    display: contents;
+}
+
+.dropdown-item {
+    color: black;
+}
+
+.hidden-text {
+    display: none;
+    color: #007bff;
+}
+
+#sidebar:hover .hidden-text {
+    display: inline-block;
+}
+
+/* Media query for mobile devices */
+@media (max-width: 768px) {
+    #sidebar {
+        width: 100%;
+    }
+
+        #sidebar:hover {
+            width: 100%;
+        }
+
+            #sidebar:hover .hidden-text {
+                display: none;
+            }
+}
