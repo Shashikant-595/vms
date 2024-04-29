@@ -17,8 +17,8 @@ namespace VMS.Controllers
     
     public class HomeController : Controller
     {
-        string connectionString = "Data Source=192.168.20.70,1433;Initial Catalog=vms;User ID=vms;Password=Vms@123;";
-       // string connectionString = "Data Source=localhost\\sqlexpress;Initial Catalog=VMS;Integrated Security=True;";
+       // string connectionString = "Data Source=192.168.20.70,1433;Initial Catalog=vms;User ID=vms;Password=Vms@123;";
+        string connectionString = "Data Source=localhost\\sqlexpress;Initial Catalog=VMS;Integrated Security=True;";
      
 
 
@@ -194,18 +194,18 @@ namespace VMS.Controllers
         [HttpPost]
         public ActionResult SaveQRData(string qrData)
         {
-            System.Diagnostics.Trace.WriteLine($"method calles "+ qrData);
+            System.Diagnostics.Trace.WriteLine($"method calles " + qrData);
             var tokenfromqr = qrData.Split('/');
             System.Diagnostics.Trace.WriteLine($"array length {tokenfromqr.Length}");
             string Token = tokenfromqr[9];
             TimeSpan currentTime = DateTime.Now.TimeOfDay;
             string formattedTime = currentTime.ToString("hh\\:mm");
             System.Diagnostics.Trace.WriteLine($"token from controller ={Token}");
-           try
+            try
             {
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
-                    string queryCheck = "SELECT IN_time, OUT_time, confirmation FROM Record WHERE token = @token";
+                    string queryCheck = "SELECT IN_time, OUT_time ,confirmation FROM Record WHERE token = @token";
                     string queryInsert = "UPDATE Record SET IN_time = @time WHERE token = @token";
                     string queryUpdateOutTime = "UPDATE Record SET OUT_time = @time WHERE token = @token";
                     string queryUpdateErrorFlag = "UPDATE Record SET error_flag = 1 WHERE token = @token";
@@ -224,30 +224,30 @@ namespace VMS.Controllers
                             commandInsert.Parameters.AddWithValue("@time", formattedTime);
                             commandInsert.Parameters.AddWithValue("@token", Token);
                             commandInsert.ExecuteNonQuery();
-                            return Content("******VISITOR ENTRY SUCCESFULL****** : ", "text/plain");
+                            return Content("****VISITOR ENTRY SUCCESFULL**** : ", "text/plain");
                             System.Diagnostics.Trace.WriteLine($" in time entry {Token}");
                         }
-                        
-                            // Check if confirmation is true
-                            if (!reader.IsDBNull(2) && reader.GetBoolean(2)) // confirmation is true
-                            {
-                                reader.Close();
-                                // Update OUT_time with current time
-                                SqlCommand commandUpdateOutTime = new SqlCommand(queryUpdateOutTime, connection);
-                                commandUpdateOutTime.Parameters.AddWithValue("@time", formattedTime);
-                                commandUpdateOutTime.Parameters.AddWithValue("@token", Token);
-                                commandUpdateOutTime.ExecuteNonQuery();
-                                return Content("*****Thank you for visiting our premises ****** ", "text/plain");
-                                System.Diagnostics.Trace.WriteLine($" out time entry {Token}");
 
-                            }
-                            else
-                            {
-                              
-                                // Confirmation is not true, so return without updating OUT_time
-                                return Content("YOUR MEETING CONFIRMATION IS PENDING !!!.", "text/plain");
-                                System.Diagnostics.Trace.WriteLine($" conformation is not done  time entry {Token}");
-                            }
+                        // Check if confirmation is true
+                        if (!reader.IsDBNull(2) && reader.GetBoolean(2)) // confirmation is true
+                        {
+                            reader.Close();
+                            // Update OUT_time with current time
+                            SqlCommand commandUpdateOutTime = new SqlCommand(queryUpdateOutTime, connection);
+                            commandUpdateOutTime.Parameters.AddWithValue("@time", formattedTime);
+                            commandUpdateOutTime.Parameters.AddWithValue("@token", Token);
+                            commandUpdateOutTime.ExecuteNonQuery();
+                            return Content("***Thank you for visiting our premises **** ", "text/plain");
+                            System.Diagnostics.Trace.WriteLine($" out time entry {Token}");
+
+                        }
+                        else
+                        {
+
+                            // Confirmation is not true, so return without updating OUT_time
+                            return Content("YOUR MEETING CONFIRMATION IS PENDING !!!.", "text/plain");
+                            System.Diagnostics.Trace.WriteLine($" conformation is not done  time entry {Token}");
+                        }
 
                         //// Update error flag to indicate invalid QR after fourth scan
                         if (!reader.IsDBNull(1)) // OUT_time is not NULL
@@ -266,7 +266,7 @@ namespace VMS.Controllers
                         return Content("Invalid QR detected: No record found for the given user", "text/plain");
                     }
                 }
-               
+
             }
             catch (Exception ex)
             {
@@ -289,7 +289,7 @@ namespace VMS.Controllers
             {
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
-                    string queryCheck = "SELECT IN_time, confirmation FROM Record WHERE token = @token";
+                    string queryCheck = "SELECT IN_time, confirmation,Employee_mob FROM Record WHERE token = @token";
 
                     string queryUpdateConfirmation = "UPDATE Record SET confirmation = 1 WHERE token = @token";
 
@@ -303,17 +303,26 @@ namespace VMS.Controllers
                         // Check if IN_time is not null
                         if (!reader.IsDBNull(0))
                         {
+                            string conform=reader.GetString(2).Trim();
+                            string userid = Session["User_id"].ToString().Trim();
+
                             // Check if confirmation is false
-                            if (reader.IsDBNull(1)) // confirmation is false
+                            if (reader.IsDBNull(1) && conform == userid) // confirmation is false
                             {
+
                                 reader.Close();
                                 // Update confirmation to true
                                 SqlCommand commandUpdateConfirmation = new SqlCommand(queryUpdateConfirmation, connection);
                                 commandUpdateConfirmation.Parameters.AddWithValue("@token", Token);
                                 commandUpdateConfirmation.ExecuteNonQuery();
-                                return Content("CONFIRMATION DONE !!", "text/plain");
                                 System.Diagnostics.Trace.WriteLine($"Confirmation updated for token: {Token}");
-                              
+
+                                return Content("CONFIRMATION DONE !!", "text/plain");
+
+                            }
+                            else
+                            {
+                                return Content("UNAUTHORISED USER FOUND!!", "text/plain");
                             }
                            
                         }

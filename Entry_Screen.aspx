@@ -432,7 +432,7 @@ header img {
                 })
                 .catch(error => {
                     // Handle error, display an error message
-                    alert('exception  ' + error.message);
+                    alert('exception == ' + error.message);
                 });
         }
 

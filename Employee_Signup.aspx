@@ -159,7 +159,7 @@ header img {
                 <div class="form-group col-sm-3">
                     <asp:Label ID="lbleMbNo" runat="server" Text="Mobile No : "></asp:Label>
                    
-                    <asp:TextBox ID="txteMbNo"  runat="server" CssClass="form-control"></asp:TextBox>
+                    <asp:TextBox ID="txteMbNo"  runat="server" CssClass="form-control"  OnTextChanged="txteMbNo_TextChanged" AutoPostBack="True"></asp:TextBox>
                 </div>
                 <div class="form-group  col-sm-3">
                     <asp:Label ID="Label1" runat="server" Text="Email : "></asp:Label>
@@ -183,10 +183,9 @@ header img {
                     </asp:DropDownList>
                 </div>
                 <div class="form-group col-sm-3 mt-5">
-                <asp:Button ID="btn_save" runat="server" Text="Register" CssClass="btn btn-primary" OnClick="btn_save_Click" />
-
-
-                </div>
+     <asp:Button ID="btn_save" runat="server" Text="Register" CssClass="btn btn-primary" OnClick="btn_save_Click" />
+         <asp:Button ID="btn_edit" runat="server" Text="Edit" CssClass="btn btn-primary" OnClick="btn_edit_Click" style="float:right;"/>
+ </div>
             </div>
        
     </form>

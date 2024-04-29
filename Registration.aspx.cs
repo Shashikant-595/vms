@@ -21,10 +21,11 @@ using ZXing.Common;
 using ZXing;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 using System.Web.Mvc;
+using ZXing.Aztec.Internal;
 
 namespace VMS
 {
-    [Authorize]
+   
     public partial class Registration : System.Web.UI.Page
     {
          private string connectionString = "Data Source=localhost\\sqlexpress;Initial Catalog=VMS;Integrated Security=True;";
@@ -36,22 +37,36 @@ namespace VMS
         private String SUBJECT = "VISITOR MEETING CONFORMATIO";
         private String BODY_TEXT = "Hello Sir , This is your meeting details  ";
         private String token;
+        string employeename;
+
+
         private readonly Timer timer = new Timer();
         protected void Page_Load(object sender, EventArgs e)
         {
+
+
             // Check if the user is logged in as Admin
-            if (Session["adminrole"] != null && Session["adminrole"].ToString() == "Admin")
+            if (Session["User_type"] != null && Session["User_type"].ToString().Trim() == "SupperAdmin")
             {
-                if (!IsPostBack)
+                System.Diagnostics.Trace.WriteLine($"reeeeeeeeeeeeegiiiii load");
+                //  BindDropDownList();
+
+            } else if (Session["User_type"] != null && Session["User_type"].ToString().Trim() == "Admin")
                 {
-                    BindDropDownList();
+
+                    employeelink.Visible = false;
+                    //  BindDropDownList();
+
+
                 }
-            }
-            else
-            {
+
+                else
+                {
+                System.Diagnostics.Trace.WriteLine($"registration up loads");
 
                 Response.Redirect("Authenticate_User.aspx");
-            }
+                }
+            
              
         }
 
@@ -66,7 +81,9 @@ namespace VMS
              string urlWithToken=null;
             //     string apiUrl = "https://graph.facebook.com/v18.0/206970215843824/messages";
             //     string apiKey = "EAAK3AIry3xEBO4SgDUMKUZA7N5Ii1Qnqf6fMHZAVUrZCZAT5KHdaWww3Jmpd4PwShpy07dMXVD6GOshE6LA7ENCt8G1DuZAwFyEmPBlOvL4vISdDMIrG7Ap0egyvuArvNn9WcbiAgPcyjRPBylAgAZBGcNISqREhl2hkANMzUlcpo3BMNm2Jv5rmyXrUzQj38UUkjzlYGPEY55gordaiZCBBZB1Dhx8ZD";
-            string whometo_visit = DropDownList1.SelectedValue; // Save whometo_visit from DropDownList1
+            employeename = Session["name"].ToString(); 
+            string employymail = Session["passmail"].ToString();
+            string EmployeeMob = Session["User_id"].ToString();
             string mobile_No = txtMbNo.Text; // Save mobile_No from txtMbNo
             string meetingSubject = txtMeeting.Text;
             string meetingdate = datetimepicker.Text;
@@ -76,7 +93,7 @@ namespace VMS
             string Company = txtCompany.Text;
 
 
-            InsertRecord(whometo_visit, mobile_No, meetingSubject, meetingdate, visitor_Name, visitor_Email, Company);
+            InsertRecord(employeename, EmployeeMob ,mobile_No, meetingSubject, meetingdate, visitor_Name, visitor_Email, Company);
 
 
             try
@@ -114,13 +131,14 @@ namespace VMS
                 Qrdata.Add(visitor_Name);   //3
                 Qrdata.Add(Company);        //4
                 Qrdata.Add(meetingdate);    //5
-                Qrdata.Add(whometo_visit);  //6
+                Qrdata.Add(employeename);  //6
                 Qrdata.Add(token);  //7
 
                 // Assuming you have a method to insert data into the record table, call it here
              
                 PrintQRCode(Qrdata);
-                sendMail(visitor_Email);
+                sendMail(visitor_Email, employymail);
+                System.Diagnostics.Trace.WriteLine($" mail is send success fully");
                 string alertMessage = "alert('Your Meeting Request has been successfully submitted.');";
                 ClientScript.RegisterStartupScript(this.GetType(), "alert", alertMessage, true);
 
@@ -222,7 +240,7 @@ namespace VMS
                 Console.WriteLine("Error occurred: " + ex.Message);
             }
         }
-        protected void sendMail(String receiverMail)
+        protected void sendMail(String receiverMail,String employymail)
         {
            
             // write the code that can get the receiver email and send the link on that using the user credentials 
@@ -241,6 +259,7 @@ namespace VMS
                     {
                         message.From = new MailAddress(SENDER_EMAIL);
                         message.To.Add(new MailAddress(receiverMail));
+                        message.CC.Add(new MailAddress(employymail));
 
                         message.Subject = SUBJECT;
                         message.IsBodyHtml = true;
@@ -256,7 +275,7 @@ namespace VMS
 
                         // Attach the link 
                         string BODY_HTML = "<h1style=\"color: blue\">Hello " + txtName.Text + " sir, This is your Gate pass </h1><br>" +
-                    "<p>Meeting Subject:- " + txtMeeting.Text + "<br>" + "We look forward to welcoming you to FORES ELASTOMECH INDIA PVT.LTD and having a fruitful discussion.<p/><br>" + "<p>We hope you have a pleasant and enjoyable experience while you're here. Thank you for choosing us, and we look forward to serving you.</p><br>" + "<p>Best regards,</p><br>"+"<p> "+ DropDownList1.SelectedValue + "</p>";
+                    "<p>Meeting Subject:- " + txtMeeting.Text + "<br>" + "We look forward to welcoming you to FORES ELASTOMECH INDIA PVT.LTD and having a fruitful discussion.<p/><br>" + "<p>We hope you have a pleasant and enjoyable experience while you're here. Thank you for choosing us, and we look forward to serving you.</p><br>" + "<p>Best regards,</p><br>"+"<p> "+ employeename + "</p>";
 
                         // Add the text part
                         message.Body = BODY_HTML;
@@ -269,44 +288,45 @@ namespace VMS
             }
             catch (Exception ex)
             {
+                System.Diagnostics.Trace.WriteLine($" in time entry {ex.Message}");
                 Console.WriteLine("Failed to send email: " + ex.Message);
             }
 
         }
 
-        protected void DropDownList1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            string selectedValue = DropDownList1.SelectedValue;
-        }
+        //protected void DropDownList1_SelectedIndexChanged(object sender, EventArgs e)
+        //{
+        //    string selectedValue = DropDownList1.SelectedValue;
+        //}
 
-        private void BindDropDownList()
-        {
-            // Your connection string to the database
+        //private void BindDropDownList()
+        //{
+        //    // Your connection string to the database
            
-            // Your SQL query to fetch names from the employ_Registration table
-            string query = "SELECT Name FROM Employ_Registration";
+        //    // Your SQL query to fetch names from the employ_Registration table
+        //    string query = "SELECT Name FROM Employ_Registration";
 
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                using (SqlCommand command = new SqlCommand(query, connection))
-                {
-                    connection.Open();
-                    SqlDataReader reader = command.ExecuteReader();
-                    if (reader.HasRows)
-                    {
-                        while (reader != null && reader.Read())
-                        {
-                            if (!reader.IsDBNull(reader.GetOrdinal("Name")))
-                            {
-                                ListItem item = new ListItem(reader["Name"].ToString());
-                                DropDownList1.Items.Add(item);
-                            }
-                        }
-                    }
-                    reader.Close();
-                }
-            }
-        }
+        //    using (SqlConnection connection = new SqlConnection(connectionString))
+        //    {
+        //        using (SqlCommand command = new SqlCommand(query, connection))
+        //        {
+        //            connection.Open();
+        //            SqlDataReader reader = command.ExecuteReader();
+        //            if (reader.HasRows)
+        //            {
+        //                while (reader != null && reader.Read())
+        //                {
+        //                    if (!reader.IsDBNull(reader.GetOrdinal("Name")))
+        //                    {
+        //                        ListItem item = new ListItem(reader["Name"].ToString());
+        //                        DropDownList1.Items.Add(item);
+        //                    }
+        //                }
+        //            }
+        //            reader.Close();
+        //        }
+        //    }
+        //}
 
         protected void txtMbNo_TextChanged(object sender, EventArgs e)
         {
@@ -347,8 +367,10 @@ namespace VMS
                             }
                             else
                             {
+                                ScriptManager.RegisterStartupScript(this, GetType(), "showalert", "alert('Mobile number is not registered.');", true);
                                 // Displaying message if mobile number not found
-                                ScriptManager.RegisterStartupScript(this, GetType(), "alertMessage", "alert('Mobile number is not registered.');", true);
+                               // ScriptManager.RegisterStartupScript(this, GetType(), "alertMessage", "alert('Mobile number is not registered.');", true);
+                               Response.Redirect("Signup.aspx");
                             }
 
                             // Closing reader
@@ -379,13 +401,13 @@ namespace VMS
                 ScriptManager.RegisterStartupScript(this, GetType(), "alertMessage", "alert('Mobile number should be 10 digits.');", true);
             }
         }
-        private void InsertRecord(string Whometo_Visit, string Mobile_No, string Meeting_Subject, string Date_Time, string Name, string Email, string Company)
+        private void InsertRecord(string Whometo_Visit,string EmployeeMob, string Mobile_No, string Meeting_Subject, string Date_Time, string Name, string Email, string Company)
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 try {
 
-                    string query = "INSERT INTO Record (Whometo_Visit, Mobile_No, Meeting_Subject, Date_Time, Name, Email, Company) VALUES (@Whometo_Visit, @Mobile_No, @Meeting_Subject, @Date_Time, @Name, @Email, @Company)";
+                    string query = "INSERT INTO Record (Whometo_Visit, Mobile_No, Meeting_Subject, Date_Time, Name, Email, Company,Employee_mob) VALUES (@Whometo_Visit, @Mobile_No, @Meeting_Subject, @Date_Time, @Name, @Email, @Company,@EmployeeMob)";
 
                     using (var command = new SqlCommand(query, connection))
                     {
@@ -396,6 +418,8 @@ namespace VMS
                         command.Parameters.AddWithValue("@Name", Name);
                         command.Parameters.AddWithValue("@Email", Email);
                         command.Parameters.AddWithValue("@Company", Company);
+                        command.Parameters.AddWithValue("@EmployeeMob", EmployeeMob);
+
                         connection.Open();
                         command.ExecuteNonQuery();
                     }

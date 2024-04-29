@@ -153,7 +153,7 @@ header img {
             </div>
             <div style="margin-bottom: 20px; margin-left: -24px;">
                 <asp:Label ID="lblMbNo" runat="server" Text="Mobile No : "></asp:Label>
-                <asp:TextBox ID="txtMbNo" runat="server"></asp:TextBox>
+                <asp:TextBox ID="txtMbNo" runat="server" OnTextChanged="txtMbNo_TextChanged" AutoPostBack="true"></asp:TextBox>
             </div>
             <div style="margin-bottom: 20px; margin-left: 10px;">
                 <asp:Label ID="email" runat="server" Text="Email : "></asp:Label>
@@ -163,7 +163,11 @@ header img {
                 <asp:Label ID="compony" runat="server" Text="Company : "></asp:Label>
                 <asp:TextBox ID="txtcompany" runat="server"></asp:TextBox>
             </div>
-            <asp:Button ID="btn_submit" runat="server" Text="Register" Style="font-size: 14px; padding: 12px 24px; margin-left: 15px" OnClick="btn_submit_Click" />
+           
+                       <div class="form-group col-sm-3 mt-5">
+    <asp:Button ID="btn_submit" runat="server" Text="Register" CssClass="btn btn-primary" OnClick="btn_submit_Click" />
+        <asp:Button ID="btn_edit" runat="server" Text="Edit" CssClass="btn btn-primary" OnClick="btn_edit_Click" />
+</div>
         </div>
     </form>
 </body>

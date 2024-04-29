@@ -238,14 +238,14 @@ header img {
             </div>
         </div>
         </div>
-           <div class="row">
+         <%--  <div class="row">
         <div class="col-md-3">
             <div class="form-group">
                 <asp:Label ID="Label4" runat="server" Text="Meeting Invitor :" AssociatedControlID="DropDownList1"></asp:Label>
                 <asp:DropDownList ID="DropDownList1" runat="server" OnSelectedIndexChanged="DropDownList1_SelectedIndexChanged" CssClass="form-control" Style="width: 100%;"></asp:DropDownList>
             </div>
         </div>
-        </div>
+        </div>--%>
            <div class="row">
         <div class="col-md-3">
             <div class="form-group">
@@ -259,13 +259,7 @@ header img {
         <asp:Button ID="RGN" runat="server" Text="Submit" CssClass="btn btn-primary btn-lg btn-block" OnClick="Button1_Click" />
     </div>
 </div>
-            <div class="row">
-     <div class="col-md-3">
-         <div class="registration-link">
-             <a href="Signup.aspx" class="blinking-link">New Visitor Register Here</a>
-         </div>
-     </div>
- </div>
+            
     </div>
 <script>
     document.getElementById('sidebar').addEventListener('mouseenter', function () {
