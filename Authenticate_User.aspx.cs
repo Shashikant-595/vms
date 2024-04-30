@@ -10,7 +10,7 @@ namespace VMS
 {
     public partial class Authenticate_User : System.Web.UI.Page
     {
-        string connectionString = "Data Source=localhost\\sqlexpress;Initial Catalog=VMS;Integrated Security=True;";
+        string connectionString = "Data Source=DESKTOP-4TNUEJA\\MSSQLSERVER02;Initial Catalog=vms;Integrated Security=True;";
 
         protected void Page_Load(object sender, EventArgs e)
         {
