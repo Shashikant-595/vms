@@ -11,6 +11,8 @@ using ZXing.Common;
 using System.Data.SqlClient;
 using System.Web.WebPages;
 using System.Xml.Linq;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 
 namespace VMS.Controllers
 {
@@ -28,11 +30,33 @@ namespace VMS.Controllers
            // return View();
         }
 
+        private readonly string _connectionString; // Replace with your actual connection string
 
-     
+        public HomeController(IConfiguration configuration)
+        {
+            _connectionString = configuration.GetConnectionString("MyConnectionString"); // Assuming "DefaultConnection"
+        }
+
+        [HttpGet]
+        public int GetTotalVisitors()
+        {
+            int count = 0;
+            using (SqlConnection connection = new SqlConnection(_connectionString))
+            {
+                connection.Open();
+                string sql = "SELECT COUNT(*) FROM Record"; // Replace "Record" with your actual table name
+
+                using (SqlCommand command = new SqlCommand(sql, connection))
+                {
+                    count = (int)command.ExecuteScalar();
+                }
+            }
+            return count;
+        }
+
         //public void GenerateQRcode(string token)
         //{
-           
+
 
 
         //    if (token.IsEmpty())
@@ -112,10 +136,10 @@ namespace VMS.Controllers
         //            catch (Exception ex)
         //            {
         //                System.Diagnostics.Trace.WriteLine($" PrintQRCode(stringList); {ex.ToString()}");
-                     
+
 
         //            }
-                    
+
         //        }
         //    }
         //}
