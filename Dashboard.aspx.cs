@@ -4,9 +4,12 @@ using System.Configuration;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
-using System.Web.Services;
+
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using Microsoft.AspNet.SignalR;
+
+
 
 namespace VMS
 {
@@ -14,29 +17,46 @@ namespace VMS
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+
+            int visitorCount = GetVisitorCount();
+
+            // Update the visitor count on the page (assuming visitorCountLabel exists)
+            
+
+            var hubContext = GlobalHost.ConnectionManager.GetHubContext<ChatHub>();
+            hubContext.Clients.All.ReceiveVisitorCount(visitorCount);
+        }
+
+        public int GetVisitorCount() // Change to public
+        {
+            int visitorCount = 0;
+
+            // Connection string to your database
             string connectionString = ConfigurationManager.ConnectionStrings["MyConnectionString"].ConnectionString;
 
-            int totalVisitors = GetTotalVisitors(connectionString);
-
-            // Bind the count to the Label control
-            totalVisitorsLabel.Text = totalVisitors.ToString();
-
-        }
-
-        private int GetTotalVisitors(string connectionString)
-        {
-            int count = 0;
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                connection.Open();
-                string sql = "SELECT COUNT(*) FROM Record"; // Replace "Record" with your actual table name
+                // SQL query to get the visitor count
+                string query = "SELECT COUNT(*) FROM Record";
 
-                using (SqlCommand command = new SqlCommand(sql, connection))
+                using (SqlCommand command = new SqlCommand(query, connection))
                 {
-                    count = (int)command.ExecuteScalar();
+                    connection.Open();
+                    visitorCount = (int)command.ExecuteScalar();
                 }
             }
-            return count;
+
+            return visitorCount;
+
         }
+
+        protected void Timer1_Tick(object sender, EventArgs e)
+        {
+            int visitorCount = GetVisitorCount();
+            visitorCount = GetVisitorCount();
+            Label1.Text = visitorCount.ToString();
+        }
+
     }
-}
+    }
+

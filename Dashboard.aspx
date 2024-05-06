@@ -5,9 +5,15 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <title>Visitor Management System - Dashboard</title>
+
+
     <link href="Content/bootstrap.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-XXEtcRoHS9bLVzIBb8dlUbaD5aykaf4u50c4+WCohgFjm4C8FaEzC1Kj2Ml3sH1R3T8MEXMm1kVhuvbfYjZKdA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <script src="Scripts/jquery-3.7.1.min.js"></script>
+    <script src="Scripts/jquery-3.6.0.min.js"></script>
+    <script src="Scripts/jquery.signalR-2.4.2.min.js"></script>
+    <script src="signalr/hubs"></script>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
     <link href="Content/Site.css" rel="stylesheet" />
@@ -30,10 +36,12 @@
             width: 100%;
         }
 
-            header img {
-                height: 80px;
-                margin-left: 5px;
-            }
+
+        header img {
+            height: 80px;
+            margin-left: 5px;
+        }
+
 
         .header-name {
             text-align: center;
@@ -54,37 +62,39 @@
             z-index: 1; /* Ensure the sidebar is above other content */
         }
 
-            .icon-sidebar a {
-                color: black;
-                padding: 15px 0;
-                text-align: center;
-                width: 100%;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                text-decoration: none;
-                margin-top: 50px;
-            }
 
-                .icon-sidebar a i {
-                    display: block;
-                    font-size: 14px;
-                }
+        .icon-sidebar a {
+            color: black;
+            padding: 15px 0;
+            text-align: center;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            margin-top: 50px;
+        }
 
-                .icon-sidebar a span {
-                    display: none;
-                    opacity: 0;
-                    transition: opacity 0.3s;
-                }
+        .icon-sidebar a i {
+            display: block;
+            font-size: 14px;
+        }
 
-            .icon-sidebar:hover a i {
-                display: inline;
-            }
+        .icon-sidebar a span {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
 
-            .icon-sidebar:hover a span {
-                display: inline;
-                opacity: 1;
-            }
+        .icon-sidebar:hover a i {
+            display: inline;
+        }
+
+        .icon-sidebar:hover a span {
+            display: inline;
+            opacity: 1;
+        }
+
 
         .content {
             padding-left: 60px;
@@ -100,10 +110,20 @@
             width: 100%;
             overflow-y: auto;
         }
+
+
+        .scrollable-content {
+            max-height: calc(100vh - 100px); /* Height of the viewport - header height */
+            overflow-y: auto;
+        }
+
     </style>
 </head>
 <body>
     <form id="form1" runat="server">
+
+        <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
+
         <header>
             <img src="https://foreselastomech.com/wp-content/uploads/2019/03/FORES-Logo.png" alt="Logo" />
             <div class="header-name">DASHBOARD</div>
@@ -135,35 +155,39 @@
                 <div class="col-md-10">
                     <section class="content">
                         <div class="container mt-4">
+
+                            <div class="scrollable-content">
+
                             <div class="row">
                                 <div class="col-md-3">
                                     <div class="card h-100 bg-info">
                                         <div class="card-body">
-                                <h5 class="card-title text-white">Total Visitors</h5>
-                                <asp:Label ID="totalVisitorsLabel" runat="server" Text=""></asp:Label>
-                            </div>
+
+                                            <h1>Total Visitors: <span id="totalVisitorsLabel"></span></h1>
+                                            
+                                            <asp:UpdatePanel ID="cardUpdatePanel" runat="server" UpdateMode="Conditional">
+                                                <ContentTemplate>
+                                                    <asp:Label ID="Label1" runat="server" Text=""></asp:Label> <asp:Timer ID="Timer1" runat="server" Interval="1000" OnTick="Timer1_Tick"></asp:Timer>
+                                                </ContentTemplate>
+                                                <Triggers>
+                                                    <asp:AsyncPostBackTrigger ControlID="__PAGE" EventName="Load" />
+                                                </Triggers>
+                                            </asp:UpdatePanel>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="col-md-3">
-                                    <div class="card h-100 bg-success">
+                                    <div class="card h-100 bg-warning">
+
                                         <div class="card-body">
                                             <h5 class="card-title text-white">Visitors This Month</h5>
                                             <h3 id="visitorsThisMonth" class="card-text text-white">0</h3>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-3">
-                                    <div class="card h-100 bg-warning">
-                                        <div class="card-body">
-                                            <h5 class="card-title text-white">Most Visited Employee</h5>
-                                            <h3 id="mostVisitedEmployee" class="card-text text-white">N/A</h3>
-                                            <hr />
-                                            <h6 class="text-white">Top 5 Most Visited Employees:</h6>
-                                            <button id="toggleEmployeeList" class="btn btn-outline-light btn-sm mb-2" style="display: none;" onclick="toggleEmployeeList()">Show Employees</button>
-                                            <ul id="topVisitedEmployees" class="text-white" style="display: none;"></ul>
-                                        </div>
-                                    </div>
-                                </div>
+
+                                
+
                                 <div class="col-md-3">
                                     <div class="card h-100 bg-danger">
                                         <div class="card-body">
@@ -203,6 +227,9 @@
                                     <canvas id="visitorChart" style="height: 400px; width: 100%;"></canvas>
                                 </div>
                             </div>
+
+                            </div>
+
                         </div>
                     </section>
                 </div>
@@ -211,79 +238,28 @@
 
     </form>
 
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="/Scripts/jquery.signalR-2.4.2.min.js"></script>
+    <script src="/signalr/hubs"></script>
     <script>
         $(document).ready(function () {
-            // Replace "YourApiUrl" with the actual URL of your Web API endpoint
-            const url = "Home/GetTotalVisitors";
+            var connection = new signalR.HubConnectionBuilder()
+                .withUrl("/ChatHub")
+                .configureLogging(signalR.LogLevel.Information)
+                .build();
 
-            fetch(url)
-                .then(response => response.json())
-                .then(data => {
-                    $("#totalVisitorsSpan").text(data);
-                })
-                .catch(error => {
-                    console.error("Error fetching visitor count:", error);
-                    // Handle errors gracefully, e.g., display an error message
-                });
-        });
-
-        function loadVisitorChart() {
-            $.ajax({
-                type: "POST",
-                url: "Dashboard.aspx/GetVisitorChartData",
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                success: function (response) {
-                    var data = JSON.parse(response.d);
-                    var ctx = document.getElementById('visitorChart').getContext('2d');
-                    var myChart = new Chart(ctx, {
-                        type: 'doughnut',
-                        data: {
-                            labels: data.Labels,
-                            datasets: [{
-                                label: '# of Visitors',
-                                data: data.Data,
-                                backgroundColor: [
-                                    'rgba(255, 99, 132, 0.5)',
-                                    'rgba(54, 162, 235, 0.5)',
-                                    'rgba(255, 206, 86, 0.5)',
-                                    'rgba(75, 192, 192, 0.5)',
-                                    'rgba(153, 102, 255, 0.5)',
-                                    'rgba(255, 159, 64, 0.5)'
-                                ],
-                                borderColor: [
-                                    'rgba(255, 99, 132, 1)',
-                                    'rgba(54, 162, 235, 1)',
-                                    'rgba(255, 206, 86, 1)',
-                                    'rgba(75, 192, 192, 1)',
-                                    'rgba(153, 102, 255, 1)',
-                                    'rgba(255, 159, 64, 1)'
-                                ],
-                                borderWidth: 1
-                            }]
-                        },
-                        options: {
-                            responsive: true,
-                            maintainAspectRatio: false
-                        }
-                    });
-                },
-                failure: function (response) {
-                    alert(response.d);
-                }
+            connection.on("ReceiveVisitorCount", function (newCount) {
+                $("#totalVisitorsLabel").text(newCount);
             });
-        }
 
-        function toggleEmployeeList() {
-            var list = document.getElementById('topVisitedEmployees');
-            if (list.style.display === 'none') {
-                list.style.display = 'block';
-                document.getElementById('toggleEmployeeList').innerText = 'Hide Employees';
-            } else {
-                list.style.display = 'none';
-                document.getElementById('toggleEmployeeList').innerText = 'Show Employees';
-            }
-        }
+            connection.start().then(function () {
+                console.log("Connected to SignalR Hub");
+            }).catch(function (err) {
+                console.error(err.toString());
+            });
+        });;
+       
+
     </script>
 </body>
 </html>
