@@ -17,11 +17,11 @@ namespace VMS
         {
             int visitorCount = GetVisitorCount();
 
-            // Update the visitor count on the page
-            visitorCountLabel.Text = visitorCount.ToString();
+            // Update the visitor count on the page (assuming visitorCountLabel exists)
+            
 
             var hubContext = GlobalHost.ConnectionManager.GetHubContext<ChatHub>();
-            hubContext.Clients.All.receiveVisitorCount(visitorCount);
+            hubContext.Clients.All.ReceiveVisitorCount(visitorCount);
         }
 
         public int GetVisitorCount() // Change to public
@@ -44,6 +44,15 @@ namespace VMS
             }
 
             return visitorCount;
+
         }
+
+        protected void Timer1_Tick(object sender, EventArgs e)
+        {
+            int visitorCount = GetVisitorCount();
+            visitorCount = GetVisitorCount();
+            Label1.Text = visitorCount.ToString();
+        }
+
     }
     }

@@ -5,7 +5,7 @@ namespace VMS
 {
     public class ChatHub : Hub
     {
-        public async Task SendVisitorCount(int newCount)
+        public async Task ReceiveVisitorCount(int newCount)
         {
             await Clients.All.SendAsync("ReceiveVisitorCount", newCount);
         }

@@ -1,6 +1,6 @@
 ﻿CREATE TRIGGER trgAfterUpdateRecord
 ON Record
-AFTER INSERT
+AFTER INSERT, UPDATE, DELETE
 AS
 BEGIN
     SET NOCOUNT ON;
@@ -10,5 +10,5 @@ BEGIN
     SELECT @newCount = COUNT(*) FROM Record;
 
     -- Send new visitor count to SignalR Hub
-    EXEC sp_SendVisitorCount @newCount;
+    EXEC SendVisitorCount @newCount;
 END;

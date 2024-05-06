@@ -104,6 +104,11 @@
             width: 100%;
             overflow-y: auto;
         }
+
+        .scrollable-content {
+            max-height: calc(100vh - 100px); /* Height of the viewport - header height */
+            overflow-y: auto;
+        }
     </style>
 </head>
 <body>
@@ -140,15 +145,16 @@
                 <div class="col-md-10">
                     <section class="content">
                         <div class="container mt-4">
+                            <div class="scrollable-content">
                             <div class="row">
                                 <div class="col-md-3">
                                     <div class="card h-100 bg-info">
                                         <div class="card-body">
                                             <h1>Total Visitors: <span id="totalVisitorsLabel"></span></h1>
-                                            <asp:Label ID="visitorCountLabel" runat="server"></asp:Label>
+                                            
                                             <asp:UpdatePanel ID="cardUpdatePanel" runat="server" UpdateMode="Conditional">
                                                 <ContentTemplate>
-                                                    <asp:Label ID="Label1" runat="server" Text=""></asp:Label>
+                                                    <asp:Label ID="Label1" runat="server" Text=""></asp:Label> <asp:Timer ID="Timer1" runat="server" Interval="1000" OnTick="Timer1_Tick"></asp:Timer>
                                                 </ContentTemplate>
                                                 <Triggers>
                                                     <asp:AsyncPostBackTrigger ControlID="__PAGE" EventName="Load" />
@@ -158,25 +164,14 @@
                                     </div>
                                 </div>
                                 <div class="col-md-3">
-                                    <div class="card h-100 bg-success">
+                                    <div class="card h-100 bg-warning">
                                         <div class="card-body">
                                             <h5 class="card-title text-white">Visitors This Month</h5>
                                             <h3 id="visitorsThisMonth" class="card-text text-white">0</h3>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-3">
-                                    <div class="card h-100 bg-warning">
-                                        <div class="card-body">
-                                            <h5 class="card-title text-white">Most Visited Employee</h5>
-                                            <h3 id="mostVisitedEmployee" class="card-text text-white">N/A</h3>
-                                            <hr />
-                                            <h6 class="text-white">Top 5 Most Visited Employees:</h6>
-                                            <button id="toggleEmployeeList" class="btn btn-outline-light btn-sm mb-2" style="display: none;" onclick="toggleEmployeeList()">Show Employees</button>
-                                            <ul id="topVisitedEmployees" class="text-white" style="display: none;"></ul>
-                                        </div>
-                                    </div>
-                                </div>
+                                
                                 <div class="col-md-3">
                                     <div class="card h-100 bg-danger">
                                         <div class="card-body">
@@ -215,6 +210,7 @@
                                 <div class="col-md-5">
                                     <canvas id="visitorChart" style="height: 400px; width: 100%;"></canvas>
                                 </div>
+                            </div>
                             </div>
                         </div>
                     </section>
