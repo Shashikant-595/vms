@@ -1,6 +1,3 @@
-<<<<<<< HEAD
-# vms
-visitors managements systems 
-=======
+
 # VMS
->>>>>>> master
+changes for rule checking 

@@ -28,7 +28,9 @@ namespace VMS
    
     public partial class Registration : System.Web.UI.Page
     {
+
          private string connectionString = "Data Source=DESKTOP-4TNUEJA\\MSSQLSERVER02;Initial Catalog=vms;Integrated Security=True;";
+
         // private string connectionString = "Data Source=192.168.20.70,1433;Initial Catalog=vms;User ID=vms;Password=Vms@123;";
 
         private readonly object recipientNumber;
@@ -73,7 +75,9 @@ namespace VMS
 
         protected async void Button1_Click(object sender, EventArgs e)
         {
+
            // string connectionString = "Data Source=192.168.20.70,1433;Initial Catalog=vms;User ID=vms;Password=Vms@123;";
+
             string connectionString = "Data Source=DESKTOP-4TNUEJA\\MSSQLSERVER02;Initial Catalog=vms;Integrated Security=True;";
             //
 

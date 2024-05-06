@@ -4,9 +4,11 @@ using System.Configuration;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
+
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Microsoft.AspNet.SignalR;
+
 
 
 namespace VMS
@@ -15,6 +17,7 @@ namespace VMS
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+
             int visitorCount = GetVisitorCount();
 
             // Update the visitor count on the page (assuming visitorCountLabel exists)
@@ -56,3 +59,4 @@ namespace VMS
 
     }
     }
+
