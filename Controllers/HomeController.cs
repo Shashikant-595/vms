@@ -11,11 +11,10 @@ using ZXing.Common;
 using System.Data.SqlClient;
 using System.Web.WebPages;
 using System.Xml.Linq;
-<<<<<<< Updated upstream
-=======
+
 
 using Microsoft.Extensions.Configuration;
->>>>>>> Stashed changes
+
 
 namespace VMS.Controllers
 {
