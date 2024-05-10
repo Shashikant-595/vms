@@ -15,6 +15,7 @@ namespace VMS
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+
             int visitorCount = GetVisitorCount();
 
             // Update the visitor count on the page (assuming visitorCountLabel exists)
@@ -56,3 +57,4 @@ namespace VMS
 
     }
     }
+

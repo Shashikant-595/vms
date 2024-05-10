@@ -6,12 +6,14 @@
 <head runat="server">
     <title>Visitor Management System - Dashboard</title>
 
+
     <link href="Content/bootstrap.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-XXEtcRoHS9bLVzIBb8dlUbaD5aykaf4u50c4+WCohgFjm4C8FaEzC1Kj2Ml3sH1R3T8MEXMm1kVhuvbfYjZKdA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <script src="Scripts/jquery-3.7.1.min.js"></script>
     <script src="Scripts/jquery-3.6.0.min.js"></script>
     <script src="Scripts/jquery.signalR-2.4.2.min.js"></script>
     <script src="signalr/hubs"></script>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
     <link href="Content/Site.css" rel="stylesheet" />
@@ -34,10 +36,12 @@
             width: 100%;
         }
 
+
         header img {
             height: 80px;
             margin-left: 5px;
         }
+
 
         .header-name {
             text-align: center;
@@ -57,6 +61,7 @@
             align-items: center;
             z-index: 1; /* Ensure the sidebar is above other content */
         }
+
 
         .icon-sidebar a {
             color: black;
@@ -90,6 +95,7 @@
             opacity: 1;
         }
 
+
         .content {
             padding-left: 60px;
             transition: padding-left 0.3s;
@@ -105,15 +111,19 @@
             overflow-y: auto;
         }
 
+
         .scrollable-content {
             max-height: calc(100vh - 100px); /* Height of the viewport - header height */
             overflow-y: auto;
         }
+
     </style>
 </head>
 <body>
     <form id="form1" runat="server">
+
         <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
+
         <header>
             <img src="https://foreselastomech.com/wp-content/uploads/2019/03/FORES-Logo.png" alt="Logo" />
             <div class="header-name">DASHBOARD</div>
@@ -145,11 +155,14 @@
                 <div class="col-md-10">
                     <section class="content">
                         <div class="container mt-4">
+
                             <div class="scrollable-content">
+
                             <div class="row">
                                 <div class="col-md-3">
                                     <div class="card h-100 bg-info">
                                         <div class="card-body">
+
                                             <h1>Total Visitors: <span id="totalVisitorsLabel"></span></h1>
                                             
                                             <asp:UpdatePanel ID="cardUpdatePanel" runat="server" UpdateMode="Conditional">
@@ -165,13 +178,16 @@
                                 </div>
                                 <div class="col-md-3">
                                     <div class="card h-100 bg-warning">
+
                                         <div class="card-body">
                                             <h5 class="card-title text-white">Visitors This Month</h5>
                                             <h3 id="visitorsThisMonth" class="card-text text-white">0</h3>
                                         </div>
                                     </div>
                                 </div>
+
                                 
+
                                 <div class="col-md-3">
                                     <div class="card h-100 bg-danger">
                                         <div class="card-body">
@@ -211,12 +227,15 @@
                                     <canvas id="visitorChart" style="height: 400px; width: 100%;"></canvas>
                                 </div>
                             </div>
+
                             </div>
+
                         </div>
                     </section>
                 </div>
             </div>
         </div>
+
     </form>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -240,6 +259,7 @@
             });
         });;
        
+
     </script>
 </body>
 </html>
