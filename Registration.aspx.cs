@@ -28,8 +28,9 @@ namespace VMS
    
     public partial class Registration : System.Web.UI.Page
     {
+        string connectionString = "Data Source=192.168.20.70,1433;Initial Catalog=vms;User ID=vms;Password=Vms@123;";
 
-         private string connectionString = "Data Source=DESKTOP-4TNUEJA\\MSSQLSERVER02;Initial Catalog=vms;Integrated Security=True;";
+//        private string connectionString = "Data Source=DESKTOP-4TNUEJA\\MSSQLSERVER02;Initial Catalog=vms;Integrated Security=True;";
 
         // private string connectionString = "Data Source=192.168.20.70,1433;Initial Catalog=vms;User ID=vms;Password=Vms@123;";
 
@@ -90,7 +91,7 @@ namespace VMS
             string employymail = Session["passmail"].ToString();
             string EmployeeMob = Session["User_id"].ToString();
             string mobile_No = txtMbNo.Text; // Save mobile_No from txtMbNo
-            string meetingSubject = txtMeeting.Text;
+           //string meetingSubject = txtMeeting.Text;
             string meetingdate = datetimepicker.Text;
 
             string visitor_Name = txtName.Text;
@@ -98,7 +99,7 @@ namespace VMS
             string Company = txtCompany.Text;
 
 
-            InsertRecord(employeename, EmployeeMob ,mobile_No, meetingSubject, meetingdate, visitor_Name, visitor_Email, Company);
+            //InsertRecord(employeename, EmployeeMob ,mobile_No, meetingSubject, meetingdate, visitor_Name, visitor_Email, Company);
 
 
             try
@@ -130,7 +131,7 @@ namespace VMS
                     }
                 }
 
-                Qrdata.Add(meetingSubject); //0
+               //Qrdata.Add(meetingSubject); //0
                 Qrdata.Add(visitor_Email);  //1
                 Qrdata.Add(mobile_No);      //2
                 Qrdata.Add(visitor_Name);   //3
@@ -151,7 +152,7 @@ namespace VMS
                 txtEmail.Text = string.Empty;
                 txtName.Text = string.Empty;
                 datetimepicker.Text = string.Empty;
-                txtMeeting.Text = string.Empty;
+               // txtMeeting.Text = string.Empty;
                 txtMbNo.Text = string.Empty;
 
 
@@ -279,11 +280,11 @@ namespace VMS
 
 
                         // Attach the link 
-                        string BODY_HTML = "<h1style=\"color: blue\">Hello " + txtName.Text + " sir, This is your Gate pass </h1><br>" +
-                    "<p>Meeting Subject:- " + txtMeeting.Text + "<br>" + "We look forward to welcoming you to FORES ELASTOMECH INDIA PVT.LTD and having a fruitful discussion.<p/><br>" + "<p>We hope you have a pleasant and enjoyable experience while you're here. Thank you for choosing us, and we look forward to serving you.</p><br>" + "<p>Best regards,</p><br>"+"<p> "+ employeename + "</p>";
+                       // string BODY_HTML = "<h1style=\"color: blue\">Hello " + txtName.Text + " sir, This is your Gate pass </h1><br>" +
+                    //"<p>Meeting Subject:- " + txtMeeting.Text + "<br>" + "We look forward to welcoming you to FORES ELASTOMECH INDIA PVT.LTD and having a fruitful discussion.<p/><br>" + "<p>We hope you have a pleasant and enjoyable experience while you're here. Thank you for choosing us, and we look forward to serving you.</p><br>" + "<p>Best regards,</p><br>"+"<p> "+ employeename + "</p>";
 
                         // Add the text part
-                        message.Body = BODY_HTML;
+                        //message.Body = BODY_HTML;
 
 
                         client.Send(message);

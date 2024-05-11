@@ -43,7 +43,7 @@ header img {
 
 .icon-sidebar {
     background-color: darkgray;
-    width: 25px;
+    width: 30px;
     position: fixed;
     height: 100%;
     transition: width 0.3s;
@@ -95,80 +95,74 @@ header img {
 .icon-sidebar:hover{
     width:180px;
 }
-.center-button-container {
-    text-align: center;
-    margin-top: 50px; /* Adjust as needed */
+.logout-btn {
+    margin-top: 900px;
+    background-color: red;
 }
-
-.center-button {
-    background-color: #e7e7e7; /* Light gray background */
-    border: 1px solid #ddd; /* Add a subtle border */
-    color: #333; /* Darker text color */
-    padding: 15px 32px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    cursor: pointer;
-    border-radius: 8px;
-    margin-left: 695px;
-    margin-top: 393px;
-}
-
-.center-button:hover {
-    background-color: #e5e5e5; /* Slightly darker gray on hover */
-}
-  span:hover {
-     animation: blink 1s infinite;
-     color: #0066ff; /* Change this color to suit your background */
-     text-decoration: none; /* Remove underline */
- }
-
     </style>
-    <link href="Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="Conten
+        t/bootstrap.min.css" rel="stylesheet" />
     <script src="Scripts/bootstrap.min.js"></script>
 
 </head>
 <body>
     
-    <form id="form1" runat="server" >
-        <header>
-            <img src="https://foreselastomech.com/wp-content/uploads/2019/03/FORES-Logo.png" alt="Logo" />
-            <div class="header-name">ENTRY SCREEN</div>
-        </header>
-        <div class="icon-sidebar " id="sidebar" >
-            <a href="Registration.aspx" id="registrationLink" runat="server">
-                <i class='fas fa-user-plus'></i>
-                <span  >INVITE VISITOR</span>
-
-            </a>
-            <a href="Signup.aspx" id="newVisitorLink" runat="server">
-                <i class='fas fa-user-plus'></i>
-                <span>NEW VISITORS REGISTRATION</span>
-            </a>
-
-             <a href="Employee_Signup.aspx" id="employeelink" runat="server">
-     <i class='fas fa-user-plus'></i>
-     <span>NEW EMPLOYEE REGISTRATION</span>
+    <form id="form1" runat="server">
+    <header>
+        <img src="https://foreselastomech.com/wp-content/uploads/2019/03/FORES-Logo.png" alt="Logo" />
+        <div class="header-name">ENTRY SCREEN</div>
+    </header>
+    <div class="icon-sidebar" id="sidebar">
+        <a href="Registration.aspx" id="registrationLink" runat="server" class="sidebar-link">
+            <i class='fas fa-user-plus sidebar-icon'></i>
+            <span>INVITE VISITOR</span>
+        </a>
+        <a href="Signup.aspx" id="newVisitorLink" runat="server" class="sidebar-link">
+            <i class='fas fa-user-plus sidebar-icon'></i>
+            <span>NEW VISITORS REGISTRATION</span>
+        </a>
+        <a href="Employee_Signup.aspx" id="employeelink" runat="server" class="sidebar-link">
+            <i class='fas fa-user-plus sidebar-icon'></i>
+            <span>NEW EMPLOYEE REGISTRATION</span>
+        </a>
+        <a href="#" id="scanQrLink" class="sidebar-link" onclick="openCamera()">
+            <i class='fas fa-qrcode sidebar-icon'></i>
+            <span>Scan QR</span>
+        </a>
+        <a href="#" id="confirmLink" class="sidebar-link" onclick="opencamere_forconform()">
+            <i class='fas fa-check sidebar-icon'></i>
+            <span>Confirm</span>
+        </a>
+         <a href="Authenticate_User.aspx" class="logout-btn">
+     <i class="fas fa-sign-out-alt"></i>
+     <span>Logout</span>
  </a>
         </div>
 
-      <div class="container">
-  <div class="row justify-content-center">
-    <div class="col-sm-6 text-center"> <!-- Adjust column size based on your layout -->
-      <asp:Button ID="centerButton" runat="server" class="btn btn-primary" Text="Scan QR Code Here" OnClientClick="openCamera(); return false;" OnClick="centerButton_Click1" />
-    </div>
-    <div class="col-sm-6 text-center mt-4  col-md-4 "> <!-- Adjust column size based on your layout -->
-      <asp:Button ID="btnconform" runat="server" class="btn btn-primary" Text="Confirm" OnClientClick="opencamere_forconform(); return false;" />
-    </div>
-  </div>
-</div>
-        <div id="camera-preview"class="col-ml-6 " ></div>
-    
-    
-    </form>
-    <script>
 
+    
+
+    <div id="camera-preview" class="col-ml-6"></div>
+</form>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Adjust button placement
+            var iconSidebar = document.getElementById("sidebar");
+            var links = iconSidebar.getElementsByClassName("sidebar-link");
+            for (var i = 0; i < links.length; i++) {
+                links[i].style.marginLeft = (iconSidebar.offsetWidth - links[i].offsetWidth) / 2 + "px";
+            }
+
+            // Adjust button size and placement when the window is resized
+            window.addEventListener("resize", function () {
+                for (var i = 0; i < links.length; i++) {
+                    links[i].style.marginLeft = (iconSidebar.offsetWidth - links[i].offsetWidth) / 2 + "px";
+                }
+            });
+        });
+
+        
 
         function openCamera() {
             // Check if getUserMedia is available

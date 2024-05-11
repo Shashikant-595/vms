@@ -11,7 +11,7 @@ using ZXing.Common;
 using System.Data.SqlClient;
 using System.Web.WebPages;
 using System.Xml.Linq;
-using Microsoft.AspNetCore.Mvc;
+
 using Microsoft.Extensions.Configuration;
 
 namespace VMS.Controllers
@@ -19,10 +19,13 @@ namespace VMS.Controllers
     
     public class HomeController : Controller
     {
-       // string connectionString = "Data Source=192.168.20.70,1433;Initial Catalog=vms;User ID=vms;Password=Vms@123;";
-        string connectionString = "Data Source=localhost\\sqlexpress;Initial Catalog=VMS;Integrated Security=True;";
-     
+        string connectionString = "Data Source=192.168.20.70,1433;Initial Catalog=vms;User ID=vms;Password=Vms@123;";
+        //string connectionString = "Data Source=localhost\\sqlexpress;Initial Catalog=VMS;Integrated Security=True;";
 
+        public HomeController()
+        {
+            // Parameterless constructor
+        }
 
         public ActionResult Index()
         {

@@ -138,7 +138,7 @@ header img {
 
 
             <img src="https://foreselastomech.com/wp-content/uploads/2019/03/FORES-Logo.png" alt="Logo" />
-            <div class="header-name">Create New User</div>
+            <div class="header-name">Create New Employee</div>
         </header>
         <div class="icon-sidebar">
             <a href="Entry_Screen.aspx">
@@ -166,9 +166,13 @@ header img {
                     <asp:TextBox ID="txteemail" runat="server" CssClass="form-control"></asp:TextBox>
                 </div>
                 <div class="form-group  col-sm-3">
-                    <asp:Label ID="Labele2" runat="server" Text="Employee-Code : "></asp:Label>
-                    <asp:TextBox ID="txteDepartment" runat="server" CssClass="form-control"></asp:TextBox>
+                    <asp:Label ID="Labele2" runat="server" Text="Employee-ID    : "></asp:Label>
+                    <asp:TextBox ID="txtID" runat="server" CssClass="form-control"></asp:TextBox>
                 </div>
+           <div class="form-group  col-sm-3">
+     <asp:Label ID="Label3" runat="server" Text="Department    : "></asp:Label>
+     <asp:TextBox ID="txtDepartment" runat="server" CssClass="form-control"></asp:TextBox>
+ </div>
                 <div class="form-group col-sm-3" style="position: relative;">
     <asp:Label ID="Label13" runat="server" Text="Password: "></asp:Label>
     <asp:TextBox ID="txtpassword" type="password" runat="server" CssClass="form-control" onfocus="showIcon(this)" onblur="hideIcon(this)"></asp:TextBox>

@@ -123,6 +123,19 @@ header img {
     color: #0066ff; /* Change this color to suit your background */
     text-decoration: none; /* Remove underline */
 }
+             .btn-primary {
+    background-color: green; /* Change button background color to green */
+    color: white; /* Change button text color to white */
+    padding: 15px 30px; /* Increase padding to make the button bigger */
+    font-size: 18px; /* Increase font size */
+    border: none; /* Remove button border */
+}
+
+.btn-primary:hover {
+    background-color: darkgreen; /* Change button background color on hover */
+    color: white; /* Change button text color on hover */
+}
+
     </style>
 </head>
 <body>
@@ -148,7 +161,7 @@ header img {
 
         <div class="center-container">
             <div style="margin-bottom: 20px; margin-left: -48px">
-                <asp:Label ID="lblName" runat="server" Text="Visitor Name : "></asp:Label>
+                <asp:Label ID="lblName" runat="server" Text=" Name : "></asp:Label>
                 <asp:TextBox ID="txtName" runat="server"></asp:TextBox>
             </div>
             <div style="margin-bottom: 20px; margin-left: -24px;">
