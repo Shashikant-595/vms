@@ -70,21 +70,14 @@ namespace VMS
 
         }
 
-        protected async void Button1_Click(object sender, EventArgs e)
+        protected void Button1_Click(object sender, EventArgs e)
         {
             string connectionString = "Data Source=192.168.20.70,1433;Initial Catalog=vms;User ID=vms;Password=Vms@123;";
-            //  string connectionString = "Data Source=localhost\\sqlexpress;Initial Catalog=VMS;Integrated Security=True;";
-            //
-
             List<string> Qrdata = new List<string>();
-            // string Employee_email=null;
-            string urlWithToken = null;
-            //     string apiUrl = "https://graph.facebook.com/v18.0/206970215843824/messages";
-            //     string apiKey = "EAAK3AIry3xEBO4SgDUMKUZA7N5Ii1Qnqf6fMHZAVUrZCZAT5KHdaWww3Jmpd4PwShpy07dMXVD6GOshE6LA7ENCt8G1DuZAwFyEmPBlOvL4vISdDMIrG7Ap0egyvuArvNn9WcbiAgPcyjRPBylAgAZBGcNISqREhl2hkANMzUlcpo3BMNm2Jv5rmyXrUzQj38UUkjzlYGPEY55gordaiZCBBZB1Dhx8ZD";
             employeename = Session["name"].ToString();
             string employymail = Session["passmail"].ToString();
             string EmployeeMob = Session["User_id"].ToString();
-            string mobile_No = txtMbNo.Text; // Save mobile_No from txtMbNo
+            string mobile_No = txtMbNo.Text;
             string meetingSubject = txtMeeting.Text;
             string meetingdate = datetimepicker.Text;
 
@@ -92,30 +85,22 @@ namespace VMS
             string visitor_Email = txtEmail.Text;
             string Company = txtCompany.Text;
 
-
             InsertRecord(employeename, EmployeeMob, mobile_No, meetingSubject, meetingdate, visitor_Name, visitor_Email, Company);
-
 
             try
             {
-
                 string queryfortoken = "SELECT MAX(token) AS LastToken FROM Record";
 
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
                     using (SqlCommand command = new SqlCommand(queryfortoken, connection))
                     {
-                        // Opening connection
                         connection.Open();
-
-                        // Executing query
                         object LastToken = command.ExecuteScalar();
 
                         if (LastToken != null)
                         {
-                            // Store the last inserted token value into a variable
                             token = LastToken.ToString();
-
                             System.Diagnostics.Trace.WriteLine($"token is  {token}");
                         }
                         else
@@ -125,36 +110,33 @@ namespace VMS
                     }
                 }
 
-                Qrdata.Add(meetingSubject); //0
-                Qrdata.Add(visitor_Email);  //1
-                Qrdata.Add(mobile_No);      //2
-                Qrdata.Add(visitor_Name);   //3
-                Qrdata.Add(Company);        //4
-                Qrdata.Add(meetingdate);    //5
-                Qrdata.Add(employeename);  //6
-                Qrdata.Add(token);  //7
-
-                // Assuming you have a method to insert data into the record table, call it here
+                Qrdata.Add(meetingSubject);
+                Qrdata.Add(visitor_Email);
+                Qrdata.Add(mobile_No);
+                Qrdata.Add(visitor_Name);
+                Qrdata.Add(Company);
+                Qrdata.Add(meetingdate);
+                Qrdata.Add(employeename);
+                Qrdata.Add(token);
 
                 PrintQRCode(Qrdata);
                 sendMail(visitor_Email, employymail);
                 System.Diagnostics.Trace.WriteLine($" mail is send success fully");
-                string alertMessage = "alert('Your Meeting Request has been successfully submitted.');";
-                ClientScript.RegisterStartupScript(this.GetType(), "alert", alertMessage, true);
 
+                // Display success message using ScriptManager
+                string alertMessage = "alert('Your Meeting Request has been successfully submitted.');";
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "alert", alertMessage, true);
+
+                // Clear input fields
                 txtCompany.Text = string.Empty;
                 txtEmail.Text = string.Empty;
                 txtName.Text = string.Empty;
                 datetimepicker.Text = string.Empty;
                 txtMeeting.Text = string.Empty;
-                txtMbNo.Text = string.Empty;
 
+                // Reinitialize datetimepicker after the pop-up is closed
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "DateTimePicker", "$('#<%= datetimepicker.ClientID %>').datetimepicker();", true);
 
-            }
-            catch (HttpRequestException ex)
-            {
-
-                Console.WriteLine($"An HTTP request error occurred: {ex.Message}");
             }
             catch (Exception ex)
             {
