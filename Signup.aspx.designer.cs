@@ -51,6 +51,15 @@ namespace VMS
         protected global::System.Web.UI.WebControls.TextBox txtName;
 
         /// <summary>
+        /// regexName control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RegularExpressionValidator regexName;
+
+        /// <summary>
         /// lblMbNo control.
         /// </summary>
         /// <remarks>
@@ -69,6 +78,15 @@ namespace VMS
         protected global::System.Web.UI.WebControls.TextBox txtMbNo;
 
         /// <summary>
+        /// regexMobile1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RegularExpressionValidator regexMobile1;
+
+        /// <summary>
         /// email control.
         /// </summary>
         /// <remarks>
@@ -85,6 +103,15 @@ namespace VMS
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtemail;
+
+        /// <summary>
+        /// regexEmail1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RegularExpressionValidator regexEmail1;
 
         /// <summary>
         /// compony control.

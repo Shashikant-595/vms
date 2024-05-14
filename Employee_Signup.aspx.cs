@@ -206,6 +206,9 @@ namespace VMS
             return result;
         }
 
+        protected void GridView1_SelectedIndexChanged(object sender, EventArgs e)
+        {
 
+        }
     }
 }

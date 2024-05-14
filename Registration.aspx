@@ -55,7 +55,7 @@
 
             .icon-sidebar a {
                 color: black;
-                padding: 15px 0;
+                padding: 17px 0;
                 text-align: center;
                 width: 100%;
                 display: flex;
@@ -155,10 +155,16 @@
             position: relative;
             top: 10px; /* Adjust the value as needed for desired spacing */
         }
+
         .logout-btn {
-    margin-top: 400px;
-    background-color: red;
-}
+            margin-top: 400px;
+            background-color: red;
+        }
+
+        .logout-btn {
+            margin-top: 900px;
+            background-color: red;
+        }
     </style>
 </head>
 <body>
@@ -195,6 +201,9 @@
                             <i class='fas fa-user-plus'></i>
                             <span class="d-none d-md-inline">NEW EMPLOYEE REGISTRATION</span>
                         </a>
+                        <br />
+                        <br />
+                        <br />
                                 <a href="Authenticate_User.aspx" class="logout-btn">
     <i class="fas fa-sign-out-alt"></i>
     <span>Logout</span>
@@ -208,8 +217,8 @@
             <div class="row">
                 <div class="col-md-3">
                     <div class="form-group">
-                        <asp:Label ID="lblName" runat="server" Text="Name :" AssociatedControlID="txtName"></asp:Label>
-                        <asp:TextBox ID="txtName" runat="server" CssClass="form-control"></asp:TextBox>
+                        <asp:Label ID="lblName" runat="server" Text="Name :" AssociatedControlID="txtName" ></asp:Label>
+                        <asp:TextBox ID="txtName" runat="server" CssClass="form-control" required></asp:TextBox>
                     </div>
                 </div>
             </div>
@@ -217,7 +226,7 @@
     <div class="col-md-3">
         <div class="form-group">
             <asp:Label ID="lblMbNo" runat="server" Text="Mobile No :" AssociatedControlID="txtMbNo"></asp:Label>
-            <asp:TextBox ID="txtMbNo" runat="server" OnTextChanged="txtMbNo_TextChanged" AutoPostBack="True" CssClass="form-control"></asp:TextBox>
+            <asp:TextBox ID="txtMbNo" runat="server" OnTextChanged="txtMbNo_TextChanged" AutoPostBack="True" CssClass="form-control" required></asp:TextBox>
             <asp:RegularExpressionValidator ID="regexMobile" runat="server" ControlToValidate="txtMbNo"
                 ValidationExpression="^[0-9]{10}$"
                 ErrorMessage="Please enter a valid 10-digit mobile number."
@@ -230,27 +239,29 @@
     <div class="col-md-3">
         <div class="form-group">
             <asp:Label ID="Label1" runat="server" Text="Email :" AssociatedControlID="txtEmail"></asp:Label>
-            <asp:TextBox ID="txtEmail" runat="server" CssClass="form-control"></asp:TextBox>
+            <asp:TextBox ID="txtEmail" runat="server" CssClass="form-control" required></asp:TextBox>
             <asp:RegularExpressionValidator ID="regexEmail" runat="server" ControlToValidate="txtEmail"
                 ValidationExpression="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
                 ErrorMessage="Please enter a valid email address with '@' symbol and a '.' before the ending word."
                 Display="Dynamic" ForeColor="Red"></asp:RegularExpressionValidator>
         </div>
     </div>
+</div><div class="row">
+    <div class="col-md-3">
+        <div class="form-group">
+            <asp:Label ID="Label2" runat="server" Text="Company:"></asp:Label>
+            <asp:TextBox ID="txtCompany" runat="server" CssClass="form-control" required></asp:TextBox>
+            <asp:RequiredFieldValidator runat="server" ID="reqCompany" ControlToValidate="txtCompany" ErrorMessage="Please enter the company name!" />
+        </div>
+    </div>
 </div>
-            <div class="row">
-                <div class="col-md-3">
-                    <div class="form-group">
-                        <asp:Label ID="Label2" runat="server" Text="Company :" AssociatedControlID="txtCompany"></asp:Label>
-                        <asp:TextBox ID="txtCompany" runat="server" CssClass="form-control"></asp:TextBox>
-                    </div>
-                </div>
-            </div>
-          <div class="row">
+
+
+<div class="row">
     <div class="col-md-3">
         <div class="form-group">
             <label for="ddlMeetingType">Meeting Subject :</label>
-            <select class="form-control" id="ddlMeetingType" onchange="showOtherOption(this)">
+            <select class="form-control" id="ddlMeetingType" onchange="showOtherOption(this)" required>
                 <option value="">Select Meeting Type</option>
                 <option value="Business Meeting">Business Meeting</option>
                 <option value="Job Interview">Job Interview</option>
@@ -269,7 +280,6 @@
         </div>
     </div>
 </div>
-
 
 
 <script>
@@ -300,6 +310,17 @@
         }
         return true;
     }
+
+    function showOtherOption(select) {
+        var otherOption = select.options[select.selectedIndex].value;
+        if (otherOption === "Other") {
+            document.getElementById("txtMeeting").style.display = "block";
+            document.getElementById("txtMeeting").setAttribute("required", "true");
+        } else {
+            document.getElementById("txtMeeting").style.display = "none";
+            document.getElementById("txtMeeting").removeAttribute("required");
+        }
+    }
 </script>
 
 
@@ -311,14 +332,17 @@
             </div>
         </div>
         </div>--%>
-            <div class="row">
-                <div class="col-md-3">
-                    <div class="form-group">
-                        <asp:Label ID="Label9" runat="server" Text="Meeting Date and Time :" AssociatedControlID="datetimepicker"></asp:Label>
-                        <asp:TextBox ID="datetimepicker" runat="server" CssClass="form-control"></asp:TextBox>
-                    </div>
-                </div>
-            </div>
+   <div class="row">
+    <div class="col-md-3">
+        <div class="form-group">
+            <asp:Label ID="Label9" runat="server" Text="Meeting Date and Time :" AssociatedControlID="datetimepicker"></asp:Label>
+            <asp:TextBox ID="datetimepicker" runat="server" CssClass="form-control"></asp:TextBox>
+            <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="datetimepicker" ErrorMessage="Meeting Date and Time is required" Display="None"></asp:RequiredFieldValidator>
+        </div>
+    </div>
+</div>
+
+
             <div class="row">
                 <div class="col-md-3">
                     <asp:Button ID="RGN" runat="server" Text="Submit" CssClass="btn btn-primary btn-lg btn-block" OnClick="Button1_Click" />
@@ -334,14 +358,29 @@
             document.getElementById('sidebar').addEventListener('mouseleave', function () {
                 this.classList.remove('show');
             });
+            $(function () {
+                $('#<%= datetimepicker.ClientID %>').datetimepicker();
+              });
         </script>
+
     </form>
 
-    <script type="text/javascript">
-        $(function () {
-            $('#<%= datetimepicker.ClientID %>').datetimepicker();
-     });
-    </script >
-
+    
 </body >
 </html >
+<script>
+    // Add event listeners to all text boxes (except email) to capitalize all letters when typed
+    document.addEventListener("DOMContentLoaded", function () {
+        var textboxes = document.querySelectorAll('input[type="text"]:not(#txtEmail)');
+        textboxes.forEach(function (textbox) {
+            textbox.addEventListener("input", function () {
+                // Get the current value of the textbox
+                var currentValue = this.value;
+                // Convert the value to uppercase
+                var newValue = currentValue.toUpperCase();
+                // Update the textbox value with the uppercase text
+                this.value = newValue;
+            });
+        });
+    });
+</script>

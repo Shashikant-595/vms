@@ -68,33 +68,33 @@
 
 
                         </div>
-                         <div class="form-group text-center">
-     <asp:Button ID="loginbtn" runat="server" Text="Login" CssClass="btn btn-primary login-button" OnClick="loginbtn_Click" />
- </div>
-                        </form>
+                        <div class="form-group text-center">
+                            <asp:Button ID="loginbtn" runat="server" Text="Login" CssClass="btn btn-primary login-button" OnClick="loginbtn_Click" />
+                        </div>
+                    </form>
                 </div>
-               
-               
+
+
             </div>
         </div>
     </div>
-    
 
-   
-<script>
-    function togglePasswordVisibility(inputId) {
-        const passwordInput = document.getElementById(inputId);
-        const eyeIcon = document.getElementById('eyeIcon2');
 
-        if (passwordInput.type === 'password') {
-            passwordInput.type = 'text';
-            eyeIcon.innerHTML = '<i class="fa fa-eye-slash"></i>'; // Change icon to hide
-        } else {
-            passwordInput.type = 'password';
-            eyeIcon.innerHTML = '<i class="fa fa-eye"></i>'; // Change icon to show
+
+    <script>
+        function togglePasswordVisibility(inputId) {
+            const passwordInput = document.getElementById(inputId);
+            const eyeIcon = document.getElementById('eyeIcon2');
+
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                eyeIcon.innerHTML = '<i class="fa fa-eye-slash"></i>'; // Change icon to hide
+            } else {
+                passwordInput.type = 'password';
+                eyeIcon.innerHTML = '<i class="fa fa-eye"></i>'; // Change icon to show
+            }
         }
-    }
-</script>
+    </script>
 
 </body>
 </html>

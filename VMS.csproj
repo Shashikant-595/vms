@@ -439,6 +439,7 @@
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="images\BG.jpg" />
     <Content Include="images\fores.jpg" />
     <Content Include="Registration.aspx" />
     <Content Include="Scripts\bootstrap-datetimepicker.js" />

@@ -53,8 +53,8 @@ namespace VMS
                 SqlCommand command = new SqlCommand(query, connection);
                 command.Parameters.AddWithValue("@Name", txtName.Text);
                 command.Parameters.AddWithValue("@Mobil_No", txtMbNo.Text);
-                command.Parameters.AddWithValue("@Email", txtemail.Text);
-                command.Parameters.AddWithValue("@Company", txtcompany.Text);
+                command.Parameters.AddWithValue("@Email", txtEmail.Text);
+                command.Parameters.AddWithValue("@Company", txtCompany.Text);
 
                 command.ExecuteNonQuery();
                 connection.Close();
@@ -84,11 +84,11 @@ namespace VMS
                     {
                         fieldsToUpdate.Add("Name = @Name");
                     }
-                    if (!string.IsNullOrEmpty(txtemail.Text))
+                    if (!string.IsNullOrEmpty(txtEmail.Text))
                     {
                         fieldsToUpdate.Add("Email = @Email");
                     }
-                    if (!string.IsNullOrEmpty(txtcompany.Text))
+                    if (!string.IsNullOrEmpty(txtCompany.Text))
                     {
                         fieldsToUpdate.Add("Company = @Company");
                     }
@@ -103,13 +103,13 @@ namespace VMS
                             {
                                 command.Parameters.AddWithValue("@Name", txtName.Text);
                             }
-                            if (!string.IsNullOrEmpty(txtemail.Text))
+                            if (!string.IsNullOrEmpty(txtEmail.Text))
                             {
-                                command.Parameters.AddWithValue("@Email", txtemail.Text);
+                                command.Parameters.AddWithValue("@Email", txtEmail.Text);
                             }
-                            if (!string.IsNullOrEmpty(txtcompany.Text))
+                            if (!string.IsNullOrEmpty(txtCompany.Text))
                             {
-                                command.Parameters.AddWithValue("@Company", txtcompany.Text);
+                                command.Parameters.AddWithValue("@Company", txtCompany.Text);
                             }
                             command.Parameters.AddWithValue("@MobileNo", mobileNo);
                             connection.Open();

@@ -6,144 +6,153 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
-   
-    <title style="font:bold">ENTRY SCREEN</title>
+
+    <title style="font: bold">ENTRY SCREEN</title>
     <link rel="icon" href="https://foreselastomech.com/wp-content/uploads/2019/03/FORES-Logo.png">
     <script src="https://cdn.jsdelivr.net/npm/@zxing/library@0.26.1"></script>
     <script src="https://cdn.jsdelivr.net/npm/html5-qrcode@^2.2.0/html5-qrcode.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jsqr/dist/jsQR.js"></script>
     <style>
-        
-       body {
-    font-family: 'Poppins', sans-serif;
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-}
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
 
-header {
-    background-color: darkgray;
-    padding: 10px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
+        header {
+            background-color: darkgray;
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
 
-header img {
-    height: 80px;
-    margin-left: 5px;
-}
+            header img {
+                height: 80px;
+                margin-left: 5px;
+            }
 
-.header-name {
-    text-align: center;
-    flex-grow: 1;
-    font-size: 24px;
-    font-weight: bold;
-}
+        .header-name {
+            text-align: center;
+            flex-grow: 1;
+            font-size: 24px;
+            font-weight: bold;
+        }
 
-.icon-sidebar {
-    background-color: darkgray;
-    width: 30px;
-    position: fixed;
-    height: 100%;
-    transition: width 0.3s;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
+        .icon-sidebar {
+            background-color: darkgray;
+            width: 30px;
+            position: fixed;
+            height: 100%;
+            transition: width 0.3s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
 
-.icon-sidebar a {
-    color: black;
-    padding: 15px 0;
-    text-align: center;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-decoration: none;
-    margin-top: 50px;
-}
+            .icon-sidebar a {
+                color: black;
+                padding: 7px 0;
+                text-align: center;
+                width: 100%;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                text-decoration: none;
+                margin-top: 50px;
+            }
 
-.icon-sidebar a i {
-    display: block; /* Initially display only icons */
-    font-size: 14px;
-}
+                .icon-sidebar a i {
+                    display: block; /* Initially display only icons */
+                    font-size: 14px;
+                }
 
-.icon-sidebar a span {
-    display: none;
-     opacity: 0;
-    transition: opacity 0.3s; /* Use opacity for smooth transition */
-    /* Initially set opacity to 0 */
-}
+                .icon-sidebar a span {
+                    display: none;
+                    opacity: 0;
+                    transition: opacity 0.3s; /* Use opacity for smooth transition */
+                    /* Initially set opacity to 0 */
+                }
 
-.icon-sidebar:hover a i {
-    
-    display: inline; /* Hide icons when hovering over the sidebar */
-}
+            .icon-sidebar:hover a i {
+                display: inline; /* Hide icons when hovering over the sidebar */
+            }
 
-.icon-sidebar:hover a span {
-    display: inline; /* Display span text when hovering over the sidebar */
-    opacity: 1; /* Set opacity to 1 to reveal the text */
+            .icon-sidebar:hover a span {
+                display: inline; /* Display span text when hovering over the sidebar */
+                opacity: 1; /* Set opacity to 1 to reveal the text */
+            }
 
-}
+        .content {
+            margin-left: 60px;
+            padding: 16px;
+            transition: margin-left 0.3s;
+        }
 
-.content {
-    margin-left: 60px;
-    padding: 16px;
-    transition: margin-left 0.3s;
-}
-.icon-sidebar:hover{
-    width:180px;
-}
-.logout-btn {
-    margin-top: 900px;
-    background-color: red;
-}
+        .icon-sidebar:hover {
+            width: 180px;
+        }
+
+        .logout-btn {
+            margin-top: 600px;
+            background-color: red;
+        }
     </style>
     <link href="Conten
-        t/bootstrap.min.css" rel="stylesheet" />
+        t/bootstrap.min.css"
+        rel="stylesheet" />
     <script src="Scripts/bootstrap.min.js"></script>
 
 </head>
 <body>
-    
+
     <form id="form1" runat="server">
-    <header>
-        <img src="https://foreselastomech.com/wp-content/uploads/2019/03/FORES-Logo.png" alt="Logo" />
-        <div class="header-name">ENTRY SCREEN</div>
-    </header>
-    <div class="icon-sidebar" id="sidebar">
-        <a href="Registration.aspx" id="registrationLink" runat="server" class="sidebar-link">
-            <i class='fas fa-user-plus sidebar-icon'></i>
-            <span>INVITE VISITOR</span>
-        </a>
-        <a href="Signup.aspx" id="newVisitorLink" runat="server" class="sidebar-link">
-            <i class='fas fa-user-plus sidebar-icon'></i>
-            <span>NEW VISITORS REGISTRATION</span>
-        </a>
-        <a href="Employee_Signup.aspx" id="employeelink" runat="server" class="sidebar-link">
-            <i class='fas fa-user-plus sidebar-icon'></i>
-            <span>NEW EMPLOYEE REGISTRATION</span>
-        </a>
-        <a href="#" id="scanQrLink" class="sidebar-link" onclick="openCamera()">
-            <i class='fas fa-qrcode sidebar-icon'></i>
-            <span>Scan QR</span>
-        </a>
-        <a href="#" id="confirmLink" class="sidebar-link" onclick="opencamere_forconform()">
-            <i class='fas fa-check sidebar-icon'></i>
-            <span>Confirm</span>
-        </a>
-         <a href="Authenticate_User.aspx" class="logout-btn">
-     <i class="fas fa-sign-out-alt"></i>
-     <span>Logout</span>
- </a>
+        <header>
+            <img src="https://foreselastomech.com/wp-content/uploads/2019/03/FORES-Logo.png" alt="Logo" />
+            <div class="header-name">ENTRY SCREEN</div>
+            <!-- Add the user ID icon and text box -->
+            <div id="userIdIcon">
+                <i class="fas fa-user sidebar-icon text-primary fa-2x"></i>
+                <div id="userIdTextBox" class="input-group" style="border-radius: 10px; margin-top: 10px;">
+                    <input type="text" id="userIdInput" class="form-control rounded" style="border-radius: 8px; height: 30px;" placeholder="User ID" />
+                </div>
+            </div>
+
+        </header>
+        <div class="icon-sidebar" id="sidebar">
+            <a href="Registration.aspx" id="registrationLink" runat="server" class="sidebar-link">
+                <i class='fas fa-user-plus sidebar-icon'></i>
+                <span>INVITE VISITOR</span>
+            </a>
+            <a href="Signup.aspx" id="newVisitorLink" runat="server" class="sidebar-link">
+                <i class='fas fa-user-plus sidebar-icon'></i>
+                <span>NEW VISITORS REGISTRATION</span>
+            </a>
+            <a href="Employee_Signup.aspx" id="employeelink" runat="server" class="sidebar-link">
+                <i class='fas fa-user-plus sidebar-icon'></i>
+                <span>NEW EMPLOYEE REGISTRATION</span>
+            </a>
+
+            <a href="#" id="confirmLink" class="sidebar-link" onclick="opencamere_forconform()">
+                <i class='fas fa-check sidebar-icon'></i>
+                <span>Confirm</span>
+            </a>
+            <a href="#" id="scanQrLink" class="sidebar-link" onclick="openCamera()">
+                <i class='fas fa-qrcode sidebar-icon'></i>
+                <span>Scan QR</span>
+
+                <a href="Authenticate_User.aspx" class="logout-btn">
+                    <i class="fas fa-sign-out-alt" id="logoutBtn"></i>
+                    <span>Logout</span>
+                </a>
         </div>
 
 
-    
 
-    <div id="camera-preview" class="col-ml-6"></div>
-</form>
+
+        <div id="camera-preview" class="col-ml-6"></div>
+    </form>
 
     <script>
         document.addEventListener("DOMContentLoaded", function () {
@@ -162,7 +171,7 @@ header img {
             });
         });
 
-        
+
 
         function openCamera() {
             // Check if getUserMedia is available
@@ -178,8 +187,8 @@ header img {
                 // for back camera
                 navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } })
 
-                // Request access to the camera
-               // navigator.mediaDevices.getUserMedia({ video: true })
+                    // Request access to the camera
+                    // navigator.mediaDevices.getUserMedia({ video: true })
                     .then(function (stream) {
                         // Create a video element to display the camera stream
                         var video = document.createElement('video');
@@ -212,10 +221,10 @@ header img {
                             if (code) {
                                 console.log('QR code detected:', code.data);
                                 // Do something with the decoded data (e.g., display it on the page)
-                               
+
                                 saveQRDataToDatabase(code.data);
-                               
-                               
+
+
                             }
                         }, 100); // Adjust the interval as needed (e.g., every second)
                     })
@@ -262,7 +271,7 @@ header img {
                         video.setAttribute('autoplay', '');
                         video.setAttribute('playsinline', '');
 
-                       // video.style.position = 'fixed';
+                        // video.style.position = 'fixed';
                         video.style.top = '17vh';
                         video.style.left = '65vh';
                         video.style.width = '40%';
@@ -304,7 +313,17 @@ header img {
             }
         }
 
-
+        // Add event listener to show the text box when hovering over the user ID icon
+        document.addEventListener("DOMContentLoaded", function () {
+            var userIdIcon = document.getElementById("userIdIcon");
+            var userIdTextBox = document.getElementById("userIdTextBox");
+            userIdIcon.addEventListener("mouseover", function () {
+                userIdTextBox.style.display = "block";
+            });
+            userIdIcon.addEventListener("mouseout", function () {
+                userIdTextBox.style.display = "none";
+            });
+        });
 
         // code for conformation
 
@@ -355,7 +374,7 @@ header img {
         //                        console.log('QR code detected:', code.data);
         //                        // Do something with the decoded data (e.g., display it on the page)
         //                        Conform_meeting(code.data);
-                               
+
         //                    }
         //                }, 100); // Adjust the interval as needed (e.g., every second)
         //            })
@@ -400,7 +419,7 @@ header img {
 
         function saveQRDataToDatabase(qrData) {
             // Send an AJAX request to the server
-           
+
             fetch('/Home/SaveQRData', {
                 method: 'POST',
                 headers: {
@@ -415,14 +434,14 @@ header img {
                     } else {
 
                         // Response was not successful, handle error message
-                       // throw new Error('responce is not send ');
+                        // throw new Error('responce is not send ');
 
                     }
                 })
                 .then(message => {
                     // Display the returned message as an alert
                     alert(message);
-                   
+
                 })
                 .catch(error => {
                     // Handle error, display an error message
@@ -431,6 +450,5 @@ header img {
         }
 
     </script>
-   
 </body>
-</html>  
+</html>
