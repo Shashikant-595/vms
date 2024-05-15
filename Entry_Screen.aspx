@@ -144,8 +144,7 @@
                 <span>NEW EMPLOYEE REGISTRATION</span>
             </a>
 
-            <a href="#" id="confirmLink" class="sidebar-link" runat="server" onclick="opencamere_forconform()">
-            <a href="#" id="confirmLink" class="sidebar-link" onclick="openCamera()">
+            <a href="#" id="confirmLink" class="sidebar-link" runat="server" onclick="openCamera()">
                 <i class='fas fa-check sidebar-icon'></i>
                 <span>Confirm</span>
             </a>
