@@ -132,13 +132,22 @@ namespace VMS
         protected global::System.Web.UI.WebControls.RequiredFieldValidator reqCompany;
 
         /// <summary>
-        /// Label9 control.
+        /// ddlMeetingType control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label Label9;
+        protected global::System.Web.UI.WebControls.DropDownList ddlMeetingType;
+
+        /// <summary>
+        /// txtMeeting control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtMeeting;
 
         /// <summary>
         /// datetimepicker control.

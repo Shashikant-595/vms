@@ -13,8 +13,8 @@ namespace VMS
     
     public partial class Employee_Signup : System.Web.UI.Page
     {
-      //  string connectionString = "Data Source=DESKTOP-4TNUEJA\\MSSQLSERVER02;Initial Catalog=vms;Integrated Security=True;";
-        string connectionString = "Data Source=192.168.20.70,1433;Initial Catalog=vms;User ID=vms;Password=Vms@123;";
+        string connectionString = "Data Source=DESKTOP-4TNUEJA\\MSSQLSERVER02;Initial Catalog=vms;Integrated Security=True;";
+        //string connectionString = "Data Source=192.168.20.70,1433;Initial Catalog=vms;User ID=vms;Password=Vms@123;";
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -52,7 +52,7 @@ namespace VMS
                 command.Parameters.AddWithValue("@Name", txteName.Text);
                 command.Parameters.AddWithValue("@Mobil_No", txteMbNo.Text);
                 command.Parameters.AddWithValue("@Email", txteemail.Text);
-                command.Parameters.AddWithValue("@Department", txteDepartment.Text);
+                command.Parameters.AddWithValue("@Department", ddlDepartment.Text);
                 command.Parameters.AddWithValue("@password", txtpassword.Text);
                 command.Parameters.AddWithValue("@user_type", itemText);
                 System.Diagnostics.Trace.WriteLine($" usertype is  ; "+ usertype.SelectedItem);
@@ -95,7 +95,7 @@ namespace VMS
                     {
                         fieldsToUpdate.Add("Email = @Email");
                     }
-                    if (!string.IsNullOrEmpty(txteDepartment.Text))
+                    if (!string.IsNullOrEmpty(ddlDepartment.Text))
                     {
                         fieldsToUpdate.Add("Department = @Department");
                     }
@@ -122,9 +122,9 @@ namespace VMS
                             {
                                 command.Parameters.AddWithValue("@Email", txteemail.Text);
                             }
-                            if (!string.IsNullOrEmpty(txteDepartment.Text))
+                            if (!string.IsNullOrEmpty(ddlDepartment.Text))
                             {
-                                command.Parameters.AddWithValue("@Department", txteDepartment.Text);
+                                command.Parameters.AddWithValue("@Department", ddlDepartment.Text);
                             }
                             if (!string.IsNullOrEmpty(txtpassword.Text))
                             {

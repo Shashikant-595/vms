@@ -7,11 +7,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
     <title>REGISTRATION</title>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <link rel="icon" href="https://foreselastomech.com/wp-content/uploads/2019/03/FORES-Logo.png">
     <link href="Content/Site.css" rel="stylesheet" />
     <link href="Content/bootstrap-datetimepicker.min.css" rel="stylesheet" />
     <link href="Content/bootstrap.min.css" rel="stylesheet" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
 
     <style>
         body {
@@ -172,18 +174,10 @@
         <header>
             <img src="https://foreselastomech.com/wp-content/uploads/2019/03/FORES-Logo.png" alt="Logo" />
             <div class="header-name">INVITE VISITOR</div>
-            <%--   <link href="Content/bootstrap.min.css" rel="stylesheet" />
-
-            <link href="Content/bootstrap-datetimepicker.min.css" rel="stylesheet" />--%>
-
 
             <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
             <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />
             <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
-
-
         </header>
         <div class="jumbotrone" style="position: sticky; left: 0; background-color: gray;">
             <div class="row">
@@ -204,10 +198,10 @@
                         <br />
                         <br />
                         <br />
-                                <a href="Authenticate_User.aspx" class="logout-btn">
-    <i class="fas fa-sign-out-alt"></i>
-    <span>Logout</span>
-</a>
+                        <a href="Authenticate_User.aspx" class="logout-btn">
+                            <i class="fas fa-sign-out-alt"></i>
+                            <span>Logout</span>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -261,55 +255,57 @@
     <div class="col-md-3">
         <div class="form-group">
             <label for="ddlMeetingType">Meeting Subject :</label>
-            <select class="form-control" id="ddlMeetingType" onchange="showOtherOption(this)" required>
-                <option value="">Select Meeting Type</option>
-                <option value="Business Meeting">Business Meeting</option>
-                <option value="Job Interview">Job Interview</option>
-                <option value="Vendor Meeting">Vendor Meeting</option>
-                <option value="Client Visit">Client Visit</option>
-                <option value="Training Session">Training Session</option>
-                <option value="Delivery / Pickup">Delivery / Pickup</option>
-                <option value="Personal Visit">Personal Visit</option>
-                <option value="Maintenance/Repair Visit">Maintenance/Repair Visit</option>
-                <option value="Government Inspection">Government Inspection</option>
-                <option value="Audit">Audit</option>
-                <option value="Material Inspection">Material Inspection</option>
-                <option value="Other">Other (Please Specify)</option>
-            </select>
-            <input type="text" id="txtMeeting" class="form-control" style="display: none;" placeholder="Meeting Subject">
+            <asp:DropDownList ID="ddlMeetingType" runat="server" class="form-control" onchange="showOtherOption(this)" required>
+                <asp:ListItem Value="">Select Meeting Type</asp:ListItem>
+                <asp:ListItem Value="Business Meeting">Business Meeting</asp:ListItem>
+                <asp:ListItem Value="Job Interview">Job Interview</asp:ListItem>
+                <asp:ListItem Value="Vendor Meeting">Vendor Meeting</asp:ListItem>
+                <asp:ListItem Value="Client Visit">Client Visit</asp:ListItem>
+                <asp:ListItem Value="Training Session">Training Session</asp:ListItem>
+                <asp:ListItem Value="Delivery / Pickup">Delivery / Pickup</asp:ListItem>
+                <asp:ListItem Value="Personal Visit">Personal Visit</asp:ListItem>
+                <asp:ListItem Value="Maintenance/Repair Visit">Maintenance/Repair Visit</asp:ListItem>
+                <asp:ListItem Value="Government Inspection">Government Inspection</asp:ListItem>
+                <asp:ListItem Value="Audit">Audit</asp:ListItem>
+                <asp:ListItem Value="Material Inspection">Material Inspection</asp:ListItem>
+                <asp:ListItem Value="Other">Other (Please Specify)</asp:ListItem>
+            </asp:DropDownList>
+            <asp:TextBox ID="txtMeeting" runat="server" class="form-control" style="display: none;" placeholder="Meeting Subject"></asp:TextBox>
         </div>
     </div>
 </div>
 
+<div class="row">
+    <div class="col-md-3">
+        <div class="form-group">
+            <label for="datetimepicker">Meeting Date and Time :</label>
+            <asp:TextBox ID="datetimepicker" runat="server" CssClass="form-control"></asp:TextBox>
+            <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="datetimepicker" ErrorMessage="Meeting Date and Time is required" Display="None"></asp:RequiredFieldValidator>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-3">
+        <asp:Button ID="RGN" runat="server" Text="Submit" CssClass="btn btn-primary btn-lg btn-block" OnClick="Button1_Click" />
+    </div>
+</div>
+
+</div>
+</form>
 
 <script>
-    function showOtherOption(select) {
-        var selectedOption = select.value;
-        var meetingTextBox = document.getElementById("txtMeeting");
-        if (selectedOption === "Other") {
-            meetingTextBox.style.display = "block";
-        } else {
-            meetingTextBox.style.display = "none";
-        }
-    } function showOtherOption(select) {
-        var selectedOption = select.value;
-        var meetingTextBox = document.getElementById("txtMeeting");
-        if (selectedOption === "Other") {
-            meetingTextBox.style.display = "block";
-        } else {
-            meetingTextBox.style.display = "none";
-        }
-    }
+    document.getElementById('sidebar').addEventListener('mouseenter', function () {
+        this.classList.add('show');
+    });
 
-    function validateMobile() {
-        var mobileNumber = document.getElementById('<%= txtMbNo.ClientID %>').value;
-        var regex = /^[0-9]{10}$/;
-        if (!regex.test(mobileNumber)) {
-            alert("Please enter a valid 10-digit mobile number.");
-            return false;
-        }
-        return true;
-    }
+    document.getElementById('sidebar').addEventListener('mouseleave', function () {
+        this.classList.remove('show');
+    });
+
+    $(function () {
+        $('#<%= datetimepicker.ClientID %>').datetimepicker();
+    });
 
     function showOtherOption(select) {
         var otherOption = select.options[select.selectedIndex].value;
@@ -321,54 +317,7 @@
             document.getElementById("txtMeeting").removeAttribute("required");
         }
     }
-</script>
 
-
-            <%--  <div class="row">
-        <div class="col-md-3">
-            <div class="form-group">
-                <asp:Label ID="Label4" runat="server" Text="Meeting Invitor :" AssociatedControlID="DropDownList1"></asp:Label>
-                <asp:DropDownList ID="DropDownList1" runat="server" OnSelectedIndexChanged="DropDownList1_SelectedIndexChanged" CssClass="form-control" Style="width: 100%;"></asp:DropDownList>
-            </div>
-        </div>
-        </div>--%>
-   <div class="row">
-    <div class="col-md-3">
-        <div class="form-group">
-            <asp:Label ID="Label9" runat="server" Text="Meeting Date and Time :" AssociatedControlID="datetimepicker"></asp:Label>
-            <asp:TextBox ID="datetimepicker" runat="server" CssClass="form-control"></asp:TextBox>
-            <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="datetimepicker" ErrorMessage="Meeting Date and Time is required" Display="None"></asp:RequiredFieldValidator>
-        </div>
-    </div>
-</div>
-
-
-            <div class="row">
-                <div class="col-md-3">
-                    <asp:Button ID="RGN" runat="server" Text="Submit" CssClass="btn btn-primary btn-lg btn-block" OnClick="Button1_Click" />
-                </div>
-            </div>
-
-        </div>
-        <script>
-            document.getElementById('sidebar').addEventListener('mouseenter', function () {
-                this.classList.add('show');
-            });
-
-            document.getElementById('sidebar').addEventListener('mouseleave', function () {
-                this.classList.remove('show');
-            });
-            $(function () {
-                $('#<%= datetimepicker.ClientID %>').datetimepicker();
-              });
-        </script>
-
-    </form>
-
-    
-</body >
-</html >
-<script>
     // Add event listeners to all text boxes (except email) to capitalize all letters when typed
     document.addEventListener("DOMContentLoaded", function () {
         var textboxes = document.querySelectorAll('input[type="text"]:not(#txtEmail)');
@@ -384,3 +333,5 @@
         });
     });
 </script>
+</body>
+</html>

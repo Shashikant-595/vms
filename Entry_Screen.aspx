@@ -134,22 +134,19 @@
                 <span>NEW EMPLOYEE REGISTRATION</span>
             </a>
 
-            <a href="#" id="confirmLink" class="sidebar-link" onclick="opencamere_forconform()">
+            <a href="#" id="confirmLink" class="sidebar-link" runat="server" onclick="opencamere_forconform()">
                 <i class='fas fa-check sidebar-icon'></i>
                 <span>Confirm</span>
             </a>
-            <a href="#" id="scanQrLink" class="sidebar-link" onclick="openCamera()">
+            <a href="#" id="scanQrLink" class="sidebar-link" runat="server" onclick="openCamera()">
                 <i class='fas fa-qrcode sidebar-icon'></i>
                 <span>Scan QR</span>
-
+                </a>
                 <a href="Authenticate_User.aspx" class="logout-btn">
                     <i class="fas fa-sign-out-alt" id="logoutBtn"></i>
                     <span>Logout</span>
                 </a>
         </div>
-
-
-
 
         <div id="camera-preview" class="col-ml-6"></div>
     </form>
