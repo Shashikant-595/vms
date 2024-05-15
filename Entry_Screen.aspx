@@ -98,6 +98,9 @@
             margin-top: 600px;
             background-color: red;
         }
+        /* Center align the visitor count container */
+
+
     </style>
     <link href="Conten
         t/bootstrap.min.css"
@@ -109,6 +112,13 @@
 
     <form id="form1" runat="server">
         <header>
+           
+    <!-- Logo and header name code here -->
+
+    <!-- Number of visitors textbox -->
+   
+
+
             <img src="https://foreselastomech.com/wp-content/uploads/2019/03/FORES-Logo.png" alt="Logo" />
             <div class="header-name">ENTRY SCREEN</div>
             <!-- Add the user ID icon and text box -->
@@ -134,7 +144,7 @@
                 <span>NEW EMPLOYEE REGISTRATION</span>
             </a>
 
-            <a href="#" id="confirmLink" class="sidebar-link" onclick="opencamere_forconform()">
+            <a href="#" id="confirmLink" class="sidebar-link" onclick="openCamera()">
                 <i class='fas fa-check sidebar-icon'></i>
                 <span>Confirm</span>
             </a>
@@ -150,8 +160,10 @@
 
 
 
-
-        <div id="camera-preview" class="col-ml-6"></div>
+         <div class="visitor-count-container mt-5 d-flex justify-content-center" style="margin-top:350px ;margin-left:600px"> <!-- Added "d-flex justify-content-center" classes -->
+        <label for="visitorCountInput" class="mr-2 font-weight-bold">Number of Visitors:</label>
+        <input type="number" id="visitorCountInput" class="form-control rounded" style="border-radius: 8px; height: 30px; width: 100px;" placeholder="Enter number" value="0" />
+    </div>
     </form>
 
     <script>
@@ -237,81 +249,7 @@
             }
         }
 
-        function opencamere_forconform() {
-            // Check if getUserMedia is available
-            if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-                // If there's already an active camera stream, stop it and remove the video element
-                var existingVideo = document.querySelector('video');
-                if (existingVideo) {
-                    existingVideo.srcObject.getTracks().forEach(track => track.stop());
-                    existingVideo.remove();
-                    return;
-                }
-
-                // Determine device type
-                var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-
-                // Request access to the appropriate camera based on the device type
-                var constraints = {
-                    video: {}
-                };
-
-                if (isMobile) {
-                    // If it's a mobile device, request access to the back camera
-                    constraints.video.facingMode = 'environment';
-                } else {
-                    // If it's a desktop device, request access to the default camera (front camera)
-                    constraints.video = true;
-                }
-
-                navigator.mediaDevices.getUserMedia(constraints)
-                    .then(function (stream) {
-                        // Create a video element to display the camera stream
-                        var video = document.createElement('video');
-                        video.setAttribute('autoplay', '');
-                        video.setAttribute('playsinline', '');
-
-                        // video.style.position = 'fixed';
-                        video.style.top = '17vh';
-                        video.style.left = '65vh';
-                        video.style.width = '40%';
-                        video.style.height = '40%';
-                        video.style.objectFit = 'cover';
-                        video.style.zIndex = '9999';
-                        video.style.marginLeft = '150px';
-                        video.style.marginTop = '100px';
-
-
-                        // Attach the stream to the video element
-                        video.srcObject = stream;
-
-                        // Append the video element to the body
-                        document.body.appendChild(video);
-
-                        // Continuously capture frames from the video stream
-                        setInterval(function () {
-                            var canvas = document.createElement('canvas');
-                            canvas.width = video.videoWidth;
-                            canvas.height = video.videoHeight;
-                            var context = canvas.getContext('2d');
-                            context.drawImage(video, 0, 0, canvas.width, canvas.height);
-                            var imageData = context.getImageData(0, 0, canvas.width, canvas.height);
-                            var code = jsQR(imageData.data, imageData.width, imageData.height);
-                            if (code) {
-                                console.log('QR code detected:', code.data);
-                                // Do something with the decoded data (e.g., display it on the page)
-                                Conform_meeting(code.data);
-                            }
-                        }, 100); // Adjust the interval as needed (e.g., every second)
-                    })
-                    .catch(function (error) {
-                        // Handle errors
-                        console.error('Error accessing camera:', error);
-                    });
-            } else {
-                alert('getUserMedia is not supported in this browser');
-            }
-        }
+       
 
         // Add event listener to show the text box when hovering over the user ID icon
         document.addEventListener("DOMContentLoaded", function () {

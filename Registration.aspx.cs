@@ -28,9 +28,9 @@ namespace VMS
    
     public partial class Registration : System.Web.UI.Page
     {
-        string connectionString = "Data Source=192.168.20.70,1433;Initial Catalog=vms;User ID=vms;Password=Vms@123;";
+        //string connectionString = "Data Source=192.168.20.70,1433;Initial Catalog=vms;User ID=vms;Password=Vms@123;";
 
-//        private string connectionString = "Data Source=DESKTOP-4TNUEJA\\MSSQLSERVER02;Initial Catalog=vms;Integrated Security=True;";
+       private string connectionString = "Data Source=ALBATROSS;Initial Catalog=ALBATROSS;Integrated Security=True;Trust Server Certificate=True";
 
         // private string connectionString = "Data Source=192.168.20.70,1433;Initial Catalog=vms;User ID=vms;Password=Vms@123;";
 
@@ -79,7 +79,7 @@ namespace VMS
 
            // string connectionString = "Data Source=192.168.20.70,1433;Initial Catalog=vms;User ID=vms;Password=Vms@123;";
 
-            string connectionString = "Data Source=DESKTOP-4TNUEJA\\MSSQLSERVER02;Initial Catalog=vms;Integrated Security=True;";
+            string connectionString = "Data Source=ALBATROSS;Initial Catalog=ALBATROSS;Integrated Security=True;Trust Server Certificate=True";
             //
 
             List<string>Qrdata = new List<string>();

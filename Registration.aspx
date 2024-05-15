@@ -171,6 +171,7 @@
     <form id="form1" runat="server">
         <header>
             <img src="https://foreselastomech.com/wp-content/uploads/2019/03/FORES-Logo.png" alt="Logo" />
+           
             <div class="header-name">INVITE VISITOR</div>
             <%--   <link href="Content/bootstrap.min.css" rel="stylesheet" />
 
@@ -213,15 +214,25 @@
             </div>
         </div>
 
-        <div class="  justify-content-center" style="margin-left: 200px">
-            <div class="row">
-                <div class="col-md-3">
-                    <div class="form-group">
-                        <asp:Label ID="lblName" runat="server" Text="Name :" AssociatedControlID="txtName" ></asp:Label>
-                        <asp:TextBox ID="txtName" runat="server" CssClass="form-control" required></asp:TextBox>
-                    </div>
-                </div>
+      <div class="justify-content-center" style="margin-left: 200px">
+    <div class="row">
+        <div class="col-md-3">
+            <div class="form-group">
+                <asp:Label ID="lblName" runat="server" Text="Name :" AssociatedControlID="txtName"></asp:Label>
+                <asp:TextBox ID="txtName" runat="server" CssClass="form-control" required></asp:TextBox>
             </div>
+        </div>
+        <div class="col-md-1">
+            <div class="form-group">
+                <i class="fas fa-plus-circle" id="plusIcon" style="margin-top: 35px;margin-left:-40px"></i>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group">
+                <asp:TextBox ID="txtTotalPersons" runat="server" CssClass="form-control" placeholder="Total Persons" style="margin-top: 24px; width:110px; margin-left:-120px" Text="0"  required></asp:TextBox>
+            </div>
+        </div>
+    </div>
           <div class="row">
     <div class="col-md-3">
         <div class="form-group">
@@ -261,28 +272,34 @@
     <div class="col-md-3">
         <div class="form-group">
             <label for="ddlMeetingType">Meeting Subject :</label>
-            <select class="form-control" id="ddlMeetingType" onchange="showOtherOption(this)" required>
-                <option value="">Select Meeting Type</option>
-                <option value="Business Meeting">Business Meeting</option>
-                <option value="Job Interview">Job Interview</option>
-                <option value="Vendor Meeting">Vendor Meeting</option>
-                <option value="Client Visit">Client Visit</option>
-                <option value="Training Session">Training Session</option>
-                <option value="Delivery / Pickup">Delivery / Pickup</option>
-                <option value="Personal Visit">Personal Visit</option>
-                <option value="Maintenance/Repair Visit">Maintenance/Repair Visit</option>
-                <option value="Government Inspection">Government Inspection</option>
-                <option value="Audit">Audit</option>
-                <option value="Material Inspection">Material Inspection</option>
-                <option value="Other">Other (Please Specify)</option>
-            </select>
-            <input type="text" id="txtMeeting" class="form-control" style="display: none;" placeholder="Meeting Subject">
+            <asp:DropDownList ID="ddlMeetingType" runat="server" class="form-control" onchange="showOtherOption(this)" required>
+                <asp:ListItem Value="">Select Meeting Type</asp:ListItem>
+                <asp:ListItem Value="Business Meeting">Business Meeting</asp:ListItem>
+                <asp:ListItem Value="Job Interview">Job Interview</asp:ListItem>
+                <asp:ListItem Value="Vendor Meeting">Vendor Meeting</asp:ListItem>
+                <asp:ListItem Value="Client Visit">Client Visit</asp:ListItem>
+                <asp:ListItem Value="Training Session">Training Session</asp:ListItem>
+                <asp:ListItem Value="Delivery / Pickup">Delivery / Pickup</asp:ListItem>
+                <asp:ListItem Value="Personal Visit">Personal Visit</asp:ListItem>
+                <asp:ListItem Value="Maintenance/Repair Visit">Maintenance/Repair Visit</asp:ListItem>
+                <asp:ListItem Value="Government Inspection">Government Inspection</asp:ListItem>
+                <asp:ListItem Value="Audit">Audit</asp:ListItem>
+                <asp:ListItem Value="Material Inspection">Material Inspection</asp:ListItem>
+                <asp:ListItem Value="Other">Other (Please Specify)</asp:ListItem>
+            </asp:DropDownList>
+            <asp:TextBox ID="txtMeeting" runat="server" class="form-control" style="display: none;" placeholder="Meeting Subject"></asp:TextBox>
         </div>
     </div>
 </div>
 
 
 <script>
+    document.getElementById('plusIcon').addEventListener('click', function () {
+        var totalPersonsTextbox = document.getElementById('<%= txtTotalPersons.ClientID %>');
+        var currentValue = parseInt(totalPersonsTextbox.value || 0);
+        totalPersonsTextbox.value = currentValue + 1;
+    });
+
     function showOtherOption(select) {
         var selectedOption = select.value;
         var meetingTextBox = document.getElementById("txtMeeting");

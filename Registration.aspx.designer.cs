@@ -51,6 +51,15 @@ namespace VMS
         protected global::System.Web.UI.WebControls.TextBox txtName;
 
         /// <summary>
+        /// txtTotalPersons control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtTotalPersons;
+
+        /// <summary>
         /// lblMbNo control.
         /// </summary>
         /// <remarks>
@@ -130,6 +139,24 @@ namespace VMS
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RequiredFieldValidator reqCompany;
+
+        /// <summary>
+        /// ddlMeetingType control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlMeetingType;
+
+        /// <summary>
+        /// txtMeeting control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtMeeting;
 
         /// <summary>
         /// Label9 control.
