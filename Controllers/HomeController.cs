@@ -11,8 +11,8 @@ using ZXing.Common;
 using System.Data.SqlClient;
 using System.Web.WebPages;
 using System.Xml.Linq;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+
 
 namespace VMS.Controllers
 {
@@ -249,7 +249,6 @@ namespace VMS.Controllers
                             commandInsert.Parameters.AddWithValue("@token", Token);
                             commandInsert.ExecuteNonQuery();
                             return Content("****VISITOR ENTRY SUCCESFULL**** : ", "text/plain");
-                            System.Diagnostics.Trace.WriteLine($" in time entry {Token}");
                         }
 
                         // Check if confirmation is true

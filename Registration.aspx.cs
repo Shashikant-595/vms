@@ -25,17 +25,16 @@ using ZXing.Aztec.Internal;
 
 namespace VMS
 {
-   
+
     public partial class Registration : System.Web.UI.Page
     {
-        string connectionString = "Data Source=DESKTOP-4TNUEJA\\MSSQLSERVER02;Initial Catalog=vms;Integrated Security=True;";
-        // private string connectionString = "Data Source=192.168.20.70,1433;Initial Catalog=vms;User ID=vms;Password=Vms@123;";
+        // private string connectionString = "Data Source=localhost\\sqlexpress;Initial Catalog=VMS;Integrated Security=True;";
+        private string connectionString = "Data Source=192.168.20.70,1433;Initial Catalog=vms;User ID=vms;Password=Vms@123;";
 
         private readonly object recipientNumber;
         private String SENDER_EMAIL = "softsupport@foresgroup.com";
         private String SENDER_PASSWORD = "Password@193";
-        private String SUBJECT = "VISITOR MEETING CONFORMATIO";
-        private String BODY_TEXT = "Hello Sir , This is your meeting details  ";
+        private String SUBJECT = "CONFIRMATION OF YOUR APPOINTMENT AT FORES GROUP";
         private String token;
         string employeename;
 
@@ -51,40 +50,34 @@ namespace VMS
                 System.Diagnostics.Trace.WriteLine($"reeeeeeeeeeeeegiiiii load");
                 //  BindDropDownList();
 
-            } else if (Session["User_type"] != null && Session["User_type"].ToString().Trim() == "Admin")
-                {
+            }
+            else if (Session["User_type"] != null && Session["User_type"].ToString().Trim() == "Admin")
+            {
 
-                    employeelink.Visible = false;
-                    //  BindDropDownList();
+                employeelink.Visible = false;
+                //  BindDropDownList();
 
 
-                }
+            }
 
-                else
-                {
+            else
+            {
                 System.Diagnostics.Trace.WriteLine($"registration up loads");
 
                 Response.Redirect("Authenticate_User.aspx");
-                }
-            
-             
+            }
+
+
         }
 
-        protected async void Button1_Click(object sender, EventArgs e)
+        protected void Button1_Click(object sender, EventArgs e)
         {
-            // string connectionString = "Data Source=192.168.20.70,1433;Initial Catalog=vms;User ID=vms;Password=Vms@123;";
-            string connectionString = "Data Source=DESKTOP-4TNUEJA\\MSSQLSERVER02;Initial Catalog=vms;Integrated Security=True;";
-            //
-
-            List<string>Qrdata = new List<string>();
-            // string Employee_email=null;
-             string urlWithToken=null;
-            //     string apiUrl = "https://graph.facebook.com/v18.0/206970215843824/messages";
-            //     string apiKey = "EAAK3AIry3xEBO4SgDUMKUZA7N5Ii1Qnqf6fMHZAVUrZCZAT5KHdaWww3Jmpd4PwShpy07dMXVD6GOshE6LA7ENCt8G1DuZAwFyEmPBlOvL4vISdDMIrG7Ap0egyvuArvNn9WcbiAgPcyjRPBylAgAZBGcNISqREhl2hkANMzUlcpo3BMNm2Jv5rmyXrUzQj38UUkjzlYGPEY55gordaiZCBBZB1Dhx8ZD";
-            employeename = Session["name"].ToString(); 
+            string connectionString = "Data Source=192.168.20.70,1433;Initial Catalog=vms;User ID=vms;Password=Vms@123;";
+            List<string> Qrdata = new List<string>();
+            employeename = Session["name"].ToString();
             string employymail = Session["passmail"].ToString();
             string EmployeeMob = Session["User_id"].ToString();
-            string mobile_No = txtMbNo.Text; // Save mobile_No from txtMbNo
+            string mobile_No = txtMbNo.Text;
             string meetingSubject = txtMeeting.Text;
             string meetingdate = datetimepicker.Text;
 
@@ -92,30 +85,22 @@ namespace VMS
             string visitor_Email = txtEmail.Text;
             string Company = txtCompany.Text;
 
-
-            InsertRecord(employeename, EmployeeMob ,mobile_No, meetingSubject, meetingdate, visitor_Name, visitor_Email, Company);
-
+            InsertRecord(employeename, EmployeeMob, mobile_No, meetingSubject, meetingdate, visitor_Name, visitor_Email, Company);
 
             try
             {
-               
                 string queryfortoken = "SELECT MAX(token) AS LastToken FROM Record";
 
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
                     using (SqlCommand command = new SqlCommand(queryfortoken, connection))
                     {
-                        // Opening connection
                         connection.Open();
-
-                        // Executing query
                         object LastToken = command.ExecuteScalar();
 
                         if (LastToken != null)
                         {
-                            // Store the last inserted token value into a variable
                             token = LastToken.ToString();
-
                             System.Diagnostics.Trace.WriteLine($"token is  {token}");
                         }
                         else
@@ -125,36 +110,33 @@ namespace VMS
                     }
                 }
 
-                Qrdata.Add(meetingSubject); //0
-                Qrdata.Add(visitor_Email);  //1
-                Qrdata.Add(mobile_No);      //2
-                Qrdata.Add(visitor_Name);   //3
-                Qrdata.Add(Company);        //4
-                Qrdata.Add(meetingdate);    //5
-                Qrdata.Add(employeename);  //6
-                Qrdata.Add(token);  //7
+                Qrdata.Add(meetingSubject);
+                Qrdata.Add(visitor_Email);
+                Qrdata.Add(mobile_No);
+                Qrdata.Add(visitor_Name);
+                Qrdata.Add(Company);
+                Qrdata.Add(meetingdate);
+                Qrdata.Add(employeename);
+                Qrdata.Add(token);
 
-                // Assuming you have a method to insert data into the record table, call it here
-             
                 PrintQRCode(Qrdata);
                 sendMail(visitor_Email, employymail);
                 System.Diagnostics.Trace.WriteLine($" mail is send success fully");
-                string alertMessage = "alert('Your Meeting Request has been successfully submitted.');";
-                ClientScript.RegisterStartupScript(this.GetType(), "alert", alertMessage, true);
 
-                txtCompany.Text =string.Empty;
+                // Display success message using ScriptManager
+                string alertMessage = "alert('Your Meeting Request has been successfully submitted.');";
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "alert", alertMessage, true);
+
+                // Clear input fields
+                txtCompany.Text = string.Empty;
                 txtEmail.Text = string.Empty;
                 txtName.Text = string.Empty;
                 datetimepicker.Text = string.Empty;
                 txtMeeting.Text = string.Empty;
-                txtMbNo.Text = string.Empty;
 
+                // Reinitialize datetimepicker after the pop-up is closed
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "DateTimePicker", "$('#<%= datetimepicker.ClientID %>').datetimepicker();", true);
 
-            }
-            catch (HttpRequestException ex)
-            {
-
-                Console.WriteLine($"An HTTP request error occurred: {ex.Message}");
             }
             catch (Exception ex)
             {
@@ -216,16 +198,16 @@ namespace VMS
                     g.DrawString("Name: " + values[3], new Font("Verdana", 9), Brushes.Black, 15, 90);
                     g.DrawString("Meeting Date: " + values[5], new Font("Verdana", 9), Brushes.Black, 15, 105);
                     g.DrawString("Mobile No: " + values[2], new Font("Verdana", 9), Brushes.Black, 15, 120);
-                    g.DrawString("Meeting With: " + values[6], new Font("Verdana",9 ), Brushes.Black, 15,  135);
-                    g.DrawString("Company: " + values[4], new Font("Verdana", 9), Brushes.Black, 15,  150);
+                    g.DrawString("Meeting With: " + values[6], new Font("Verdana", 9), Brushes.Black, 15, 135);
+                    g.DrawString("Company: " + values[4], new Font("Verdana", 9), Brushes.Black, 15, 150);
                     g.DrawString("Subject: " + values[0], new Font("Verdana", 9), Brushes.Black, 15, 165);
-                   
+
                     // parameters for position of texton the paper 
                     int textX = qrCodeX + qrCodeSize + 2;
                     int textY = qrCodeY + 20;
 
-                    
-                     }
+
+                }
 
                 // Use HostingEnvironment.MapPath instead of Server.MapPath
                 string savePath = @"D:\Gate_Pass.png";
@@ -240,12 +222,12 @@ namespace VMS
                 Console.WriteLine("Error occurred: " + ex.Message);
             }
         }
-        protected void sendMail(String receiverMail,String employymail)
+        protected void sendMail(String receiverMail, String employymail)
         {
-           
+
             // write the code that can get the receiver email and send the link on that using the user credentials 
             //  string BODY_HTML = "<p>Hello Sir,</p><p>This is past 7-hour mixing batch testing report.</p><p>Please click on the button/link below:</p><p><a href=\"https://www.example.com\"><button style=\"padding:10px;background-color:#4CAF50;color:white;border:none;\">Click me</button></a></p>";
-           
+
             try
             {
                 using (SmtpClient client = new SmtpClient("smtp.office365.com"))
@@ -265,20 +247,18 @@ namespace VMS
                         message.IsBodyHtml = true;
 
 
+                        // Attach the link 
+
+                        string BODY_HTML = "<h1 style=\"color: blue\">Dear " + txtName.Text + ",<p> This is your Gate pass</h1><br>" +
+                                           "<p style=\\\"padding-left: 20px;\\>This is a just quick message to confirm your upcoming appointment at Fores Group. <p>We're thrilled to have you visit our office!</p><br>" + "Thank You." + "<p>Best regards,</p><br><p> " + employeename + "</p>";
+
+                        // Add the text part
+                        message.Body = BODY_HTML;
 
                         // attach the file to the mail
                         string savePath = @"D:\Gate_Pass.png"; // Adjust the path as necessary
                         Attachment attachment = new Attachment(savePath);
                         message.Attachments.Add(attachment);
-
-
-
-                        // Attach the link 
-                        string BODY_HTML = "<h1style=\"color: blue\">Hello " + txtName.Text + " sir, This is your Gate pass </h1><br>" +
-                    "<p>Meeting Subject:- " + txtMeeting.Text + "<br>" + "We look forward to welcoming you to FORES ELASTOMECH INDIA PVT.LTD and having a fruitful discussion.<p/><br>" + "<p>We hope you have a pleasant and enjoyable experience while you're here. Thank you for choosing us, and we look forward to serving you.</p><br>" + "<p>Best regards,</p><br>"+"<p> "+ employeename + "</p>";
-
-                        // Add the text part
-                        message.Body = BODY_HTML;
 
 
                         client.Send(message);
@@ -302,7 +282,7 @@ namespace VMS
         //private void BindDropDownList()
         //{
         //    // Your connection string to the database
-           
+
         //    // Your SQL query to fetch names from the employ_Registration table
         //    string query = "SELECT Name FROM Employ_Registration";
 
@@ -330,13 +310,13 @@ namespace VMS
 
         protected void txtMbNo_TextChanged(object sender, EventArgs e)
         {
-          
+
 
 
             if (txtMbNo.Text.Trim().Length == 10)
             {
                 // Database connection string
-                   // Query to check if mobile number exists and retrieve details
+                // Query to check if mobile number exists and retrieve details
                 string query = "SELECT Name, Email, Company FROM Visitor_Registration WHERE Mobile_No = @Mobil_No";
                 try
                 {
@@ -369,8 +349,8 @@ namespace VMS
                             {
                                 ScriptManager.RegisterStartupScript(this, GetType(), "showalert", "alert('Mobile number is not registered.');", true);
                                 // Displaying message if mobile number not found
-                               // ScriptManager.RegisterStartupScript(this, GetType(), "alertMessage", "alert('Mobile number is not registered.');", true);
-                               Response.Redirect("Signup.aspx");
+                                // ScriptManager.RegisterStartupScript(this, GetType(), "alertMessage", "alert('Mobile number is not registered.');", true);
+                                Response.Redirect("Signup.aspx");
                             }
 
                             // Closing reader
@@ -401,11 +381,12 @@ namespace VMS
                 ScriptManager.RegisterStartupScript(this, GetType(), "alertMessage", "alert('Mobile number should be 10 digits.');", true);
             }
         }
-        private void InsertRecord(string Whometo_Visit,string EmployeeMob, string Mobile_No, string Meeting_Subject, string Date_Time, string Name, string Email, string Company)
+        private void InsertRecord(string Whometo_Visit, string EmployeeMob, string Mobile_No, string Meeting_Subject, string Date_Time, string Name, string Email, string Company)
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                try {
+                try
+                {
 
                     string query = "INSERT INTO Record (Whometo_Visit, Mobile_No, Meeting_Subject, Date_Time, Name, Email, Company,Employee_mob) VALUES (@Whometo_Visit, @Mobile_No, @Meeting_Subject, @Date_Time, @Name, @Email, @Company,@EmployeeMob)";
 
@@ -427,10 +408,10 @@ namespace VMS
                 }
                 catch (Exception ex)
                 {
-                   System.Diagnostics.Trace.WriteLine($"Mobile Number for {ex.Message}: ");
+                    System.Diagnostics.Trace.WriteLine($"Mobile Number for {ex.Message}: ");
 
                 }
-               
+
             }
         }
     }
