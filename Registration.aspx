@@ -7,11 +7,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
     <title>REGISTRATION</title>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <link rel="icon" href="https://foreselastomech.com/wp-content/uploads/2019/03/FORES-Logo.png">
     <link href="Content/Site.css" rel="stylesheet" />
     <link href="Content/bootstrap-datetimepicker.min.css" rel="stylesheet" />
     <link href="Content/bootstrap.min.css" rel="stylesheet" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
 
     <style>
         body {
@@ -173,18 +175,10 @@
             <img src="https://foreselastomech.com/wp-content/uploads/2019/03/FORES-Logo.png" alt="Logo" />
            
             <div class="header-name">INVITE VISITOR</div>
-            <%--   <link href="Content/bootstrap.min.css" rel="stylesheet" />
-
-            <link href="Content/bootstrap-datetimepicker.min.css" rel="stylesheet" />--%>
-
 
             <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
             <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />
             <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
-
-
         </header>
         <div class="jumbotrone" style="position: sticky; left: 0; background-color: gray;">
             <div class="row">
@@ -205,10 +199,10 @@
                         <br />
                         <br />
                         <br />
-                                <a href="Authenticate_User.aspx" class="logout-btn">
-    <i class="fas fa-sign-out-alt"></i>
-    <span>Logout</span>
-</a>
+                        <a href="Authenticate_User.aspx" class="logout-btn">
+                            <i class="fas fa-sign-out-alt"></i>
+                            <span>Logout</span>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -292,6 +286,7 @@
     </div>
 </div>
 
+<div class="row">
 
 <script>
     document.getElementById('plusIcon').addEventListener('click', function () {
@@ -352,40 +347,46 @@
    <div class="row">
     <div class="col-md-3">
         <div class="form-group">
-            <asp:Label ID="Label9" runat="server" Text="Meeting Date and Time :" AssociatedControlID="datetimepicker"></asp:Label>
+            <label for="datetimepicker">Meeting Date and Time :</label>
             <asp:TextBox ID="datetimepicker" runat="server" CssClass="form-control"></asp:TextBox>
             <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="datetimepicker" ErrorMessage="Meeting Date and Time is required" Display="None"></asp:RequiredFieldValidator>
         </div>
     </div>
 </div>
 
+<div class="row">
+    <div class="col-md-3">
+        <asp:Button ID="RGN" runat="server" Text="Submit" CssClass="btn btn-primary btn-lg btn-block" OnClick="Button1_Click" />
+    </div>
+</div>
 
-            <div class="row">
-                <div class="col-md-3">
-                    <asp:Button ID="RGN" runat="server" Text="Submit" CssClass="btn btn-primary btn-lg btn-block" OnClick="Button1_Click" />
-                </div>
-            </div>
+</div>
+</form>
 
-        </div>
-        <script>
-            document.getElementById('sidebar').addEventListener('mouseenter', function () {
-                this.classList.add('show');
-            });
-
-            document.getElementById('sidebar').addEventListener('mouseleave', function () {
-                this.classList.remove('show');
-            });
-            $(function () {
-                $('#<%= datetimepicker.ClientID %>').datetimepicker();
-              });
-        </script>
-
-    </form>
-
-    
-</body >
-</html >
 <script>
+    document.getElementById('sidebar').addEventListener('mouseenter', function () {
+        this.classList.add('show');
+    });
+
+    document.getElementById('sidebar').addEventListener('mouseleave', function () {
+        this.classList.remove('show');
+    });
+
+    $(function () {
+        $('#<%= datetimepicker.ClientID %>').datetimepicker();
+    });
+
+    function showOtherOption(select) {
+        var otherOption = select.options[select.selectedIndex].value;
+        if (otherOption === "Other") {
+            document.getElementById("txtMeeting").style.display = "block";
+            document.getElementById("txtMeeting").setAttribute("required", "true");
+        } else {
+            document.getElementById("txtMeeting").style.display = "none";
+            document.getElementById("txtMeeting").removeAttribute("required");
+        }
+    }
+
     // Add event listeners to all text boxes (except email) to capitalize all letters when typed
     document.addEventListener("DOMContentLoaded", function () {
         var textboxes = document.querySelectorAll('input[type="text"]:not(#txtEmail)');
@@ -401,3 +402,5 @@
         });
     });
 </script>
+</body>
+</html>
