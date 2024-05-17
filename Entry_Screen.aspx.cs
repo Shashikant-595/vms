@@ -22,7 +22,7 @@ namespace VMS
                     System.Diagnostics.Trace.WriteLine($"gvfadcdfffffffffffff  "+Session["User_type"]);
 
                     // HR and IT head 
-                    scanQrLink.Visible = false;
+                    scanQrLink.Visible = true;
                     confirmLink.Visible = true;
                     registrationLink.Visible = true;
                     newVisitorLink.Visible = true;

@@ -161,90 +161,99 @@
 </head>
 <body>
     <form id="signup" runat="server">
-        <header>
-            <img src="https://foreselastomech.com/wp-content/uploads/2019/03/FORES-Logo.png" alt="Logo" />
-            <div class="header-name">NEW VISITORS REGISTRATION</div>
-            <div id="userIdIcon">
-                <i class="fas fa-user sidebar-icon text-primary fa-2x"></i>
-                <div id="userIdTextBox" class="input-group" style="border-radius: 10px; margin-top: 10px;">
-                    <input type="text" id="userIdInput" class="form-control rounded" style="border-radius: 8px; height: 30px;" placeholder="User ID" />
+        <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
+        <asp:UpdatePanel ID="UpdatePanel1" runat="server">
+            <ContentTemplate>
+                <header>
+                    <img src="https://foreselastomech.com/wp-content/uploads/2019/03/FORES-Logo.png" alt="Logo" />
+                    <div class="header-name">NEW VISITORS REGISTRATION</div>
+                    <div id="userIdIcon">
+                        <i class="fas fa-user sidebar-icon text-primary fa-2x"></i>
+                        <div id="userIdTextBox" class="input-group" style="border-radius: 10px; margin-top: 10px;">
+                            <input type="text" id="userIdInput" class="form-control rounded" style="border-radius: 8px; height: 30px;" placeholder="User ID" />
+                        </div>
+                    </div>
+                </header>
+                <div class="icon-sidebar">
+                    <a href="Entry_Screen.aspx">
+                        <i class='fas fa-door-open'></i>
+                        <span>ENTRY SCREEN</span>
+                    </a>
+                    <a href="Registration.aspx">
+                        <i class='fas fa-user-plus'></i>
+                        <span>INVITE VISITOR</span>
+                    </a>
+                    <a href="Employee_Signup.aspx" id="employeelink" runat="server">
+                        <i class='fas fa-user-plus'></i>
+                        <span>NEW EMPLOYEE REGISTRATION</span>
+                    </a>
+                    <a href="Authenticate_User.aspx" class="logout-btn">
+                        <i class="fas fa-sign-out-alt" id="logoutBtn"></i>
+                        <span>Logout</span>
+                    </a>
                 </div>
-            </div>
-        </header>
-        <div class="icon-sidebar">
-            <a href="Entry_Screen.aspx">
-                <i class='fas fa-door-open'></i>
-                <span>ENTRY SCREEN</span>
-            </a>
-            <a href="Registration.aspx">
-                <i class='fas fa-user-plus'></i>
-                <span>INVITE VISITOR</span>
-            </a>
-            <a href="Employee_Signup.aspx" id="employeelink" runat="server">
-                <i class='fas fa-user-plus'></i>
-                <span>NEW EMPLOYEE REGISTRATION</span>
-            </a>
-            <a href="Authenticate_User.aspx" class="logout-btn">
-                <i class="fas fa-sign-out-alt" id="logoutBtn"></i>
-                <span>Logout</span>
-            </a>
-        </div>
 
-        <div class="center-container">
-            <div style="margin-bottom: 25px; margin-right: -10px">
-                <asp:Label ID="lblName" runat="server" Text=" Name : "></asp:Label>
-                <asp:TextBox ID="txtName" runat="server" required></asp:TextBox>
-            </div>
-            <div>
-                <div style="margin-bottom: 5px;">
-                    <asp:RegularExpressionValidator ID="regexName" runat="server" ControlToValidate="txtName"
-                        ValidationExpression="^[A-Z][a-z]+( [A-Z][a-z]+){2}$"
-                        ErrorMessage="Please enter a 'First name Middle name Last name' with the first letter of each name capitalized."
-                        Display="Dynamic" ForeColor="Red"></asp:RegularExpressionValidator>
-                </div>
-            </div>
-            <div style="margin-bottom: 20px; margin-left: -24px;">
-                <asp:Label ID="lblMbNo" runat="server" Text="Mobile No : "></asp:Label>
-                <asp:TextBox ID="txtMbNo" runat="server" OnTextChanged="txtMbNo_TextChanged" AutoPostBack="true" required></asp:TextBox>
-            </div>
-            <div>
-                <div style="margin-bottom: 5px;">
-                    <asp:RegularExpressionValidator ID="regexMobile1" runat="server" ControlToValidate="txtMbNo"
-                        ValidationExpression="^[0-9]{10}$"
-                        ErrorMessage="Please enter a valid 10-digit mobile number."
-                        Display="Dynamic" ForeColor="Red"></asp:RegularExpressionValidator>
-                </div>
-            </div>
-            <div style="margin-bottom: 20px; margin-left: 10px;">
-                <asp:Label ID="email" runat="server" Text="Email : "></asp:Label>
-                <asp:TextBox ID="txtemail" runat="server" required></asp:TextBox>
-            </div>
-            <div>
-                <div style="margin-bottom: 5px;">
-                    <asp:RegularExpressionValidator ID="regexEmail1" runat="server" ControlToValidate="txtemail"
-                        ValidationExpression="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
-                        ErrorMessage="Please enter a valid email address with '@' symbol and a '.' before the ending word."
-                        Display="Dynamic" ForeColor="Red"></asp:RegularExpressionValidator>
-                </div>
-            </div>
-            <div style="margin-bottom: 20px; margin-left: -20px;">
-                <asp:Label ID="compony" runat="server" Text="Company : "></asp:Label>
-                <asp:TextBox ID="txtcompany" runat="server" required></asp:TextBox>
-            </div>
+                <div class="center-container">
+                    <div style="margin-bottom: 25px; margin-right: -10px">
+                        <asp:Label ID="lblName" runat="server" Text=" Name : "></asp:Label>
+                        <asp:TextBox ID="txtName" runat="server" required></asp:TextBox>
+                    </div>
+                    <div>
+                        <div style="margin-bottom: 5px;">
+                            <asp:RegularExpressionValidator ID="regexName" runat="server" ControlToValidate="txtName"
+                                ValidationExpression="^[A-Za-z]+(\s[A-Za-z]+){1}(\s[A-Za-z]+){1}$"
+                                ErrorMessage="Please enter 'First name Middle name Last name' ."
+                                Display="Dynamic" ForeColor="Red"></asp:RegularExpressionValidator>
+                        </div>
+                    </div>
+                    <div style="margin-bottom: 20px; margin-left: -24px;">
+                        <asp:Label ID="lblMbNo" runat="server" Text="Mobile No : "></asp:Label>
+                        <asp:TextBox ID="txtMbNo" runat="server" OnTextChanged="txtMbNo_TextChanged" AutoPostBack="true" required></asp:TextBox>
+                    </div>
+                    <div>
+                        <div style="margin-bottom: 5px;">
+                            <asp:RegularExpressionValidator ID="regexMobile1" runat="server" ControlToValidate="txtMbNo"
+                                ValidationExpression="^[0-9]{10}$"
+                                ErrorMessage="Please enter a valid 10-digit mobile number."
+                                Display="Dynamic" ForeColor="Red"></asp:RegularExpressionValidator>
+                        </div>
+                    </div>
+                    <div style="margin-bottom: 20px; margin-left: 10px;">
+                        <asp:Label ID="email" runat="server" Text="Email : "></asp:Label>
+                        <asp:TextBox ID="txtemail" runat="server" required></asp:TextBox>
+                    </div>
+                    <div>
+                        <div style="margin-bottom: 5px;">
+                            <asp:RegularExpressionValidator ID="regexEmail1" runat="server" ControlToValidate="txtemail"
+                                ValidationExpression="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
+                                ErrorMessage="Please enter a valid email address with '@' symbol and a '.' before the ending word."
+                                Display="Dynamic" ForeColor="Red"></asp:RegularExpressionValidator>
+                        </div>
+                    </div>
+                    <div style="margin-bottom: 20px; margin-left: -20px;">
+                        <asp:Label ID="compony" runat="server" Text="Company : "></asp:Label>
+                        <asp:TextBox ID="txtcompany" runat="server" required></asp:TextBox>
+                    </div>
 
-            <div class="form-group col-sm-3 mt-5">
-                <asp:Button ID="btn_submit" runat="server" Text="Register" CssClass="btn btn-primary" OnClick="btn_submit_Click" />
-                <asp:Button ID="btn_edit" runat="server" Text="Edit" CssClass="btn btn-primary" OnClick="btn_edit_Click" />
-            </div>
-        </div>
-
+                    <div class="form-group col-sm-3 mt-5">
+                        <asp:Button ID="btn_submit" runat="server" Text="Register" CssClass="btn btn-primary" OnClick="btn_submit_Click" />
+                        <asp:Button ID="btn_edit" runat="server" Text="Edit" CssClass="btn btn-primary" OnClick="btn_edit_Click" />
+                    </div>
+                </div>
+            </ContentTemplate>
+            <Triggers>
+                <asp:AsyncPostBackTrigger ControlID="txtMbNo" EventName="TextChanged" />
+                <asp:AsyncPostBackTrigger ControlID="btn_submit" EventName="Click" />
+                <asp:AsyncPostBackTrigger ControlID="btn_edit" EventName="Click" />
+            </Triggers>
+        </asp:UpdatePanel>
     </form>
 </body>
 </html>
 <script>
     // Add event listeners to all text boxes (except email) to capitalize all letters when typed
     document.addEventListener("DOMContentLoaded", function () {
-        var textboxes = document.querySelectorAll('input[type="text"]:not(#txtemail)');
+        var textboxes = document.querySelectorAll('input[type="text"]:not(#txtemail),input[type="text"][id$="txtcompany"]');
         textboxes.forEach(function (textbox) {
             textbox.addEventListener("input", function () {
                 // Get the current value of the textbox

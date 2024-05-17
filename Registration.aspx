@@ -171,9 +171,10 @@
 </head>
 <body>
     <form id="form1" runat="server">
+        <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
         <header>
             <img src="https://foreselastomech.com/wp-content/uploads/2019/03/FORES-Logo.png" alt="Logo" />
-           
+
             <div class="header-name">INVITE VISITOR</div>
 
             <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
@@ -208,135 +209,136 @@
             </div>
         </div>
 
-      <div class="justify-content-center" style="margin-left: 200px">
-    <div class="row">
-        <div class="col-md-3">
-            <div class="form-group">
-                <asp:Label ID="lblName" runat="server" Text="Name :" AssociatedControlID="txtName"></asp:Label>
-                <asp:TextBox ID="txtName" runat="server" CssClass="form-control" required></asp:TextBox>
+        <div class="justify-content-center" style="margin-left: 200px">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <asp:Label ID="lblName" runat="server" Text="Name :" AssociatedControlID="txtName"></asp:Label>
+                        <asp:TextBox ID="txtName" runat="server" CssClass="form-control" required></asp:TextBox>
+                    </div>
+                </div>
+                <div class="col-md-1">
+                    <div class="form-group">
+                        <i class="fas fa-plus-circle" id="plusIcon" style="margin-top: 35px; margin-left: -40px"></i>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <asp:TextBox ID="txtTotalPersons" runat="server" CssClass="form-control" placeholder="Total Persons" Style="margin-top: 24px; width: 110px; margin-left: -120px" Text="0" required></asp:TextBox>
+                    </div>
+                </div>
             </div>
-        </div>
-        <div class="col-md-1">
-            <div class="form-group">
-                <i class="fas fa-plus-circle" id="plusIcon" style="margin-top: 35px;margin-left:-40px"></i>
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <asp:Label ID="lblMbNo" runat="server" Text="Mobile No :" AssociatedControlID="txtMbNo"></asp:Label>
+                        <asp:TextBox ID="txtMbNo" runat="server" OnTextChanged="txtMbNo_TextChanged" AutoPostBack="True" CssClass="form-control" required></asp:TextBox>
+                        <asp:RegularExpressionValidator ID="regexMobile" runat="server" ControlToValidate="txtMbNo"
+                            ValidationExpression="^[0-9]{10}$"
+                            ErrorMessage="Please enter a valid 10-digit mobile number."
+                            Display="Dynamic" ForeColor="Red"></asp:RegularExpressionValidator>
+                    </div>
+                </div>
             </div>
-        </div>
-        <div class="col-md-3">
-            <div class="form-group">
-                <asp:TextBox ID="txtTotalPersons" runat="server" CssClass="form-control" placeholder="Total Persons" style="margin-top: 24px; width:110px; margin-left:-120px" Text="0"  required></asp:TextBox>
-            </div>
-        </div>
-    </div>
-          <div class="row">
-    <div class="col-md-3">
-        <div class="form-group">
-            <asp:Label ID="lblMbNo" runat="server" Text="Mobile No :" AssociatedControlID="txtMbNo"></asp:Label>
-            <asp:TextBox ID="txtMbNo" runat="server" OnTextChanged="txtMbNo_TextChanged" AutoPostBack="True" CssClass="form-control" required></asp:TextBox>
-            <asp:RegularExpressionValidator ID="regexMobile" runat="server" ControlToValidate="txtMbNo"
-                ValidationExpression="^[0-9]{10}$"
-                ErrorMessage="Please enter a valid 10-digit mobile number."
-                Display="Dynamic" ForeColor="Red"></asp:RegularExpressionValidator>
-        </div>
-    </div>
-</div>
 
             <div class="row">
-    <div class="col-md-3">
-        <div class="form-group">
-            <asp:Label ID="Label1" runat="server" Text="Email :" AssociatedControlID="txtEmail"></asp:Label>
-            <asp:TextBox ID="txtEmail" runat="server" CssClass="form-control" required></asp:TextBox>
-            <asp:RegularExpressionValidator ID="regexEmail" runat="server" ControlToValidate="txtEmail"
-                ValidationExpression="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
-                ErrorMessage="Please enter a valid email address with '@' symbol and a '.' before the ending word."
-                Display="Dynamic" ForeColor="Red"></asp:RegularExpressionValidator>
-        </div>
-    </div>
-</div><div class="row">
-    <div class="col-md-3">
-        <div class="form-group">
-            <asp:Label ID="Label2" runat="server" Text="Company:"></asp:Label>
-            <asp:TextBox ID="txtCompany" runat="server" CssClass="form-control" required></asp:TextBox>
-            <asp:RequiredFieldValidator runat="server" ID="reqCompany" ControlToValidate="txtCompany" ErrorMessage="Please enter the company name!" />
-        </div>
-    </div>
-</div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <asp:Label ID="Label1" runat="server" Text="Email :" AssociatedControlID="txtEmail"></asp:Label>
+                        <asp:TextBox ID="txtEmail" runat="server" CssClass="form-control" required></asp:TextBox>
+                        <asp:RegularExpressionValidator ID="regexEmail" runat="server" ControlToValidate="txtEmail"
+                            ValidationExpression="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
+                            ErrorMessage="Please enter a valid email address with '@' symbol and a '.' before the ending word."
+                            Display="Dynamic" ForeColor="Red"></asp:RegularExpressionValidator>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <asp:Label ID="Label2" runat="server" Text="Company:"></asp:Label>
+                        <asp:TextBox ID="txtCompany" runat="server" CssClass="form-control" required></asp:TextBox>
+                        <asp:RequiredFieldValidator runat="server" ID="reqCompany" ControlToValidate="txtCompany" ErrorMessage="Please enter the company name!" />
+                    </div>
+                </div>
+            </div>
 
 
-<div class="row">
-    <div class="col-md-3">
-        <div class="form-group">
-            <label for="ddlMeetingType">Meeting Subject :</label>
-            <asp:DropDownList ID="ddlMeetingType" runat="server" class="form-control" onchange="showOtherOption(this)" required>
-                <asp:ListItem Value="">Select Meeting Type</asp:ListItem>
-                <asp:ListItem Value="Business Meeting">Business Meeting</asp:ListItem>
-                <asp:ListItem Value="Job Interview">Job Interview</asp:ListItem>
-                <asp:ListItem Value="Vendor Meeting">Vendor Meeting</asp:ListItem>
-                <asp:ListItem Value="Client Visit">Client Visit</asp:ListItem>
-                <asp:ListItem Value="Training Session">Training Session</asp:ListItem>
-                <asp:ListItem Value="Delivery / Pickup">Delivery / Pickup</asp:ListItem>
-                <asp:ListItem Value="Personal Visit">Personal Visit</asp:ListItem>
-                <asp:ListItem Value="Maintenance/Repair Visit">Maintenance/Repair Visit</asp:ListItem>
-                <asp:ListItem Value="Government Inspection">Government Inspection</asp:ListItem>
-                <asp:ListItem Value="Audit">Audit</asp:ListItem>
-                <asp:ListItem Value="Material Inspection">Material Inspection</asp:ListItem>
-                <asp:ListItem Value="Other">Other (Please Specify)</asp:ListItem>
-            </asp:DropDownList>
-            <asp:TextBox ID="txtMeeting" runat="server" class="form-control" style="display: none;" placeholder="Meeting Subject"></asp:TextBox>
-        </div>
-    </div>
-</div>
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="ddlMeetingType">Meeting Subject :</label>
+                        <asp:DropDownList ID="ddlMeetingType" runat="server" class="form-control" onchange="showOtherOption(this)" required>
+                            <asp:ListItem Value="">Select Meeting Type</asp:ListItem>
+                            <asp:ListItem Value="Business Meeting">Business Meeting</asp:ListItem>
+                            <asp:ListItem Value="Job Interview">Job Interview</asp:ListItem>
+                            <asp:ListItem Value="Vendor Meeting">Vendor Meeting</asp:ListItem>
+                            <asp:ListItem Value="Client Visit">Client Visit</asp:ListItem>
+                            <asp:ListItem Value="Training Session">Training Session</asp:ListItem>
+                            <asp:ListItem Value="Delivery / Pickup">Delivery / Pickup</asp:ListItem>
+                            <asp:ListItem Value="Personal Visit">Personal Visit</asp:ListItem>
+                            <asp:ListItem Value="Maintenance/Repair Visit">Maintenance/Repair Visit</asp:ListItem>
+                            <asp:ListItem Value="Government Inspection">Government Inspection</asp:ListItem>
+                            <asp:ListItem Value="Audit">Audit</asp:ListItem>
+                            <asp:ListItem Value="Material Inspection">Material Inspection</asp:ListItem>
+                            <asp:ListItem Value="Other">Other (Please Specify)</asp:ListItem>
+                        </asp:DropDownList>
+                        <asp:TextBox ID="txtMeeting" runat="server" class="form-control" Style="display: none;" placeholder="Meeting Subject"></asp:TextBox>
+                    </div>
+                </div>
+            </div>
 
-<div class="row">
+            <div class="row">
 
-<script>
-    document.getElementById('plusIcon').addEventListener('click', function () {
-        var totalPersonsTextbox = document.getElementById('<%= txtTotalPersons.ClientID %>');
-        var currentValue = parseInt(totalPersonsTextbox.value || 0);
-        totalPersonsTextbox.value = currentValue + 1;
-    });
+                <script>
+                    document.getElementById('plusIcon').addEventListener('click', function () {
+                        var totalPersonsTextbox = document.getElementById('<%= txtTotalPersons.ClientID %>');
+                        var currentValue = parseInt(totalPersonsTextbox.value || 0);
+                        totalPersonsTextbox.value = currentValue + 1;
+                    });
 
-    function showOtherOption(select) {
-        var selectedOption = select.value;
-        var meetingTextBox = document.getElementById("txtMeeting");
-        if (selectedOption === "Other") {
-            meetingTextBox.style.display = "block";
-        } else {
-            meetingTextBox.style.display = "none";
-        }
-    } function showOtherOption(select) {
-        var selectedOption = select.value;
-        var meetingTextBox = document.getElementById("txtMeeting");
-        if (selectedOption === "Other") {
-            meetingTextBox.style.display = "block";
-        } else {
-            meetingTextBox.style.display = "none";
-        }
-    }
+                    function showOtherOption(select) {
+                        var selectedOption = select.value;
+                        var meetingTextBox = document.getElementById("txtMeeting");
+                        if (selectedOption === "Other") {
+                            meetingTextBox.style.display = "block";
+                        } else {
+                            meetingTextBox.style.display = "none";
+                        }
+                    } function showOtherOption(select) {
+                        var selectedOption = select.value;
+                        var meetingTextBox = document.getElementById("txtMeeting");
+                        if (selectedOption === "Other") {
+                            meetingTextBox.style.display = "block";
+                        } else {
+                            meetingTextBox.style.display = "none";
+                        }
+                    }
 
-    function validateMobile() {
-        var mobileNumber = document.getElementById('<%= txtMbNo.ClientID %>').value;
-        var regex = /^[0-9]{10}$/;
-        if (!regex.test(mobileNumber)) {
-            alert("Please enter a valid 10-digit mobile number.");
-            return false;
-        }
-        return true;
-    }
+                    function validateMobile() {
+                        var mobileNumber = document.getElementById('<%= txtMbNo.ClientID %>').value;
+                        var regex = /^[0-9]{10}$/;
+                        if (!regex.test(mobileNumber)) {
+                            alert("Please enter a valid 10-digit mobile number.");
+                            return false;
+                        }
+                        return true;
+                    }
 
-    function showOtherOption(select) {
-        var otherOption = select.options[select.selectedIndex].value;
-        if (otherOption === "Other") {
-            document.getElementById("txtMeeting").style.display = "block";
-            document.getElementById("txtMeeting").setAttribute("required", "true");
-        } else {
-            document.getElementById("txtMeeting").style.display = "none";
-            document.getElementById("txtMeeting").removeAttribute("required");
-        }
-    }
-</script>
+                    function showOtherOption(select) {
+                        var otherOption = select.options[select.selectedIndex].value;
+                        if (otherOption === "Other") {
+                            document.getElementById("txtMeeting").style.display = "block";
+                            document.getElementById("txtMeeting").setAttribute("required", "true");
+                        } else {
+                            document.getElementById("txtMeeting").style.display = "none";
+                            document.getElementById("txtMeeting").removeAttribute("required");
+                        }
+                    }
+                </script>
 
 
-            <%--  <div class="row">
+                <%--  <div class="row">
         <div class="col-md-3">
             <div class="form-group">
                 <asp:Label ID="Label4" runat="server" Text="Meeting Invitor :" AssociatedControlID="DropDownList1"></asp:Label>
@@ -344,63 +346,67 @@
             </div>
         </div>
         </div>--%>
-   <div class="row">
-    <div class="col-md-3">
-        <div class="form-group">
-            <label for="datetimepicker">Meeting Date and Time :</label>
-            <asp:TextBox ID="datetimepicker" runat="server" CssClass="form-control"></asp:TextBox>
-            <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="datetimepicker" ErrorMessage="Meeting Date and Time is required" Display="None"></asp:RequiredFieldValidator>
-        </div>
-    </div>
-</div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="datetimepicker">Meeting Date and Time :</label>
+                            <asp:TextBox ID="datetimepicker" runat="server" CssClass="form-control"></asp:TextBox>
+                            <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="datetimepicker" ErrorMessage="Meeting Date and Time is required" Display="None"></asp:RequiredFieldValidator>
+                        </div>
+                    </div>
+                </div>
 
-<div class="row">
-    <div class="col-md-3">
-        <asp:Button ID="RGN" runat="server" Text="Submit" CssClass="btn btn-primary btn-lg btn-block" OnClick="Button1_Click" />
-    </div>
-</div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <asp:UpdatePanel ID="UpdatePanel1" runat="server">
+                            <ContentTemplate>
+                                <asp:Button ID="RGN" runat="server" Text="Submit" CssClass="btn btn-primary btn-lg btn-block" OnClick="Button1_Click" />
+                            </ContentTemplate>
+                        </asp:UpdatePanel>
+                    </div>
+                </div>
 
-</div>
-</form>
+            </div>
+    </form>
 
-<script>
-    document.getElementById('sidebar').addEventListener('mouseenter', function () {
-        this.classList.add('show');
-    });
+    <script>
+        document.getElementById('sidebar').addEventListener('mouseenter', function () {
+            this.classList.add('show');
+        });
 
-    document.getElementById('sidebar').addEventListener('mouseleave', function () {
-        this.classList.remove('show');
-    });
+        document.getElementById('sidebar').addEventListener('mouseleave', function () {
+            this.classList.remove('show');
+        });
 
-    $(function () {
-        $('#<%= datetimepicker.ClientID %>').datetimepicker();
-    });
+        $(function () {
+            $('#<%= datetimepicker.ClientID %>').datetimepicker();
+        });
 
-    function showOtherOption(select) {
-        var otherOption = select.options[select.selectedIndex].value;
-        if (otherOption === "Other") {
-            document.getElementById("txtMeeting").style.display = "block";
-            document.getElementById("txtMeeting").setAttribute("required", "true");
-        } else {
-            document.getElementById("txtMeeting").style.display = "none";
-            document.getElementById("txtMeeting").removeAttribute("required");
+        function showOtherOption(select) {
+            var otherOption = select.options[select.selectedIndex].value;
+            if (otherOption === "Other") {
+                document.getElementById("txtMeeting").style.display = "block";
+                document.getElementById("txtMeeting").setAttribute("required", "true");
+            } else {
+                document.getElementById("txtMeeting").style.display = "none";
+                document.getElementById("txtMeeting").removeAttribute("required");
+            }
         }
-    }
 
-    // Add event listeners to all text boxes (except email) to capitalize all letters when typed
-    document.addEventListener("DOMContentLoaded", function () {
-        var textboxes = document.querySelectorAll('input[type="text"]:not(#txtEmail)');
-        textboxes.forEach(function (textbox) {
-            textbox.addEventListener("input", function () {
-                // Get the current value of the textbox
-                var currentValue = this.value;
-                // Convert the value to uppercase
-                var newValue = currentValue.toUpperCase();
-                // Update the textbox value with the uppercase text
-                this.value = newValue;
+        // Add event listeners to all text boxes (except email) to capitalize all letters when typed
+        document.addEventListener("DOMContentLoaded", function () {
+            var textboxes = document.querySelectorAll('input[type="text"]:not(#txtEmail)');
+            textboxes.forEach(function (textbox) {
+                textbox.addEventListener("input", function () {
+                    // Get the current value of the textbox
+                    var currentValue = this.value;
+                    // Convert the value to uppercase
+                    var newValue = currentValue.toUpperCase();
+                    // Update the textbox value with the uppercase text
+                    this.value = newValue;
+                });
             });
         });
-    });
-</script>
+    </script>
 </body>
 </html>

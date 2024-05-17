@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Employee_Signup.aspx.cs" Inherits="VMS.Employee_Signup" %>
+﻿﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Employee_Signup.aspx.cs" Inherits="VMS.Employee_Signup" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -140,6 +140,9 @@
 </head>
 <body>
     <form id="form1" runat="server">
+                <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
+        <asp:UpdatePanel ID="UpdatePanel1" runat="server">
+            <ContentTemplate>
         <header>
             <link href="Content/bootstrap.min.css" rel="stylesheet" />
 
@@ -224,16 +227,38 @@
                 </asp:DropDownList>
             </div>
             <div class="form-group col-sm-3 mt-5">
-                <asp:Button ID="btn_save" runat="server" Text="Register" CssClass="btn btn-primary" OnClick="btn_save_Click" />
-                <asp:Button ID="btn_edit" runat="server" Text="Edit" CssClass="btn btn-primary" OnClick="btn_edit_Click" Style="float: right;" />
+                <asp:Button ID="Btn_save" runat="server" Text="Register" CssClass="btn btn-primary" OnClick="Btn_save_Click" />
+                <asp:Button ID="Btn_edit" runat="server" Text="Edit" CssClass="btn btn-primary" OnClick="Btn_edit_Click" Style="float: right;" />
             </div>
         </div>
-
-      
-
+                
+            </ContentTemplate>
+    <Triggers>
+        <asp:AsyncPostBackTrigger ControlID="txteMbNo" EventName="TextChanged" />
+        <asp:AsyncPostBackTrigger ControlID="Btn_save" EventName="Click" />
+        <asp:AsyncPostBackTrigger ControlID="Btn_edit" EventName="Click" />
+    </Triggers>
+</asp:UpdatePanel>
+                        <div class="col-md-4" style="margin-top: -500px; margin-left:650px; height: 580px; width:900px; overflow: auto;">
+<asp:GridView ID="GridView2" runat="server" AutoGenerateColumns="False" CssClass="table table-bordered" Width="300px">
+    <Columns>
+            <asp:BoundField DataField="Name" HeaderText="Name" ItemStyle-Width="100" />
+            <asp:BoundField DataField="Mobile_No" HeaderText="Mobile No" ItemStyle-Width="100" />
+            <asp:BoundField DataField="Email" HeaderText="Email" ItemStyle-Width="150" />
+            <asp:BoundField DataField="Employee_ID" HeaderText="Employee ID" ItemStyle-Width="100" />
+            <asp:BoundField DataField="Department" HeaderText="Department" ItemStyle-Width="100" />
+            <asp:BoundField DataField="password" HeaderText="Password" ItemStyle-Width="100" />
+            <asp:BoundField DataField="user_type" HeaderText="User Type" ItemStyle-Width="100" />
+        </Columns>
+    </asp:GridView>
+</div>
     </form>
     <script src="Scripts/bootstrap.min.js"></script>
     <script src="Scripts/jquery-3.7.1.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="/Scripts/jquery.signalR-2.4.2.min.js"></script>
+    <script src="/signalr/hubs"></script>
+
 
     <script>
         function togglePasswordVisibility() {
