@@ -13,6 +13,13 @@
     <script src="https://cdn.jsdelivr.net/npm/html5-qrcode@^2.2.0/html5-qrcode.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jsqr/dist/jsQR.js"></script>
     <style>
+        .form-control {
+            width: 50%;
+            height: 20px;
+            border-radius: 8px;
+            font-size: 16px;
+            margin-bottom: 8px;
+        }
         body {
             font-family: 'Poppins', sans-serif;
             margin: 0;
@@ -101,6 +108,42 @@
         /* Center align the visitor count container */
 
 
+        .auto-style1 {
+            position: absolute;
+            top: 38px;
+            right: -71px;
+            width: 111%;
+            height: 345px;
+        }
+    .login-container {
+    border: thick;
+    padding: 10%;
+    border-radius: 30px;
+    box-shadow: 0 0 20px rgb(0, 0, 0);
+    width: 40%; /* Decreased width */
+    height: 120%; /* Increased height */
+    max-width: 300px;
+    margin: auto;
+}
+
+
+        .auto-style2 {
+            position: absolute;
+            top: -8px;
+            right: -62px;
+            width: 14%;
+            height: 379px;
+        }
+        .form-group label {
+        font-size: 1.50rem; /* Adjust the font size of labels */
+    }
+
+    .form-control {
+        font-size: 1.25rem; /* Adjust the font size of textboxes */
+        width: 300px;
+        height:30px;
+    }
+
     </style>
     <link href="Conten
         t/bootstrap.min.css"
@@ -125,7 +168,7 @@
             <div id="userIdIcon">
                 <i class="fas fa-user sidebar-icon text-primary fa-2x"></i>
                 <div id="userIdTextBox" class="input-group" style="border-radius: 10px; margin-top: 10px;">
-                    <input type="text" id="userIdInput" class="form-control rounded" style="border-radius: 8px; height: 30px;" placeholder="User ID" />
+                    <input type="text" id="userIdInput" class=" rounded" style="border-radius: 8px; height: 30px;" placeholder="User ID" />
                 </div>
             </div>
 
@@ -165,7 +208,54 @@
         <label for="visitorCountInput" class="mr-2 font-weight-bold">Number of Visitors:</label>
         <input type="number" id="visitorCountInput" class="form-control rounded" style="border-radius: 8px; height: 30px; width: 100px;" placeholder="Enter number" value="0" />
     </div>
+<div class="auto-style2" style="margin-top: 190px; margin-right: 120px; padding: 5%; border-radius: 20px; box-shadow: 0 0 20px rgb(0, 0, 0);">
+    <div class="auto-style1">
+        <div class="form-group row">
+            <h2>VISITOR INFORMATION</h2>  <div class="form-group row">
+    <label for="txtName" class="col-sm-2 col-form-label">Name</label>
+    <div class="col-sm-10">
+        <asp:TextBox ID="txtName" runat="server" CssClass="form-control" required Font-Size="Medium"></asp:TextBox>
+    </div>
+</div>
+<div class="form-group row">
+    <label for="txtMbNo" class="col-sm-2 col-form-label fs-5">Mobile No</label>
+    <div class="col-sm-10">
+        <asp:TextBox ID="txtMbNo" runat="server" CssClass="form-control fs-5" required></asp:TextBox>
+        </div>
+</div>
+<div class="form-group row">
+    <label for="txtEmail" class="col-sm-2 col-form-label fs-5">Email</label>
+    <div class="col-sm-10">
+        <asp:TextBox ID="txtEmail" runat="server" CssClass="form-control fs-5" required Font-Size="Medium"></asp:TextBox>
+    </div>
+</div>
+<div class="form-group row">
+    <label for="txtCompany" class="col-sm-2 col-form-label fs-5">Company</label>
+    <div class="col-sm-10">
+        <asp:TextBox ID="txtCompany" runat="server" CssClass="form-control fs-5" required Font-Size="Medium"></asp:TextBox>
+    </div>
+</div>
+<div class="form-group row">
+    <label for="txtMeeting" class="col-sm-2 col-form-label fs-5">Meeting Subject</label>
+    <div class="col-sm-10">
+        <asp:TextBox ID="txtMeeting" runat="server" CssClass="form-control fs-5" Font-Size="Medium"></asp:TextBox>
+    </div>
+</div>
+<div class="form-group row">
+    <label for="datetimepicker" class="col-sm-2 col-form-label fs-5">Meeting Date and Time</label>
+    <div class="col-sm-10">
+        <asp:TextBox ID="datetimepicker" runat="server" CssClass="form-control fs-5" Font-Size="Medium"></asp:TextBox>
+    </div>
+</div>
+            </div>
+        </div>
+    </div>
+
     </form>
+
+            
+
+   
 
     <script>
         document.addEventListener("DOMContentLoaded", function () {

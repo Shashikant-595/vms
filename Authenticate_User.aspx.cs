@@ -10,8 +10,8 @@ namespace VMS
 {
     public partial class Authenticate_User : System.Web.UI.Page
     {
-       string connectionString = "Data Source=DESKTOP-4TNUEJA\\MSSQLSERVER02;Initial Catalog=vms;Integrated Security=True;";
-        //string connectionString = "Data Source=192.168.20.70,1433;Initial Catalog=vms;User ID=vms;Password=Vms@123;";
+        // string connectionString = "Data Source=DESKTOP-4TNUEJA\\MSSQLSERVER02;Initial Catalog=vms;Integrated Security=True;";
+        string connectionString = "Data Source=192.168.20.70,1433;Initial Catalog=vms;User ID=vms;Password=Vms@123;";
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -23,7 +23,7 @@ namespace VMS
         {
             string userid = txtUsername.Text;
             string password = txtPassword.Text;
-            
+
             string query = "select password,user_type,Name,Email from Employ_Registration WHERE Mobile_No = @Mobil_No";
 
             // here create 3 session variable as object and pass on forward for further aplication authentication 
@@ -36,24 +36,25 @@ namespace VMS
                     System.Diagnostics.Trace.WriteLine($" mobileno for quey ; " + userid);
                     cmd.Parameters.AddWithValue("@Mobil_No", userid);
                     con.Open();
-                    System.Diagnostics.Trace.WriteLine($" query exicuted ; " );
+                    System.Diagnostics.Trace.WriteLine($" query exicuted ; ");
                     // Executing query
                     SqlDataReader reader = cmd.ExecuteReader();
                     System.Diagnostics.Trace.WriteLine($" query exicuted ; ");
-                    if (reader.Read()) { 
-                        string userpass = reader["password"].ToString(); 
+                    if (reader.Read())
+                    {
+                        string userpass = reader["password"].ToString();
                         string userlogintype = reader["user_type"].ToString();
-                        string employeeName = reader["Name"].ToString(); 
-                        string email = reader["email"].ToString();      
-                        System.Diagnostics.Trace.WriteLine($"pass from db ; "+ userpass);
-                        System.Diagnostics.Trace.WriteLine($"pass from db ; "+ userlogintype);
+                        string employeeName = reader["Name"].ToString();
+                        string email = reader["email"].ToString();
+                        System.Diagnostics.Trace.WriteLine($"pass from db ; " + userpass);
+                        System.Diagnostics.Trace.WriteLine($"pass from db ; " + userlogintype);
 
                         if (password.Trim() == userpass.Trim())
                         {
-                            System.Diagnostics.Trace.WriteLine($"password from if condition; "+ password);
+                            System.Diagnostics.Trace.WriteLine($"password from if condition; " + password);
                             // pass session 3 variables 
                             Session["User_id"] = userid;
-                            Session["User_type"]=userlogintype;
+                            Session["User_type"] = userlogintype;
                             Session["password"] = password;
                             Session["name"] = employeeName;
                             Session["passmail"] = email;
@@ -77,7 +78,8 @@ namespace VMS
 
 
             }
-            catch (Exception p){
+            catch (Exception p)
+            {
 
                 System.Diagnostics.Trace.WriteLine($" connection done ; " + p.Message);
             }

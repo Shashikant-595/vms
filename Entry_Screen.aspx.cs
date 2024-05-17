@@ -22,8 +22,8 @@ namespace VMS
                     System.Diagnostics.Trace.WriteLine($"gvfadcdfffffffffffff  "+Session["User_type"]);
 
                     // HR and IT head 
-                    scanQrLink.Visible = false;
-                    confirmLink.Visible = true;
+                    //scanQrLink.Visible = false;
+                    //confirmLink.Visible = true;
                     registrationLink.Visible = true;
                     newVisitorLink.Visible = true;
                     employeelink.Visible = true;
@@ -31,8 +31,8 @@ namespace VMS
                 if (Session["User_type"] != null && Session["User_type"].ToString().Trim() == "Admin")
                 {
                     // only invote to visitors
-                    scanQrLink.Visible = false;
-                    confirmLink.Visible = true;
+                    //scanQrLink.Visible = false;
+                    //confirmLink.Visible = true;
                     registrationLink.Visible= true;
                     newVisitorLink.Visible = true;
                     employeelink.Visible= false;
@@ -40,8 +40,8 @@ namespace VMS
                 if (Session["User_type"] != null && Session["User_type"].ToString().Trim() == "User")
                 {
                     // Hide the View button
-                    scanQrLink.Visible = true;
-                    confirmLink.Visible = false;
+                    //scanQrLink.Visible = true;
+                    //confirmLink.Visible = false;
                     registrationLink.Style["display"] = "none";
                     newVisitorLink.Style["display"] = "none";
                     employeelink.Style["display"] = "none";
