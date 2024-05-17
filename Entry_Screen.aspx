@@ -129,10 +129,10 @@
 
         .auto-style2 {
             position: absolute;
-            top: -8px;
-            right: -62px;
+            top: -53px;
+            right: 2px;
             width: 14%;
-            height: 379px;
+            height: 406px;
         }
         .form-group label {
         font-size: 1.50rem; /* Adjust the font size of labels */
@@ -204,7 +204,7 @@
         <div id="camera-preview" class="col-ml-6"></div>
 
 
-         <div class="visitor-count-container mt-5 d-flex justify-content-center" style="margin-top:350px ;margin-left:600px"> <!-- Added "d-flex justify-content-center" classes -->
+         <div class="visitor-count-container mt-5 d-flex justify-content-center" style="margin-top:350px ;margin-left:500px"> <!-- Added "d-flex justify-content-center" classes -->
         <label for="visitorCountInput" class="mr-2 font-weight-bold">Number of Visitors:</label>
         <input type="number" id="visitorCountInput" class="form-control rounded" style="border-radius: 8px; height: 30px; width: 100px;" placeholder="Enter number" value="0" />
     </div>
@@ -300,7 +300,7 @@
 
                         video.style.position = 'fixed';
                         video.style.top = '17vh';
-                        video.style.left = '65vh';
+                        video.style.left = '50vh';
                         video.style.width = '40%';
                         video.style.height = '40%';
                         video.style.objectFit = 'cover';
