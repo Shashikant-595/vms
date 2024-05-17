@@ -40,8 +40,8 @@ namespace VMS
                 if (Session["User_type"] != null && Session["User_type"].ToString().Trim() == "User")
                 {
                     // Hide the View button
-                    scanQrLink.Visible = true;
-                    confirmLink.Visible = false;
+                    //scanQrLink.Visible = true;
+                    //confirmLink.Visible = false;
                     registrationLink.Style["display"] = "none";
                     newVisitorLink.Style["display"] = "none";
                     employeelink.Style["display"] = "none";
