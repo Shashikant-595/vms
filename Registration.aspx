@@ -219,12 +219,12 @@
                 </div>
                 <div class="col-md-1">
                     <div class="form-group">
-                        <i class="fas fa-plus-circle" id="plusIcon" style="margin-top: 35px; margin-left: -40px"></i>
+                        <i class="fas fa-plus-circle" id="plusIcon" style="margin-top: 35px; margin-left: -70px"></i>
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="form-group">
-                        <asp:TextBox ID="txtTotalPersons" runat="server" CssClass="form-control" placeholder="Total Persons" Style="margin-top: 24px; width: 110px; margin-left: -120px" Text="0" required></asp:TextBox>
+                        <asp:TextBox ID="txtTotalPersons" runat="server" CssClass="form-control" placeholder="Total Persons" Style="margin-top: 24px; width: 110px; margin-left: -170px"></asp:TextBox>
                     </div>
                 </div>
             </div>
@@ -348,7 +348,7 @@
         </div>--%>
                 <div class="row">
                     <div class="col-md-3">
-                        <div class="form-group">
+                        <div class="form-group" style="margin-left: 7px;">
                             <label for="datetimepicker">Meeting Date and Time :</label>
                             <asp:TextBox ID="datetimepicker" runat="server" CssClass="form-control"></asp:TextBox>
                             <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="datetimepicker" ErrorMessage="Meeting Date and Time is required" Display="None"></asp:RequiredFieldValidator>
@@ -365,7 +365,29 @@
                         </asp:UpdatePanel>
                     </div>
                 </div>
+            </div>
 
+            <div class="col-md-6">
+                <div class="col-md-4" style="margin-top: -440px; margin-left:260px; height: 580px; width:1150px; overflow: auto;">
+                    <asp:GridView ID="GridView1" runat="server" CssClass="table table-bordered table-hover" AutoGenerateColumns="False">
+                        <Columns>
+                            <asp:BoundField DataField="token" HeaderText="Token" />
+                            <asp:BoundField DataField="Whometo_Visit" HeaderText="Whom to Visit" />
+                            <asp:BoundField DataField="Mobile_No" HeaderText="Mobile No" />
+                            <asp:BoundField DataField="Meeting_Subject" HeaderText="Meeting Subject" />
+                            <asp:BoundField DataField="Date_Time" HeaderText="Date Time" />
+                            <asp:BoundField DataField="Name" HeaderText="Name" />
+                            <asp:BoundField DataField="Email" HeaderText="Email" />
+                            <asp:BoundField DataField="Company" HeaderText="Company" />
+                            <asp:BoundField DataField="IN_time" HeaderText="IN Time" />
+                            <asp:BoundField DataField="OUT_time" HeaderText="OUT Time" />
+                            <asp:BoundField DataField="confirmation" HeaderText="Confirmation" />
+                            <asp:BoundField DataField="Employee_mob" HeaderText="Employee Mobile" />
+                            <asp:BoundField DataField="Total_Visitor" HeaderText="Total Visitors" />
+                        </Columns>
+                    </asp:GridView>
+
+                </div>
             </div>
     </form>
 

@@ -179,6 +179,7 @@ namespace VMS
             {
                 if (IsMobileNoExists(mobileNo))
                 {
+                    LoadEmployeeDetails(mobileNo);
                     ScriptManager.RegisterStartupScript(this, GetType(), "showalert", "alert('Mobile number is already registered. Please edit if needed.');", true);
                     Btn_edit.Visible = true;
                     Btn_save.Visible = false;
@@ -212,6 +213,38 @@ namespace VMS
                 Response.Write("An error occurred: " + ex.Message);
             }
             return result;
+        }
+
+        private void LoadEmployeeDetails(string mobileNo)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    string query = "SELECT * FROM Employ_Registration WHERE Mobile_No = @MobileNo";
+                    SqlCommand command = new SqlCommand(query, connection);
+                    command.Parameters.AddWithValue("@MobileNo", mobileNo);
+
+                    connection.Open();
+                    SqlDataReader reader = command.ExecuteReader();
+                    if (reader.Read())
+                    {
+                        txteName.Text = reader["Name"].ToString();
+                        txteMbNo.Text = reader["Mobile_No"].ToString();
+                        txteemail.Text = reader["Email"].ToString();
+                        txtID.Text = reader["Employee_ID"].ToString();
+                        ddlDepartment.SelectedValue = reader["Department"].ToString();
+                        txtpassword.Text = reader["password"].ToString();
+                        usertype.SelectedValue = reader["user_type"].ToString();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Handle any exceptions here, such as logging or displaying an error message
+                // Example:
+                Response.Write("An error occurred: " + ex.Message);
+            }
         }
         private void LoadEmployeeData()
         {

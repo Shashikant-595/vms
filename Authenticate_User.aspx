@@ -54,7 +54,7 @@
                     <div class="col-md-6 login-container" style="background-color: aqua; background-image: url('images/fores_vms.jpg');">
                         <h3 class="text-center mb-2">Login</h3>
                         <div class="form-group p-1">
-                            <asp:Label ID="lblusername" runat="server" CssClass="mb-3">User ID</asp:Label>
+                            <asp:Label ID="lblusername" runat="server" CssClass="mb-3">Employee ID</asp:Label>
                             <asp:TextBox ID="txtUsername" runat="server" CssClass="form-control"></asp:TextBox>
                         </div>
                         <div class="form-group p-1">

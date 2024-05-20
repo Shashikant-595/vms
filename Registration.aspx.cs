@@ -42,7 +42,7 @@ namespace VMS
         private readonly Timer timer = new Timer();
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            BindGridView();
 
             // Check if the user is logged in as Admin
             if (Session["User_type"] != null && Session["User_type"].ToString().Trim() == "SupperAdmin")
@@ -77,30 +77,27 @@ namespace VMS
                 // Check if Session variables are not null
                 if (Session["name"] != null && Session["passmail"] != null && Session["User_id"] != null)
                 {
-                    //string connectionString = "DESKTOP-4TNUEJA\\MSSQLSERVER02;Initial Catalog=vms;User ID=vms;Password=Vms@123;";
-                    string connectionString = "Data Source=192.168.20.70,1433;Initial Catalog=vms;User ID=vms;Password=Vms@123;";
+                    string connectionString = "Data Source=DESKTOP-4TNUEJA\\MSSQLSERVER02;Initial Catalog=VMS;Integrated Security=True;";
                     string employeename = Session["name"].ToString();
                     string employymail = Session["passmail"].ToString();
                     string EmployeeMob = Session["User_id"].ToString();
 
                     string mobile_No = txtMbNo.Text;
-                    string meetingSubject = ddlMeetingType.SelectedValue; // Get selected value from dropdown list
-
+                    string meetingSubject = ddlMeetingType.SelectedValue;
                     if (meetingSubject == "Other")
                     {
-                        meetingSubject = txtMeeting.Text; // If "Other" is selected, get value from the new textbox
+                        meetingSubject = txtMeeting.Text;
                     }
 
                     string meetingdate = datetimepicker.Text;
                     string visitor_Name = txtName.Text;
                     string visitor_Email = txtEmail.Text;
                     string Company = txtCompany.Text;
+                    string totalPersons = txtTotalPersons.Text;
 
-                    InsertRecord(employeename, EmployeeMob, mobile_No, meetingSubject, meetingdate, visitor_Name, visitor_Email, Company);
+                    InsertRecord(employeename, EmployeeMob, mobile_No, meetingSubject, meetingdate, visitor_Name, visitor_Email, Company, totalPersons);
 
                     string token = "";
-
-                    // Get the last inserted token
                     string queryfortoken = "SELECT MAX(token) AS LastToken FROM Record";
                     using (SqlConnection connection = new SqlConnection(connectionString))
                     {
@@ -108,7 +105,6 @@ namespace VMS
                         {
                             connection.Open();
                             object LastToken = command.ExecuteScalar();
-
                             if (LastToken != null)
                             {
                                 token = LastToken.ToString();
@@ -121,10 +117,10 @@ namespace VMS
                         }
                     }
 
-                    List<string> Qrdata = new List<string> { meetingSubject, visitor_Email, mobile_No, visitor_Name, Company, meetingdate, employeename, token };
+                    List<string> Qrdata = new List<string> { meetingSubject, visitor_Email, mobile_No, visitor_Name, Company, meetingdate, employeename, token, totalPersons };
                     PrintQRCode(Qrdata);
                     sendMail(visitor_Email, employymail);
-                    System.Diagnostics.Trace.WriteLine($" mail is send success fully");
+                    System.Diagnostics.Trace.WriteLine($" mail is send successfully");
 
                     // Display success message using ScriptManager
                     string alertMessage = "alert('Your Meeting Request has been successfully submitted.');";
@@ -138,8 +134,7 @@ namespace VMS
                     txtMeeting.Text = string.Empty;
 
                     // Reinitialize datetimepicker after the pop-up is closed
-                    ScriptManager.RegisterStartupScript(this, this.GetType(), "DateTimePicker", "$('#<%= datetimepicker.ClientID %>').datetimepicker();", true);
-
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "DateTimePicker", "$('#" + datetimepicker.ClientID + "').datetimepicker();", true);
                 }
                 else
                 {
@@ -388,14 +383,14 @@ namespace VMS
                 ScriptManager.RegisterStartupScript(this, GetType(), "alertMessage", "alert('Mobile number should be 10 digits.');", true);
             }
         }
-        private void InsertRecord(string Whometo_Visit, string EmployeeMob, string Mobile_No, string Meeting_Subject, string Date_Time, string Name, string Email, string Company)
+        private void InsertRecord(string Whometo_Visit, string EmployeeMob, string Mobile_No, string Meeting_Subject, string Date_Time, string Name, string Email, string Company,string totalPersons)
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 try
                 {
 
-                    string query = "INSERT INTO Record (Whometo_Visit, Mobile_No, Meeting_Subject, Date_Time, Name, Email, Company,Employee_mob) VALUES (@Whometo_Visit, @Mobile_No, @Meeting_Subject, @Date_Time, @Name, @Email, @Company,@EmployeeMob)";
+                    string query = "INSERT INTO Record (Whometo_Visit, Mobile_No, Meeting_Subject, Date_Time, Name, Email, Company,Employee_mob,Total_Visitor) VALUES (@Whometo_Visit, @Mobile_No, @Meeting_Subject, @Date_Time, @Name, @Email, @Company,@EmployeeMob, @totalPersons)";
 
                     using (var command = new SqlCommand(query, connection))
                     {
@@ -407,6 +402,7 @@ namespace VMS
                         command.Parameters.AddWithValue("@Email", Email);
                         command.Parameters.AddWithValue("@Company", Company);
                         command.Parameters.AddWithValue("@EmployeeMob", EmployeeMob);
+                        command.Parameters.AddWithValue("@totalPersons", totalPersons);
 
                         connection.Open();
                         command.ExecuteNonQuery();
@@ -419,6 +415,28 @@ namespace VMS
 
                 }
 
+            }
+        }
+
+        private void BindGridView()
+        {
+            string connectionString = WebConfigurationManager.ConnectionStrings["MyConnectionString"].ConnectionString;
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                SqlCommand cmd = new SqlCommand("SELECT token, Whometo_Visit, Mobile_No, Meeting_Subject, Date_Time, Name, Email, Company, IN_time, OUT_time, confirmation, Employee_mob, Total_Visitor FROM [Record]", con);
+                try
+                {
+                    con.Open();
+                    SqlDataAdapter da = new SqlDataAdapter(cmd);
+                    DataTable dt = new DataTable();
+                    da.Fill(dt);
+                    GridView1.DataSource = dt;
+                    GridView1.DataBind();
+                }
+                catch (Exception ex)
+                {
+                    Response.Write("<script>alert('Error: " + ex.Message + "');</script>");
+                }
             }
         }
     }

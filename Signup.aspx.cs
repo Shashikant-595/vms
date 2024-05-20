@@ -13,8 +13,8 @@ namespace VMS
    
     public partial class Signup : System.Web.UI.Page
     {
-          //string connectionString = "Data Source=DESKTOP-4TNUEJA\\MSSQLSERVER02;Initial Catalog=vms;Integrated Security=True;";
-          string connectionString = "Data Source=192.168.20.70,1433;Initial Catalog=vms;User ID=vms;Password=Vms@123;";
+          string connectionString = "Data Source=DESKTOP-4TNUEJA\\MSSQLSERVER02;Initial Catalog=vms;Integrated Security=True;";
+          //string connectionString = "Data Source=192.168.20.70,1433;Initial Catalog=vms;User ID=vms;Password=Vms@123;";
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -172,6 +172,7 @@ namespace VMS
             {
                 if (IsMobileNoExists(mobileNo))
                 {
+                    LoadVisitorDetails(mobileNo);
                     ScriptManager.RegisterStartupScript(this, GetType(), "showalert", "alert('Mobile number is already registered. Please edit if needed.');", true);
                     btn_edit.Visible = true;
                     btn_submit.Visible = false;
@@ -180,6 +181,34 @@ namespace VMS
                 {
                     btn_edit.Visible = false;
                 }
+            }
+        }
+        private void LoadVisitorDetails(string mobileNo)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    string query = "SELECT * FROM Visitor_Registration WHERE Mobile_No = @MobileNo";
+                    SqlCommand command = new SqlCommand(query, connection);
+                    command.Parameters.AddWithValue("@MobileNo", mobileNo);
+
+                    connection.Open();
+                    SqlDataReader reader = command.ExecuteReader();
+                    if (reader.Read())
+                    {
+                        txtName.Text = reader["Name"].ToString();
+                        txtMbNo.Text = reader["Mobile_No"].ToString();
+                        txtemail.Text = reader["Email"].ToString();
+                        txtcompany.Text = reader["Company"].ToString();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Handle any exceptions here, such as logging or displaying an error message
+                // Example:
+                Response.Write("An error occurred: " + ex.Message);
             }
         }
     }

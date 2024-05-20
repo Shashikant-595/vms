@@ -143,6 +143,9 @@
         width: 300px;
         height:30px;
     }
+    ::placeholder {
+        font-size: 13px; /* Adjust the font size as needed */
+    }
 
     </style>
     <link href="Conten
@@ -204,10 +207,10 @@
         <div id="camera-preview" class="col-ml-6"></div>
 
 
-         <div class="visitor-count-container mt-5 d-flex justify-content-center" style="margin-top:350px ;margin-left:500px"> <!-- Added "d-flex justify-content-center" classes -->
-        <label for="visitorCountInput" class="mr-2 font-weight-bold">Number of Visitors:</label>
-        <input type="number" id="visitorCountInput" class="form-control rounded" style="border-radius: 8px; height: 30px; width: 100px;" placeholder="Enter number" value="0" />
-    </div>
+         <div class="visitor-count-container mt-5 d-flex justify-content-center" style="margin-top:350px ;margin-left:600px"> <!-- Added "d-flex justify-content-center" classes -->
+             <asp:Label ID="visitorCountLabel" runat="server" CssClass="mr-2 font-weight-bold" AssociatedControlID="visitorCountInput" Text="Number of Visitors:"></asp:Label>
+        <asp:TextBox ID="visitorCountInput" runat="server" Type="Number" CssClass="form-control rounded" style="border-radius: 8px; height: 30px; width: 100px;" placeholder="Enter number" required></asp:TextBox>
+         </div>
 <div class="auto-style2" style="margin-top: 190px; margin-right: 120px; padding: 5%; border-radius: 20px; box-shadow: 0 0 20px rgb(0, 0, 0);">
     <div class="auto-style1">
         <div class="form-group row">
@@ -252,11 +255,6 @@
     </div>
 
     </form>
-
-            
-
-   
-
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             // Adjust button placement

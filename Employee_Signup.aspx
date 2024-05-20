@@ -1,4 +1,4 @@
-﻿﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Employee_Signup.aspx.cs" Inherits="VMS.Employee_Signup" %>
+﻿﻿﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Employee_Signup.aspx.cs" Inherits="VMS.Employee_Signup" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -228,7 +228,7 @@
             </div>
             <div class="form-group col-sm-3 mt-5">
                 <asp:Button ID="Btn_save" runat="server" Text="Register" CssClass="btn btn-primary" OnClick="Btn_save_Click" />
-                <asp:Button ID="Btn_edit" runat="server" Text="Edit" CssClass="btn btn-primary" OnClick="Btn_edit_Click" Style="float: right;" />
+                <asp:Button ID="Btn_edit" runat="server" Text="Edit" CssClass="btn btn-primary" OnClick="Btn_edit_Click" Style="float; margin-left:80px;" />
             </div>
         </div>
                 
