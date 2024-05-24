@@ -161,16 +161,13 @@
 </head>
 <body>
     <form id="signup" runat="server">
-        <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
-        <asp:UpdatePanel ID="UpdatePanel1" runat="server">
-            <ContentTemplate>
                 <header>
                     <img src="https://foreselastomech.com/wp-content/uploads/2019/03/FORES-Logo.png" alt="Logo" />
                     <div class="header-name">NEW VISITORS REGISTRATION</div>
                     <div id="userIdIcon">
                         <i class="fas fa-user sidebar-icon text-primary fa-2x"></i>
                         <div id="userIdTextBox" class="input-group" style="border-radius: 10px; margin-top: 10px;">
-                            <input type="text" id="userIdInput" class="form-control rounded" style="border-radius: 8px; height: 30px;" placeholder="User ID" />
+                    <asp:TextBox ID="userIdInput" runat="server" CssClass="rounded" Style="border-radius: 8px; height: 30px; width: 75px; font-size: 20px;" placeholder="User ID"></asp:TextBox>
                         </div>
                     </div>
                 </header>
@@ -196,7 +193,7 @@
                 <div class="center-container">
                     <div style="margin-bottom: 25px; margin-right: -10px">
                         <asp:Label ID="lblName" runat="server" Text=" Name : "></asp:Label>
-                        <asp:TextBox ID="txtName" runat="server" required></asp:TextBox>
+                        <asp:TextBox ID="txtName" runat="server" required OnTextChanged="txtName_TextChanged" AutoPostBack="true"></asp:TextBox>
                     </div>
                     <div>
                         <div style="margin-bottom: 5px;">
@@ -208,7 +205,7 @@
                     </div>
                     <div style="margin-bottom: 20px; margin-left: -24px;">
                         <asp:Label ID="lblMbNo" runat="server" Text="Mobile No : "></asp:Label>
-                        <asp:TextBox ID="txtMbNo" runat="server" OnTextChanged="txtMbNo_TextChanged" AutoPostBack="true" required></asp:TextBox>
+                        <asp:TextBox ID="txtMbNo" runat="server" required></asp:TextBox>
                     </div>
                     <div>
                         <div style="margin-bottom: 5px;">
@@ -240,13 +237,6 @@
                         <asp:Button ID="btn_edit" runat="server" Text="Edit" CssClass="btn btn-primary" OnClick="btn_edit_Click" />
                     </div>
                 </div>
-            </ContentTemplate>
-            <Triggers>
-                <asp:AsyncPostBackTrigger ControlID="txtMbNo" EventName="TextChanged" />
-                <asp:AsyncPostBackTrigger ControlID="btn_submit" EventName="Click" />
-                <asp:AsyncPostBackTrigger ControlID="btn_edit" EventName="Click" />
-            </Triggers>
-        </asp:UpdatePanel>
     </form>
 </body>
 </html>
@@ -266,6 +256,3 @@
         });
     });
 </script>
-
-
-

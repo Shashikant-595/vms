@@ -5,6 +5,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Services;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
@@ -17,8 +18,15 @@ namespace VMS
         {
             if (!IsPostBack)
             {
-                CheckVisitorCount();
-                PopulateVisitorInformation();
+                if (Session["User_id"] != null)
+                {
+                    // Retrieve the User_id session variable and set it as the text of the userIdInput textbox
+                    string userId = Session["User_id"].ToString();
+                    userIdInput.Text = userId;
+                }
+
+               // CheckVisitorCount();
+                //PopulateVisitorInformation();
 
                 System.Diagnostics.Trace.WriteLine($"gvfadcdfffffffffffff  " + Session["User_type"]);
 
@@ -84,32 +92,78 @@ namespace VMS
             }
         }
 
-        private void PopulateVisitorInformation()
+        [WebMethod]
+        public static void UpdateVisitorCount(int visitorCount, string token)
         {
-            string connectionString = ConfigurationManager.ConnectionStrings["MyConnectionString"].ConnectionString;
+            // Call the UpdateVisitorCountInDatabase method with the token
+            UpdateVisitorCountInDatabase(visitorCount, token);
+        }
 
-            using (SqlConnection connection = new SqlConnection(connectionString))
+        private static void UpdateVisitorCountInDatabase(int newVisitorCount, string token)
+        {
+            string connectionString = "Data Source=DESKTOP-4TNUEJA\\MSSQLSERVER02;Initial Catalog=VMS;Integrated Security=True;";
+            string updateQuery = "UPDATE Record SET Total_Visitor = @NewVisitorCount WHERE Token = @LastToken";
+
+            try
             {
-                string query = "SELECT TOP 1 Name, Mobile_No, Email, Company, Meeting_Subject, Date_Time FROM Record ORDER BY token DESC";
-
-                SqlCommand command = new SqlCommand(query, connection);
-                connection.Open();
-
-                SqlDataReader reader = command.ExecuteReader();
-                if (reader.HasRows)
+                using (SqlConnection connection = new SqlConnection(connectionString))
                 {
-                    reader.Read();
+                    using (SqlCommand command = new SqlCommand(updateQuery, connection))
+                    {
+                        // Add parameters to the query
+                        command.Parameters.AddWithValue("@NewVisitorCount", newVisitorCount);
+                        command.Parameters.AddWithValue("@LastToken", token);
 
-                    txtName.Text = reader["Name"].ToString();
-                    txtMbNo.Text = reader["Mobile_No"].ToString();
-                    txtEmail.Text = reader["Email"].ToString();
-                    txtCompany.Text = reader["Company"].ToString();
-                    txtMeeting.Text = reader["Meeting_Subject"].ToString();
-                    datetimepicker.Text = reader["Date_Time"].ToString();
+                        connection.Open();
+                        int rowsAffected = command.ExecuteNonQuery();
+                        connection.Close();
+
+                        // Check if the update was successful
+                        if (rowsAffected > 0)
+                        {
+                            Console.WriteLine("Visitor count updated successfully for token: " + token);
+                        }
+                        else
+                        {
+                            Console.WriteLine("No record found with token: " + token);
+                        }
+                    }
                 }
-
-                reader.Close();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Failed to update visitor count: " + ex.Message);
             }
         }
+
+
+
+        //private void PopulateVisitorInformation()
+        //{
+        //    string connectionString = ConfigurationManager.ConnectionStrings["MyConnectionString"].ConnectionString;
+
+        //    using (SqlConnection connection = new SqlConnection(connectionString))
+        //    {
+        //        string query = "SELECT TOP 1 Name, Mobile_No, Email, Company, Meeting_Subject, Date_Time FROM Record ORDER BY token DESC";
+
+        //        SqlCommand command = new SqlCommand(query, connection);
+        //        connection.Open();
+
+        //        SqlDataReader reader = command.ExecuteReader();
+        //        if (reader.HasRows)
+        //        {
+        //            reader.Read();
+
+        //            txtName.Text = reader["Name"].ToString();
+        //            txtMbNo.Text = reader["Mobile_No"].ToString();
+        //            txtEmail.Text = reader["Email"].ToString();
+        //            txtCompany.Text = reader["Company"].ToString();
+        //            txtMeeting.Text = reader["Meeting_Subject"].ToString();
+        //            datetimepicker.Text = reader["Date_Time"].ToString();
+        //        }
+
+        //        reader.Close();
+        //    }
+        //}
     }
 }

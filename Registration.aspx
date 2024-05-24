@@ -167,6 +167,19 @@
             margin-top: 900px;
             background-color: red;
         }
+         .checkbox-unchecked input[type="checkbox"] {
+    width: 40px;
+    height: 40px;
+    background-color: red;
+}
+
+.checkbox-checked input[type="checkbox"] {
+    width: 40px;
+    height: 40px;
+    background-color: green;
+}
+
+
     </style>
 </head>
 <body>
@@ -176,7 +189,6 @@
             <img src="https://foreselastomech.com/wp-content/uploads/2019/03/FORES-Logo.png" alt="Logo" />
 
             <div class="header-name">INVITE VISITOR</div>
-
             <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
             <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />
             <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -214,7 +226,7 @@
                 <div class="col-md-3">
                     <div class="form-group">
                         <asp:Label ID="lblName" runat="server" Text="Name :" AssociatedControlID="txtName"></asp:Label>
-                        <asp:TextBox ID="txtName" runat="server" CssClass="form-control" required></asp:TextBox>
+                        <asp:TextBox ID="txtName" runat="server" CssClass="form-control" AutoPostBack="True" OnTextChanged="txtName_TextChanged" required></asp:TextBox>
                     </div>
                 </div>
                 <div class="col-md-1">
@@ -232,7 +244,7 @@
                 <div class="col-md-3">
                     <div class="form-group">
                         <asp:Label ID="lblMbNo" runat="server" Text="Mobile No :" AssociatedControlID="txtMbNo"></asp:Label>
-                        <asp:TextBox ID="txtMbNo" runat="server" OnTextChanged="txtMbNo_TextChanged" AutoPostBack="True" CssClass="form-control" required></asp:TextBox>
+                        <asp:TextBox ID="txtMbNo" runat="server"  CssClass="form-control" required></asp:TextBox>
                         <asp:RegularExpressionValidator ID="regexMobile" runat="server" ControlToValidate="txtMbNo"
                             ValidationExpression="^[0-9]{10}$"
                             ErrorMessage="Please enter a valid 10-digit mobile number."
@@ -275,9 +287,9 @@
                             <asp:ListItem Value="Vendor Meeting">Vendor Meeting</asp:ListItem>
                             <asp:ListItem Value="Client Visit">Client Visit</asp:ListItem>
                             <asp:ListItem Value="Training Session">Training Session</asp:ListItem>
-                            <asp:ListItem Value="Delivery / Pickup">Delivery / Pickup</asp:ListItem>
+                            <asp:ListItem Value="Delivery Pickup">Delivery  Pickup</asp:ListItem>
                             <asp:ListItem Value="Personal Visit">Personal Visit</asp:ListItem>
-                            <asp:ListItem Value="Maintenance/Repair Visit">Maintenance/Repair Visit</asp:ListItem>
+                            <asp:ListItem Value="Maintenance Repair Visit">Maintenance/Repair Visit</asp:ListItem>
                             <asp:ListItem Value="Government Inspection">Government Inspection</asp:ListItem>
                             <asp:ListItem Value="Audit">Audit</asp:ListItem>
                             <asp:ListItem Value="Material Inspection">Material Inspection</asp:ListItem>
@@ -368,8 +380,8 @@
             </div>
 
             <div class="col-md-6">
-                <div class="col-md-4" style="margin-top: -440px; margin-left:260px; height: 580px; width:1150px; overflow: auto;">
-                    <asp:GridView ID="GridView1" runat="server" CssClass="table table-bordered table-hover" AutoGenerateColumns="False">
+                <div class="col-md-8" style="margin-top: -440px; margin-left:260px; height: 580px; width:1100px; overflow: auto;">
+                    <asp:GridView ID="GridView1" runat="server" CssClass="table table-bordered table-hover table-sm" AutoGenerateColumns="False" OnRowDataBound="GridView1_RowDataBound">
                         <Columns>
                             <asp:BoundField DataField="token" HeaderText="Token" />
                             <asp:BoundField DataField="Whometo_Visit" HeaderText="Whom to Visit" />
@@ -381,7 +393,13 @@
                             <asp:BoundField DataField="Company" HeaderText="Company" />
                             <asp:BoundField DataField="IN_time" HeaderText="IN Time" />
                             <asp:BoundField DataField="OUT_time" HeaderText="OUT Time" />
-                            <asp:BoundField DataField="confirmation" HeaderText="Confirmation" />
+                            <asp:TemplateField HeaderText="Confirmation">
+            <ItemTemplate>
+                <asp:CheckBox ID="chkConfirmation" runat="server" 
+                    Checked='<%# Eval("confirmation") != DBNull.Value && Convert.ToBoolean(Eval("confirmation")) %>' 
+                    Enabled="false" />
+            </ItemTemplate>
+        </asp:TemplateField>
                             <asp:BoundField DataField="Employee_mob" HeaderText="Employee Mobile" />
                             <asp:BoundField DataField="Total_Visitor" HeaderText="Total Visitors" />
                         </Columns>

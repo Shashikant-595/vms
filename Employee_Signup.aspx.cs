@@ -26,6 +26,13 @@ namespace VMS
             {
                 Btn_edit.Visible = false; // Hide the "Edit" button on initial page load
                 LoadEmployeeData();
+                if (Session["User_id"] != null)
+                {
+                    // Retrieve the User_id session variable and set it as the text of the userIdInput textbox
+                    string userId = Session["User_id"].ToString();
+                    userIdInput.Text = userId;
+                }
+
             }
             // Check if the user is logged in as Admin
             if (Session["User_type"] != null && Session["User_type"].ToString().Trim() == "SupperAdmin")
@@ -80,10 +87,10 @@ namespace VMS
         }
         protected void Btn_edit_Click(object sender, EventArgs e)
         {
-            string mobileNo = txteMbNo.Text.Trim();
-            if (!string.IsNullOrEmpty(mobileNo))
+            string name = txteName.Text.Trim();
+            if (!string.IsNullOrEmpty(name))
             {
-                if (IsMobileNoExists(mobileNo))
+                if (IsNameExists(name))
                 {
                     string query = "UPDATE Employ_Registration SET ";
                     List<string> fieldsToUpdate = new List<string>();
@@ -114,7 +121,7 @@ namespace VMS
                     if (fieldsToUpdate.Count > 0)
                     {
                         query += string.Join(", ", fieldsToUpdate);
-                        query += " WHERE Mobile_No = @MobileNo";
+                        query += " WHERE Name = @Name";
                         using (SqlConnection connection = new SqlConnection(connectionString))
                         {
                             SqlCommand command = new SqlCommand(query, connection);
@@ -142,7 +149,7 @@ namespace VMS
                             {
                                 command.Parameters.AddWithValue("@UserType", usertype.SelectedItem.Text);
                             }
-                            command.Parameters.AddWithValue("@MobileNo", mobileNo);
+                            command.Parameters.AddWithValue("@Name", name);
                             connection.Open();
                             int rowsAffected = command.ExecuteNonQuery();
                             if (rowsAffected > 0)
@@ -166,40 +173,21 @@ namespace VMS
                 }
                 else
                 {
-                    // Handle if mobile number not exists
-                    ScriptManager.RegisterStartupScript(this, GetType(), "alert", "alert('Mobile number does not exist.');", true);
+                    // Handle if name does not exist
+                    ScriptManager.RegisterStartupScript(this, GetType(), "alert", "alert('Name does not exist.');", true);
                 }
             }
         }
-
-        protected void txteMbNo_TextChanged(object sender, EventArgs e)
-        {
-            string mobileNo = txteMbNo.Text.Trim();
-            if (!string.IsNullOrEmpty(mobileNo))
-            {
-                if (IsMobileNoExists(mobileNo))
-                {
-                    LoadEmployeeDetails(mobileNo);
-                    ScriptManager.RegisterStartupScript(this, GetType(), "showalert", "alert('Mobile number is already registered. Please edit if needed.');", true);
-                    Btn_edit.Visible = true;
-                    Btn_save.Visible = false;
-                }
-                else
-                {
-                    Btn_edit.Visible = false;
-                }
-            }
-        }
-        private bool IsMobileNoExists(string mobileNo)
+        private bool IsNameExists(string name)
         {
             bool result = false;
             try
             {
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
-                    string query = "SELECT COUNT(*) FROM Employ_Registration WHERE Mobile_No = @MobileNo";
+                    string query = "SELECT COUNT(*) FROM Employ_Registration WHERE Name = @Name";
                     SqlCommand command = new SqlCommand(query, connection);
-                    command.Parameters.AddWithValue("@MobileNo", mobileNo);
+                    command.Parameters.AddWithValue("@Name", name);
 
                     connection.Open();
                     int count = (int)command.ExecuteScalar();
@@ -215,15 +203,15 @@ namespace VMS
             return result;
         }
 
-        private void LoadEmployeeDetails(string mobileNo)
+        private void LoadEmployeeDetails(string name)
         {
             try
             {
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
-                    string query = "SELECT * FROM Employ_Registration WHERE Mobile_No = @MobileNo";
+                    string query = "SELECT * FROM Employ_Registration WHERE Name = @Name";
                     SqlCommand command = new SqlCommand(query, connection);
-                    command.Parameters.AddWithValue("@MobileNo", mobileNo);
+                    command.Parameters.AddWithValue("@Name", name);
 
                     connection.Open();
                     SqlDataReader reader = command.ExecuteReader();
@@ -278,6 +266,49 @@ namespace VMS
                 var hubContext = GlobalHost.ConnectionManager.GetHubContext<ChatHub>();
                 hubContext.Clients.All.ReceiveEmployeeData(employeeData);
             }
+        }
+
+        protected void txteName_TextChanged(object sender, EventArgs e)
+        {
+            string userName = txteName.Text.Trim(); // Update to read the username textbox
+            if (!string.IsNullOrEmpty(userName))
+            {
+                if (IsNameExists(userName))
+                {
+                    LoadEmployeeDetails(userName); // Assuming LoadEmployeeDetails accepts a username parameter
+                    ScriptManager.RegisterStartupScript(this, GetType(), "showalert", "alert('Username is already registered. Please edit if needed.');", true);
+                    Btn_edit.Visible = true;
+                    Btn_save.Visible = false;
+                }
+                else
+                {
+                    Btn_edit.Visible = false;
+                    // Optionally, you might want to show a message indicating that the username is available.
+                }
+            }
+
+        }
+        [System.Web.Services.WebMethod]
+        public static List<string> GetMatchingNames(string prefix)
+        {
+            List<string> names = new List<string>();
+            string connectionString = "Data Source=DESKTOP-4TNUEJA\\MSSQLSERVER02;Initial Catalog=vms;Integrated Security=True;";
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                string query = "SELECT Name FROM Employ_Registration WHERE Name LIKE @Prefix + '%'";
+                SqlCommand command = new SqlCommand(query, connection);
+                command.Parameters.AddWithValue("@Prefix", prefix);
+
+                connection.Open();
+                SqlDataReader reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    names.Add(reader["Name"].ToString());
+                }
+            }
+
+            return names;
         }
     }
 }

@@ -21,6 +21,13 @@ namespace VMS
             if (!IsPostBack)
             {
                 btn_edit.Visible = false; // Hide the "Edit" button on initial page load
+
+                if (Session["User_id"] != null)
+                {
+                    // Retrieve the User_id session variable and set it as the text of the userIdInput textbox
+                    string userId = Session["User_id"].ToString();
+                    userIdInput.Text = userId;
+                }
             }
 
             // Check if the user is logged in as Admin
@@ -45,24 +52,33 @@ namespace VMS
            // string connectionString = "Data Source=localhost\\sqlexpress;Initial Catalog=VMS;Integrated Security=True;";
            //    string connectionString = "Data Source=192.168.20.70,1433;Initial Catalog=vms;User ID=vms;Password=Vms@123;";
 
-        SqlConnection connection = new SqlConnection(connectionString);
             string query = "INSERT INTO Visitor_Registration (Name, Mobile_No, Email, Company) VALUES (@Name, @Mobil_No, @Email, @Company)";
             try
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
             {
+                // Open the connection
                 connection.Open();
-                SqlCommand command = new SqlCommand(query, connection);
-                command.Parameters.AddWithValue("@Name", txtName.Text);
-                command.Parameters.AddWithValue("@Mobil_No", txtMbNo.Text);
-                command.Parameters.AddWithValue("@Email", txtemail.Text);
-                command.Parameters.AddWithValue("@Company", txtcompany.Text);
 
-                command.ExecuteNonQuery();
+                // Create the command and set its parameters
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@Name", txtName.Text);
+                    command.Parameters.AddWithValue("@Mobil_No", txtMbNo.Text);
+                    command.Parameters.AddWithValue("@Email", txtemail.Text);
+                    command.Parameters.AddWithValue("@Company", txtcompany.Text);
+
+                    // Execute the command
+                    command.ExecuteNonQuery();
+                }
+
+                // Close the connection
                 connection.Close();
-                
+
+                // Redirect to the registration page upon successful insertion
                 Response.Redirect("Registration.aspx");
-
-
             }
+        }
             catch (Exception ex)
             {
                 // Handle any exceptions here, such as logging or displaying an error message
@@ -73,16 +89,16 @@ namespace VMS
 
         protected void btn_edit_Click(object sender, EventArgs e)
         {
-            string mobileNo = txtMbNo.Text.Trim();
-            if (!string.IsNullOrEmpty(mobileNo))
+            string name = txtName.Text.Trim();
+            if (!string.IsNullOrEmpty(name))
             {
-                if (IsMobileNoExists(mobileNo))
+                if (IsNameExists(name))
                 {
                     string query = "UPDATE Visitor_Registration SET ";
                     List<string> fieldsToUpdate = new List<string>();
-                    if (!string.IsNullOrEmpty(txtName.Text))
+                    if (!string.IsNullOrEmpty(txtMbNo.Text))
                     {
-                        fieldsToUpdate.Add("Name = @Name");
+                        fieldsToUpdate.Add("Mobile_No = @MobileNo");
                     }
                     if (!string.IsNullOrEmpty(txtemail.Text))
                     {
@@ -95,13 +111,13 @@ namespace VMS
                     if (fieldsToUpdate.Count > 0)
                     {
                         query += string.Join(", ", fieldsToUpdate);
-                        query += " WHERE Mobile_No = @MobileNo";
+                        query += " WHERE Name = @Name";
                         using (SqlConnection connection = new SqlConnection(connectionString))
                         {
                             SqlCommand command = new SqlCommand(query, connection);
-                            if (!string.IsNullOrEmpty(txtName.Text))
+                            if (!string.IsNullOrEmpty(txtMbNo.Text))
                             {
-                                command.Parameters.AddWithValue("@Name", txtName.Text);
+                                command.Parameters.AddWithValue("@MobileNo", txtMbNo.Text);
                             }
                             if (!string.IsNullOrEmpty(txtemail.Text))
                             {
@@ -111,7 +127,7 @@ namespace VMS
                             {
                                 command.Parameters.AddWithValue("@Company", txtcompany.Text);
                             }
-                            command.Parameters.AddWithValue("@MobileNo", mobileNo);
+                            command.Parameters.AddWithValue("@Name", name);
                             connection.Open();
                             int rowsAffected = command.ExecuteNonQuery();
                             if (rowsAffected > 0)
@@ -134,22 +150,21 @@ namespace VMS
                 }
                 else
                 {
-                    // Handle if mobile number not exists
-                    ScriptManager.RegisterStartupScript(this, GetType(), "alert", "alert('Mobile number does not exist.');", true);
+                    // Handle if name does not exist
+                    ScriptManager.RegisterStartupScript(this, GetType(), "alert", "alert('Name does not exist.');", true);
                 }
             }
-
         }
-        private bool IsMobileNoExists(string mobileNo)
+        private bool IsNameExists(string name)
         {
             bool result = false;
             try
             {
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
-                    string query = "SELECT COUNT(*) FROM Visitor_Registration WHERE Mobile_No = @MobileNo";
+                    string query = "SELECT COUNT(*) FROM Visitor_Registration WHERE Name = @Name";
                     SqlCommand command = new SqlCommand(query, connection);
-                    command.Parameters.AddWithValue("@MobileNo", mobileNo);
+                    command.Parameters.AddWithValue("@Name", name);
 
                     connection.Open();
                     int count = (int)command.ExecuteScalar();
@@ -165,42 +180,28 @@ namespace VMS
             return result;
         }
 
-        protected void txtMbNo_TextChanged(object sender, EventArgs e)
-        {
-            string mobileNo = txtMbNo.Text.Trim();
-            if (!string.IsNullOrEmpty(mobileNo))
-            {
-                if (IsMobileNoExists(mobileNo))
-                {
-                    LoadVisitorDetails(mobileNo);
-                    ScriptManager.RegisterStartupScript(this, GetType(), "showalert", "alert('Mobile number is already registered. Please edit if needed.');", true);
-                    btn_edit.Visible = true;
-                    btn_submit.Visible = false;
-                }
-                else
-                {
-                    btn_edit.Visible = false;
-                }
-            }
-        }
-        private void LoadVisitorDetails(string mobileNo)
+        private void LoadVisitorDetailsByName(string name)
         {
             try
             {
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
-                    string query = "SELECT * FROM Visitor_Registration WHERE Mobile_No = @MobileNo";
-                    SqlCommand command = new SqlCommand(query, connection);
-                    command.Parameters.AddWithValue("@MobileNo", mobileNo);
-
-                    connection.Open();
-                    SqlDataReader reader = command.ExecuteReader();
-                    if (reader.Read())
+                    string query = "SELECT * FROM Visitor_Registration WHERE Name = @Name";
+                    using (SqlCommand command = new SqlCommand(query, connection))
                     {
-                        txtName.Text = reader["Name"].ToString();
-                        txtMbNo.Text = reader["Mobile_No"].ToString();
-                        txtemail.Text = reader["Email"].ToString();
-                        txtcompany.Text = reader["Company"].ToString();
+                        command.Parameters.AddWithValue("@Name", name);
+
+                        connection.Open();
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                txtName.Text = reader["Name"].ToString();
+                                txtMbNo.Text = reader["Mobile_No"].ToString();
+                                txtemail.Text = reader["Email"].ToString();
+                                txtcompany.Text = reader["Company"].ToString();
+                            }
+                        }
                     }
                 }
             }
@@ -210,6 +211,42 @@ namespace VMS
                 // Example:
                 Response.Write("An error occurred: " + ex.Message);
             }
+        }
+
+
+
+        protected void txtName_TextChanged(object sender, EventArgs e)
+        {
+            string name = txtName.Text.Trim();
+            if (!string.IsNullOrEmpty(name))
+            {
+                if (IsNameExists(name))
+                {
+                    // Assuming IsNameExists checks if the name already exists in the system
+                    LoadVisitorDetailsByName(name);
+                    ScriptManager.RegisterStartupScript(this, GetType(), "showalert", "alert('Name is already registered. Please edit if needed.');", true);
+                    btn_edit.Visible = true;
+                    btn_submit.Visible = false;
+                }
+                else
+                {
+                    btn_edit.Visible = false;
+                    btn_submit.Visible = true; // Ensure that the submit button is visible if the name doesn't exist
+                }
+            }
+            else
+            {
+                // Clear fields and reset button visibility if name is empty
+                ClearFields();
+            }
+        }
+        private void ClearFields()
+        {
+            txtMbNo.Text = "";
+            txtemail.Text = "";
+            txtcompany.Text = "";
+            btn_edit.Visible = false;
+            btn_submit.Visible = true;
         }
     }
 }

@@ -10,6 +10,44 @@
     <title style="font: bold">SIGN UP</title>
     <link rel="icon" href="https://foreselastomech.com/wp-content/uploads/2019/03/FORES-Logo.png">
     <script src="Scripts/bootstrap.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#<%= txteName.ClientID %>").keyup(function () {
+               var prefix = $(this).val();
+               if (prefix.length > 0) {
+                   $.ajax({
+                       type: "POST",
+                       url: "Employee_Signup.aspx/GetMatchingNames",
+                       data: JSON.stringify({ prefix: prefix }),
+                       contentType: "application/json; charset=utf-8",
+                       dataType: "json",
+                       success: function (response) {
+                           var names = response.d;
+                           var suggestions = "";
+                           for (var i = 0; i < names.length; i++) {
+                               suggestions += "<a href='#' class='list-group-item list-group-item-action' onclick='selectName(\"" + names[i] + "\")'>" + names[i] + "</a>";
+                           }
+                           $("#suggestions").html(suggestions).show();
+                       }
+                   });
+               } else {
+                   $("#suggestions").hide();
+               }
+           });
+
+           $(document).on("click", function (e) {
+               if (!$(e.target).closest("#<%= txteName.ClientID %>, #suggestions").length) {
+                    $("#suggestions").hide();
+                }
+            });
+        });
+
+        function selectName(name) {
+            $("#<%= txteName.ClientID %>").val(name);
+            $("#suggestions").hide();
+            __doPostBack('<%= txteName.ClientID %>', '');
+        }
+    </script>
     <style>
         body {
             font-family: 'Poppins', sans-serif;
@@ -136,6 +174,19 @@
             margin-top: 900px;
             background-color: red;
         }
+        #suggestions {
+            display: none;
+            position: absolute;
+            z-index: 1000;
+        }
+        #suggestions .list-group-item {
+            padding: 5px;
+            cursor: pointer;
+        }
+        #suggestions .list-group-item:hover {
+            background: #eee;
+        }
+
     </style>
 </head>
 <body>
@@ -146,15 +197,14 @@
         <header>
             <link href="Content/bootstrap.min.css" rel="stylesheet" />
 
-
             <img src="https://foreselastomech.com/wp-content/uploads/2019/03/FORES-Logo.png" alt="Logo" />
             <div class="header-name">Create New Employee</div>
             <div id="userIdIcon">
-                <i class="fas fa-user sidebar-icon text-primary fa-2x"></i>
-                <div id="userIdTextBox" class="input-group" style="border-radius: 10px; margin-top: 10px;">
-                    <input type="text" id="userIdInput" class="form-control rounded" style="border-radius: 8px; height: 30px;" placeholder="User ID" />
-                </div>
-            </div>
+    <i class="fas fa-user sidebar-icon text-primary fa-2x"></i>
+    <div id="userIdTextBox" class="input-group" style="border-radius: 10px; margin-top: 10px;">
+        <asp:TextBox ID="userIdInput" runat="server" CssClass="rounded" Style="border-radius: 8px; height: 30px; width: 75px; font-size: 20px;" placeholder="User ID"></asp:TextBox>
+    </div>
+</div>
         </header>
         <div class="icon-sidebar">
             <a href="Entry_Screen.aspx">
@@ -165,14 +215,15 @@
                 <i class='fas fa-user-plus'></i>
                 <span>INVITE VISITOR</span>
             </a>
+             <a href="Signup.aspx" id="newVisitorLink" runat="server" class="sidebar-link">
+     <i class='fas fa-user-plus sidebar-icon'></i>
+     <span>NEW VISITORS REGISTRATION</span>
+ </a>
             <br />
             <br />
             <br />
             <br />
-            <br />
-            <br />
-            <br />
-            <br />
+           
             <a href="Authenticate_User.aspx" class="logout-btn">
                 <i class="fas fa-sign-out-alt" id="logoutBtn"></i>
                 <span>Logout</span>
@@ -182,12 +233,21 @@
         <div class="container " style="margin-left: 200px">
             <div class="form-group col-sm-3 mt-5">
                 <asp:Label ID="lbleName" runat="server" Text="Employee Name : "></asp:Label>
-                <asp:TextBox ID="txteName" runat="server" CssClass="form-control" required></asp:TextBox>
+                <asp:TextBox ID="txteName" runat="server" CssClass="form-control" required OnTextChanged="txteName_TextChanged"  AutoPostBack="True"></asp:TextBox>
+                <ul id="suggestions"class="list-group mt-1" ></ul>
             </div>
+             <div>
+     <div style="margin-bottom: 5px;">
+         <asp:RegularExpressionValidator ID="regexName" runat="server" ControlToValidate="txteName"
+             ValidationExpression="^[A-Za-z]+(\s[A-Za-z]+){1}(\s[A-Za-z]+){1}$"
+             ErrorMessage="Please enter 'First name Middle name Last name' ."
+             Display="Dynamic" ForeColor="Red"></asp:RegularExpressionValidator>
+     </div>
+ </div>
             <div class="form-group col-sm-3">
                 <asp:Label ID="lbleMbNo" runat="server" Text="Mobile No : "></asp:Label>
 
-                <asp:TextBox ID="txteMbNo" runat="server" CssClass="form-control" OnTextChanged="txteMbNo_TextChanged" AutoPostBack="True" required></asp:TextBox>
+                <asp:TextBox ID="txteMbNo" runat="server" CssClass="form-control" required></asp:TextBox>
             </div>
             <div class="form-group col-sm-3">
                 <asp:Label ID="Label1" runat="server" Text="Email : "></asp:Label>
@@ -234,12 +294,12 @@
                 
             </ContentTemplate>
     <Triggers>
-        <asp:AsyncPostBackTrigger ControlID="txteMbNo" EventName="TextChanged" />
+        <asp:AsyncPostBackTrigger ControlID="txteName" EventName="TextChanged" />
         <asp:AsyncPostBackTrigger ControlID="Btn_save" EventName="Click" />
         <asp:AsyncPostBackTrigger ControlID="Btn_edit" EventName="Click" />
     </Triggers>
 </asp:UpdatePanel>
-                        <div class="col-md-4" style="margin-top: -500px; margin-left:650px; height: 580px; width:900px; overflow: auto;">
+                        <div class="col-md-4" style="margin-top: -530px; margin-left:650px; height: 580px; width:900px; overflow: auto;">
 <asp:GridView ID="GridView2" runat="server" AutoGenerateColumns="False" CssClass="table table-bordered" Width="300px">
     <Columns>
             <asp:BoundField DataField="Name" HeaderText="Name" ItemStyle-Width="100" />

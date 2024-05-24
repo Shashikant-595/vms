@@ -19,8 +19,9 @@ namespace VMS.Controllers
     
     public class HomeController : Controller
     {
-        string connectionString = "Data Source=192.168.20.70,1433;Initial Catalog=vms;User ID=vms;Password=Vms@123;";
+        // string connectionString = "Data Source=192.168.20.70,1433;Initial Catalog=vms;User ID=vms;Password=Vms@123;";
         //string connectionString = "Data Source=localhost\\sqlexpress;Initial Catalog=VMS;Integrated Security=True;";
+        string connectionString = "Data Source=DESKTOP-4TNUEJA\\MSSQLSERVER02;Initial Catalog=VMS;Integrated Security=True;";
 
         public HomeController()
         {
@@ -146,78 +147,83 @@ namespace VMS.Controllers
         //        }
         //    }
         //}
-        public void PrintQRCode(List<string> values)
-        {
-            int qrCodeSize = 75; // Adjust the QR code size as needed
-            int paperWidth = 300; // Adjust to the width of your paper
-            int paperHeight = 200; // Adjust to the height of your paper
-            string combinedValue = string.Join("/", values);
 
-            var hintMap = new Dictionary<EncodeHintType, object>
-            {
-                { EncodeHintType.CHARACTER_SET, "UTF-8" },
-            { EncodeHintType.ERROR_CORRECTION, ZXing.QrCode.Internal.ErrorCorrectionLevel.L  },
-            { EncodeHintType.MARGIN, 1 }
-        };
 
-            BarcodeWriter writer = new BarcodeWriter
-            {
-                Format = BarcodeFormat.QR_CODE,
-                Options = new EncodingOptions
-                {
-                    Height = qrCodeSize,
-                    Width = qrCodeSize,
-                    Margin = 1
-                }
-            };
 
-            try
-            {
-                var bitMatrix = writer.Encode(combinedValue);
-                Bitmap image = new Bitmap(qrCodeSize, qrCodeSize);
-                for (int x = 0; x < qrCodeSize; x++)
-                {
-                    for (int y = 0; y < qrCodeSize; y++)
-                    {
-                        image.SetPixel(x, y, bitMatrix[x, y] ? Color.Black : Color.White);
-                    }
-                }
 
-                Bitmap combinedImage = new Bitmap(paperWidth, paperHeight);
-                using (Graphics g = Graphics.FromImage(combinedImage))
-                {
-                    g.FillRectangle(Brushes.White, 0, 0, paperWidth, paperHeight);
-                    // parameters of position of qr image 
-                    int qrCodeX = 8;
-                    int qrCodeY = 80;
-                    g.DrawImage(image, qrCodeX, qrCodeY);
 
-                    g.DrawString("*****VISITOR GATE PASS**** ", new Font("Verdana", 9), Brushes.Black, 15, 30);
-                    g.DrawString("Name: " + values[4], new Font("Verdana", 9), Brushes.Black, 15, 45);
-                    g.DrawString("Meeting Date: " + values[5], new Font("Verdana", 9), Brushes.Black, 15, 60);
-                    // parameters for position of texton the paper 
-                    int textX = qrCodeX + qrCodeSize + 2;
-                    int textY = qrCodeY + 20;
+        //public void PrintQRCode(List<string> values)
+        //{
+        //    int qrCodeSize = 75; // Adjust the QR code size as needed
+        //    int paperWidth = 300; // Adjust to the width of your paper
+        //    int paperHeight = 200; // Adjust to the height of your paper
+        //    string combinedValue = string.Join("/", values);
 
-                    g.DrawString("M_Subject: " + values[0], new Font("Verdana", 9), Brushes.Black, textX, textY);
-                    g.DrawString("Email: " + values[1], new Font("Verdana", 9), Brushes.Black, textX, textY + 15);
-                    g.DrawString("MOB no: " + values[2], new Font("Verdana", 9), Brushes.Black, textX, textY + 30);
-                    g.DrawString("counterpart: " + values[3], new Font("Verdana", 9), Brushes.Black, textX, textY + 45);
-                }
+        //    var hintMap = new Dictionary<EncodeHintType, object>
+        //    {
+        //        { EncodeHintType.CHARACTER_SET, "UTF-8" },
+        //    { EncodeHintType.ERROR_CORRECTION, ZXing.QrCode.Internal.ErrorCorrectionLevel.L  },
+        //    { EncodeHintType.MARGIN, 1 }
+        //};
 
-                // Use HostingEnvironment.MapPath instead of Server.MapPath
-                string savePath = @"D:\generatedQR.png";
-                combinedImage.Save(savePath, ImageFormat.Png);
-                Console.WriteLine("File saved at location: " + savePath);
+        //    BarcodeWriter writer = new BarcodeWriter
+        //    {
+        //        Format = BarcodeFormat.QR_CODE,
+        //        Options = new EncodingOptions
+        //        {
+        //            Height = qrCodeSize,
+        //            Width = qrCodeSize,
+        //            Margin = 1
+        //        }
+        //    };
 
-            }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Trace.WriteLine($" {ex.ToString()}");
+        //    try
+        //    {
+        //        var bitMatrix = writer.Encode(combinedValue);
+        //        Bitmap image = new Bitmap(qrCodeSize, qrCodeSize);
+        //        for (int x = 0; x < qrCodeSize; x++)
+        //        {
+        //            for (int y = 0; y < qrCodeSize; y++)
+        //            {
+        //                image.SetPixel(x, y, bitMatrix[x, y] ? Color.Black : Color.White);
+        //            }
+        //        }
 
-                Console.WriteLine("Error occurred: " + ex.Message);
-            }
-        }
+        //        Bitmap combinedImage = new Bitmap(paperWidth, paperHeight);
+        //        using (Graphics g = Graphics.FromImage(combinedImage))
+        //        {
+        //            g.FillRectangle(Brushes.White, 0, 0, paperWidth, paperHeight);
+        //            // parameters of position of qr image 
+        //            int qrCodeX = 8;
+        //            int qrCodeY = 80;
+        //            g.DrawImage(image, qrCodeX, qrCodeY);
+
+        //            g.DrawString("*****VISITOR GATE PASS**** ", new Font("Verdana", 9), Brushes.Black, 15, 30);
+        //            g.DrawString("Name: " + values[4], new Font("Verdana", 9), Brushes.Black, 15, 45);
+        //            g.DrawString("Meeting Date: " + values[5], new Font("Verdana", 9), Brushes.Black, 15, 60);
+        //            // parameters for position of texton the paper 
+        //            int textX = qrCodeX + qrCodeSize + 2;
+        //            int textY = qrCodeY + 20;
+
+        //            g.DrawString("M_Subject: " + values[0], new Font("Verdana", 9), Brushes.Black, textX, textY);
+        //            g.DrawString("Email: " + values[1], new Font("Verdana", 9), Brushes.Black, textX, textY + 15);
+        //            g.DrawString("MOB no: " + values[2], new Font("Verdana", 9), Brushes.Black, textX, textY + 30);
+        //            g.DrawString("counterpart: " + values[3], new Font("Verdana", 9), Brushes.Black, textX, textY + 45);
+        //        }
+
+        //        // Use HostingEnvironment.MapPath instead of Server.MapPath
+        //        string savePath = @"D:\generatedQR.png";
+        //        combinedImage.Save(savePath, ImageFormat.Png);
+        //        Console.WriteLine("File saved at location: " + savePath);
+
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        System.Diagnostics.Trace.WriteLine($" {ex.ToString()}");
+
+        //        Console.WriteLine("Error occurred: " + ex.Message);
+        //    }
+        //}
         [HttpPost]
         public ActionResult SaveQRData(string qrData)
         {
