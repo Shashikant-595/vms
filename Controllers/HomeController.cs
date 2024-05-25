@@ -234,6 +234,7 @@ namespace VMS.Controllers
             TimeSpan currentTime = DateTime.Now.TimeOfDay;
             string formattedTime = currentTime.ToString("hh\\:mm");
             System.Diagnostics.Trace.WriteLine($"token from controller ={Token}");
+
             try
             {
                 using (SqlConnection connection = new SqlConnection(connectionString))
@@ -242,56 +243,45 @@ namespace VMS.Controllers
                     string queryInsert = "UPDATE Record SET IN_time = @time WHERE token = @token";
                     string queryUpdateOutTime = "UPDATE Record SET OUT_time = @time WHERE token = @token";
                     string queryUpdateErrorFlag = "UPDATE Record SET error_flag = 1 WHERE token = @token";
+
                     connection.Open();
                     SqlCommand commandCheck = new SqlCommand(queryCheck, connection);
                     commandCheck.Parameters.AddWithValue("@token", Token);
                     SqlDataReader reader = commandCheck.ExecuteReader();
+
                     if (reader.Read())
                     {
-                        // Check if IN_time is NULL
-                        if (reader.IsDBNull(0)) // IN_time is NULL
+                        if (reader.IsDBNull(0))
                         {
                             reader.Close();
-                            // update IN_time with current time
                             SqlCommand commandInsert = new SqlCommand(queryInsert, connection);
                             commandInsert.Parameters.AddWithValue("@time", formattedTime);
                             commandInsert.Parameters.AddWithValue("@token", Token);
                             commandInsert.ExecuteNonQuery();
-                            return Content("****VISITOR ENTRY SUCCESFULL**** : ", "text/plain");
-                            System.Diagnostics.Trace.WriteLine($" in time entry {Token}");
+                            return Content("****VISITOR ENTRY SUCCESSFUL****", "text/plain");
                         }
 
-                        // Check if confirmation is true
-                        if (!reader.IsDBNull(2) && reader.GetBoolean(2)) // confirmation is true
+                        if (!reader.IsDBNull(2) && reader.GetBoolean(2))
                         {
                             reader.Close();
-                            // Update OUT_time with current time
                             SqlCommand commandUpdateOutTime = new SqlCommand(queryUpdateOutTime, connection);
                             commandUpdateOutTime.Parameters.AddWithValue("@time", formattedTime);
                             commandUpdateOutTime.Parameters.AddWithValue("@token", Token);
                             commandUpdateOutTime.ExecuteNonQuery();
-                            return Content("***Thank you for visiting our premises **** ", "text/plain");
-                            System.Diagnostics.Trace.WriteLine($" out time entry {Token}");
-
+                            return Content("Thank you for visiting our premises.", "text/plain");
                         }
                         else
                         {
-
-                            // Confirmation is not true, so return without updating OUT_time
-                            return Content("YOUR MEETING CONFIRMATION IS PENDING !!!.", "text/plain");
-                            System.Diagnostics.Trace.WriteLine($" conformation is not done  time entry {Token}");
+                            return Content("YOUR MEETING CONFIRMATION IS PENDING.", "text/plain");
                         }
 
-                        //// Update error flag to indicate invalid QR after fourth scan
-                        if (!reader.IsDBNull(1)) // OUT_time is not NULL
+                        if (!reader.IsDBNull(1))
                         {
                             SqlCommand commandUpdateErrorFlag = new SqlCommand(queryUpdateErrorFlag, connection);
                             commandUpdateErrorFlag.Parameters.AddWithValue("@token", Token);
                             commandUpdateErrorFlag.ExecuteNonQuery();
-
                             return Content("Invalid QR detected: More than two scans detected", "text/plain");
                         }
-
                     }
                     else
                     {
@@ -299,7 +289,6 @@ namespace VMS.Controllers
                         return Content("Invalid QR detected: No record found for the given user", "text/plain");
                     }
                 }
-
             }
             catch (Exception ex)
             {
@@ -308,75 +297,62 @@ namespace VMS.Controllers
             }
         }
 
-        [HttpPost]
 
+        [HttpPost]
         public ActionResult Conform_meeting(string qrData)
         {
             var tokenfromqr = qrData.Split('/');
             System.Diagnostics.Trace.WriteLine($"array length: {tokenfromqr.Length}");
             string Token = tokenfromqr[9];
-         
-           
-           
-               try
+
+            try
             {
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
-                    string queryCheck = "SELECT IN_time, confirmation,Employee_mob FROM Record WHERE token = @token";
-
+                    string queryCheck = "SELECT IN_time, confirmation, Employee_mob FROM Record WHERE token = @token";
                     string queryUpdateConfirmation = "UPDATE Record SET confirmation = 1 WHERE token = @token";
 
-                  
                     connection.Open();
                     SqlCommand commandCheck = new SqlCommand(queryCheck, connection);
                     commandCheck.Parameters.AddWithValue("@token", Token);
                     SqlDataReader reader = commandCheck.ExecuteReader();
+
                     if (reader.Read())
                     {
-                        // Check if IN_time is not null
                         if (!reader.IsDBNull(0))
                         {
-                            string conform=reader.GetString(2).Trim();
+                            string conform = reader.GetString(2).Trim();
                             string userid = Session["User_id"].ToString().Trim();
 
-                            // Check if confirmation is false
-                            if (reader.IsDBNull(1) && conform == userid) // confirmation is false
+                            if (reader.IsDBNull(1) && conform == userid)
                             {
-
                                 reader.Close();
-                                // Update confirmation to true
                                 SqlCommand commandUpdateConfirmation = new SqlCommand(queryUpdateConfirmation, connection);
                                 commandUpdateConfirmation.Parameters.AddWithValue("@token", Token);
                                 commandUpdateConfirmation.ExecuteNonQuery();
                                 System.Diagnostics.Trace.WriteLine($"Confirmation updated for token: {Token}");
 
                                 return Content("CONFIRMATION DONE !!", "text/plain");
-
                             }
                             else
                             {
-                                return Content("UNAUTHORISED USER FOUND!!", "text/plain");
+                                return Content("UNAUTHORIZED USER FOUND!!", "text/plain");
                             }
-                           
                         }
                         else
                         {
-                            return Content("Intime Entry is still pending!!", "text/plain");
+                            return Content("In-time Entry is still pending!!", "text/plain");
                         }
                     }
-                    return Content("NOW VISITOR CAN GO ", "text/plain");
+                    return Content("NOW VISITOR CAN GO", "text/plain");
                 }
-               
             }
-
             catch (Exception ex)
             {
                 System.Diagnostics.Trace.WriteLine($"Error: {ex.ToString()}");
-                return Content("UNABLE TO READ QRCODE : ");
+                return Content("UNABLE TO READ QRCODE: " + ex.Message);
             }
-          
         }
-
 
     }
 }

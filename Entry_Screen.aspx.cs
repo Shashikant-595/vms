@@ -61,36 +61,36 @@ namespace VMS
                 }
             }
         }
-        private void CheckVisitorCount()
-        {
-            string connectionString = ConfigurationManager.ConnectionStrings["MyConnectionString"].ConnectionString;
+        //private void CheckVisitorCount()
+        //{
+        //    string connectionString = ConfigurationManager.ConnectionStrings["MyConnectionString"].ConnectionString;
 
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                string query = "SELECT TOP 1 Total_Visitor FROM Record ORDER BY token DESC";
+        //    using (SqlConnection connection = new SqlConnection(connectionString))
+        //    {
+        //        string query = "SELECT TOP 1 Total_Visitor FROM Record ORDER BY token DESC";
 
-                SqlCommand command = new SqlCommand(query, connection);
-                connection.Open();
+        //        SqlCommand command = new SqlCommand(query, connection);
+        //        connection.Open();
 
-                object result = command.ExecuteScalar();
-                int totalVisitor = result != null ? Convert.ToInt32(result) : 0;
+        //        object result = command.ExecuteScalar();
+        //        int totalVisitor = result != null ? Convert.ToInt32(result) : 0;
 
-                // Display the Total_Visitor count in the visitorCountInput textbox if greater than zero
-                if (totalVisitor > 0)
-                {
-                    visitorCountInput.Text = totalVisitor.ToString();
-                }
+        //        // Display the Total_Visitor count in the visitorCountInput textbox if greater than zero
+        //        if (totalVisitor > 0)
+        //        {
+        //            visitorCountInput.Text = totalVisitor.ToString();
+        //        }
 
-                // Use JavaScript to hide/show the TextBox and Label based on the value of totalVisitor
-                string script = totalVisitor == 0
-                    ? "document.getElementById('" + visitorCountInput.ClientID + "').style.display = 'none'; " +
-                      "document.getElementById('" + visitorCountLabel.ClientID + "').style.display = 'none';"
-                    : "document.getElementById('" + visitorCountInput.ClientID + "').style.display = 'block'; " +
-                      "document.getElementById('" + visitorCountLabel.ClientID + "').style.display = 'block';";
+        //        // Use JavaScript to hide/show the TextBox and Label based on the value of totalVisitor
+        //        string script = totalVisitor == 0
+        //            ? "document.getElementById('" + visitorCountInput.ClientID + "').style.display = 'none'; " +
+        //              "document.getElementById('" + visitorCountLabel.ClientID + "').style.display = 'none';"
+        //            : "document.getElementById('" + visitorCountInput.ClientID + "').style.display = 'block'; " +
+        //              "document.getElementById('" + visitorCountLabel.ClientID + "').style.display = 'block';";
 
-                ScriptManager.RegisterStartupScript(this, GetType(), "ShowHideVisitorCount", script, true);
-            }
-        }
+        //        ScriptManager.RegisterStartupScript(this, GetType(), "ShowHideVisitorCount", script, true);
+        //    }
+        //}
 
         [WebMethod]
         public static void UpdateVisitorCount(int visitorCount, string token)

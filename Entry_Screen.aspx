@@ -319,7 +319,7 @@
                         document.body.appendChild(video);
 
                         // Continuously capture frames from the video stream
-                        setInterval(function () {
+                        let intervalId = setInterval(function () {
                             var canvas = document.createElement('canvas');
                             canvas.width = video.videoWidth;
                             canvas.height = video.videoHeight;
@@ -330,6 +330,9 @@
 
                             if (code) {
                                 console.log('QR code detected:', code.data);
+                                clearInterval(intervalId);
+                                video.srcObject.getTracks().forEach(track => track.stop());
+                                video.remove();
                                 // Do something with the decoded data (e.g., display it on the page)
                                 var dataFromQR = splitQRCodeData(code.data);
 
@@ -396,6 +399,9 @@
 
         // code for conformation
 
+        let isMessageShown = false;
+        let isSaveMessageShown = false;
+
         function opencamere_forconform() {
             // Check if getUserMedia is available
             if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
@@ -409,7 +415,6 @@
 
                 // Request access to the camera
                 navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } })
-              //  navigator.mediaDevices.getUserMedia({ video: true })
                     .then(function (stream) {
                         // Create a video element to display the camera stream
                         var video = document.createElement('video');
@@ -418,7 +423,7 @@
 
                         video.style.position = 'fixed';
                         video.style.top = '17vh';
-                        video.style.left = '65vh';
+                        video.style.left = '50vh';
                         video.style.width = '40%';
                         video.style.height = '40%';
                         video.style.objectFit = 'cover';
@@ -431,7 +436,7 @@
                         document.body.appendChild(video);
 
                         // Continuously capture frames from the video stream
-                        setInterval(function () {
+                        let intervalId = setInterval(function () {
                             var canvas = document.createElement('canvas');
                             canvas.width = video.videoWidth;
                             canvas.height = video.videoHeight;
@@ -441,9 +446,14 @@
                             var code = jsQR(imageData.data, imageData.width, imageData.height);
                             if (code) {
                                 console.log('QR code detected:', code.data);
-                                // Do something with the decoded data (e.g., display it on the page)
-                                Conform_meeting(code.data);
+                                clearInterval(intervalId);  // Stop capturing frames
+                                video.srcObject.getTracks().forEach(track => track.stop());  // Stop the video stream
+                                video.remove();  // Remove the video element
 
+                                if (!isMessageShown) {
+                                    isMessageShown = true;
+                                    Conform_meeting(code.data);
+                                }
                             }
                         }, 100); // Adjust the interval as needed (e.g., every second)
                     })
@@ -455,7 +465,6 @@
                 alert('getUserMedia is not supported in this browser');
             }
         }
-        // create method to exicute controller method 
 
         function Conform_meeting(qrData) {
             // Send an AJAX request to the server
@@ -478,41 +487,43 @@
                 .then(message => {
                     // Display the returned message as an alert
                     alert(message);
-
                 })
                 .catch(error => {
                     // Handle error, display an error message
-                    alert('Error saving QR ' + error.message);
+                    alert('Error saving QR: ' + error.message);
                 });
         }
 
         function saveQRDataToDatabase(qrData) {
-            var visitorCount = parseInt(document.getElementById("<%= visitorCountInput.ClientID %>").value);
-            var token = extractTokenFromQRData(qrData); // Implement this function to extract token from qrData
+            if (isSaveMessageShown) return;
 
-            fetch('/Home/SaveQRData', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ qrData: qrData })
-            })
-                .then(response => {
-                    if (response.ok) {
-                        return response.text();
-                    } else {
-                        throw new Error('Failed to save QR data');
-                    }
-                })
-                .then(message => {
-                    alert(message);
-                    updateVisitorCountInDatabase(visitorCount, token);
-                })
-                .catch(error => {
-                    console.error('Error saving QR data:', error);
-                    alert('Error saving QR data: ' + error.message);
-                });
-        }
+            var visitorCount = parseInt(document.getElementById("<%= visitorCountInput.ClientID %>").value);
+    var token = extractTokenFromQRData(qrData); // Implement this function to extract token from qrData
+
+    fetch('/Home/SaveQRData', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ qrData: qrData })
+    })
+        .then(response => {
+            if (response.ok) {
+                return response.text();
+            } else {
+                throw new Error('Failed to save QR data');
+            }
+        })
+        .then(message => {
+            isSaveMessageShown = true;
+            alert(message);
+            updateVisitorCountInDatabase(visitorCount, token);
+        })
+        .catch(error => {
+            console.error('Error saving QR data:', error);
+            
+        });
+}
 
         function updateVisitorCountInDatabase(visitorCount, token) {
             fetch('/Entry_Screen.aspx/UpdateVisitorCount', {
@@ -531,7 +542,7 @@
                 })
                 .catch(error => {
                     console.error('Error updating visitor count:', error);
-                    alert('Error updating visitor count: ' + error.message);
+                    //alert('Error updating visitor count: ' + error.message);
                 });
         }
 

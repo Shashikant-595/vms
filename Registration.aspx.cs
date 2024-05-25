@@ -48,7 +48,7 @@ namespace VMS
             if (Session["User_type"] != null && Session["User_type"].ToString().Trim() == "SupperAdmin")
             {
                 System.Diagnostics.Trace.WriteLine($"reeeeeeeeeeeeegiiiii load");
-                //  BindDropDownList();
+                //  BindfDropDownList();
 
             }
             else if (Session["User_type"] != null && Session["User_type"].ToString().Trim() == "Admin")
@@ -117,7 +117,7 @@ namespace VMS
                         }
                     }
 
-                    List<string> Qrdata = new List<string> { meetingSubject, visitor_Email, mobile_No, visitor_Name, Company, meetingdate, employeename, token };
+                    List<string> Qrdata = new List<string> { meetingSubject, visitor_Email, mobile_No, visitor_Name, Company, meetingdate, employeename, token};
                     PrintQRCode(Qrdata);
                     sendMail(visitor_Email, employymail, employeename);
                     System.Diagnostics.Trace.WriteLine($" mail is send successfully");

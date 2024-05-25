@@ -302,7 +302,8 @@
 
             <div class="row">
 
-                <script>
+                <script> 
+
                     document.getElementById('plusIcon').addEventListener('click', function () {
                         var totalPersonsTextbox = document.getElementById('<%= txtTotalPersons.ClientID %>');
                         var currentValue = parseInt(totalPersonsTextbox.value || 0);
