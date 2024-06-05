@@ -157,9 +157,9 @@
     <script src="Scripts/bootstrap.min.js"></script>
 
 </head>
-<body>
+<body onload="setFocus()" >
 
-    <form id="form1" runat="server">
+    <form id="form1" runat="server" >
         <header>
 
             <!-- Logo and header name code here -->
@@ -209,11 +209,16 @@
                 <span>Logout</span>
             </a>
         </div>
+        <div  style="margin-left:40%"; >
 
+            <asp:TextBox ID="scannertxt" runat="server"  ></asp:TextBox>
+            
+        </div>
+        
         <div id="camera-preview" class="col-ml-6"></div>
 
 
-        <div class="visitor-count-container mt-5 d-flex justify-content-center" style="margin-top: 350px; margin-left: 600px">
+        <div class="visitor-count-container mt-5 d-flex justify-content-center" style="margin-top: 350px; margin-left: 600px" >
             <!-- Added "d-flex justify-content-center" classes -->
             <asp:Label ID="visitorCountLabel" runat="server" CssClass="mr-2 font-weight-bold" AssociatedControlID="visitorCountInput" Text="Number of Visitors:"></asp:Label>
             <asp:TextBox ID="visitorCountInput" runat="server" Type="Number" CssClass="form-control rounded" Style="border-radius: 8px; height: 30px; width: 100px;" placeholder="Enter number" required></asp:TextBox>
@@ -265,6 +270,7 @@
     </form>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
+            
             // Adjust button placement
             var iconSidebar = document.getElementById("sidebar");
             var links = iconSidebar.getElementsByClassName("sidebar-link");
@@ -282,7 +288,7 @@
 
 
 
-        function openCamera() {
+     <%--   function openCamera() {
             // Check if getUserMedia is available
             if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
                 // If there's already an active camera stream, stop it and remove the video element
@@ -375,7 +381,41 @@
             } else {
                 alert('getUserMedia is not supported in this browser');
             }
+        }--%>
+
+        function handleTextChange(scannertxt) {
+            var code = scannertxt.value;
+           
+            // Your custom logic here
+            console.log("Text changed heresc sc scs cs c   : " + code);
+            var dataFromQR = splitQRCodeData(code); // Assuming splitQRCodeData is defined elsewhere
+
+            if (txtName && dataFromQR.length > 3) {
+                txtName.value = dataFromQR[3] || '';
+            }
+            if (txtMbNo && dataFromQR.length > 2) {
+                txtMbNo.value = dataFromQR[2] || '';
+            }
+            if (txtEmail && dataFromQR.length > 1) {
+                txtEmail.value = dataFromQR[1] || '';
+            }
+            if (txtCompany && dataFromQR.length > 4) {
+                txtCompany.value = dataFromQR[4] || '';
+            }
+            if (txtMeeting && dataFromQR.length > 0) {
+                txtMeeting.value = dataFromQR[0] || '';
+            }
+            if (datetimepicker && dataFromQR.length > 5) {
+                datetimepicker.value = dataFromQR[5] || '';
+            }
+            saveQRDataToDatabase(code);
+            // Assuming saveQRDataToDatabase is defined elsewhere
+            scannertxt.value = "";
+           
         }
+
+
+
         function splitQRCodeData(data) {
             // Split the QR code data using '/' as the delimiter
             const parts = data.split('/');
@@ -497,8 +537,8 @@
         function saveQRDataToDatabase(qrData) {
             if (isSaveMessageShown) return;
 
-            var visitorCount = parseInt(document.getElementById("<%= visitorCountInput.ClientID %>").value);
-    var token = extractTokenFromQRData(qrData); // Implement this function to extract token from qrData
+          //  var visitorCount = parseInt(document.getElementById("<%= visitorCountInput.ClientID %>").value);
+            var token = extractTokenFromQRData(qrData); // Implement this function to extract token from qrData
 
     fetch('/Home/SaveQRData', {
         method: 'POST',
@@ -583,5 +623,39 @@
         });
 
     </script>
+     <script type="text/javascript">
+         function setFocus() {
+             // Get a reference to the textbox
+             var textBox = document.getElementById('<%= scannertxt.ClientID %>');
+
+             // Set focus on the textbox
+             textBox.focus();
+         }
+
+         function debounce(func, wait) {
+             let timeout;
+             return function (...args) {
+                 const later = () => {
+                     clearTimeout(timeout);
+                     func(...args);
+                 };
+                 clearTimeout(timeout);
+                 timeout = setTimeout(later, wait);
+             };
+         }
+         document.addEventListener('DOMContentLoaded', (event) => {
+             var scannerInput = document.getElementById('scannertxt');
+             const debouncedHandleTextChange = debounce(() => handleTextChange(scannerInput), 400);
+
+             scannerInput.addEventListener('input', debouncedHandleTextChange);
+         });
+
+         //document.addEventListener('DOMContentLoaded', (event) => {
+         //    var scannerInput = document.getElementById('scannertxt');
+         //    scannerInput.addEventListener('input', function () {
+         //        handleTextChange(scannerInput);
+         //    });
+         //});
+     </script>
 </body>
 </html>

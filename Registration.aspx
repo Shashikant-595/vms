@@ -381,7 +381,7 @@
             </div>
 
             <div class="col-md-6">
-                <div class="col-md-8" style="margin-top: -440px; margin-left:260px; height: 580px; width:1100px; overflow: auto;">
+               <%-- <div class="col-md-8" style="margin-top: -440px; margin-left:260px; height: 580px; width:1100px; overflow: auto;">
                     <asp:GridView ID="GridView1" runat="server" CssClass="table table-bordered table-hover table-sm" AutoGenerateColumns="False" OnRowDataBound="GridView1_RowDataBound">
                         <Columns>
                             <asp:BoundField DataField="token" HeaderText="Token" />
@@ -406,7 +406,7 @@
                         </Columns>
                     </asp:GridView>
 
-                </div>
+                </div>--%>
             </div>
     </form>
 

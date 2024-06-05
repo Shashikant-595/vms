@@ -239,7 +239,7 @@
     </form>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="/Scripts/jquery.signalR-2.4.2.min.js"></script>
+    <script src="/Scripts/jquery.signalR-2.4.3.min.js"></script>
     <script src="/signalr/hubs"></script>
     <script>
         $(document).ready(function () {

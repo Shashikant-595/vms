@@ -19,9 +19,9 @@ namespace VMS.Controllers
     
     public class HomeController : Controller
     {
-        // string connectionString = "Data Source=192.168.20.70,1433;Initial Catalog=vms;User ID=vms;Password=Vms@123;";
-        //string connectionString = "Data Source=localhost\\sqlexpress;Initial Catalog=VMS;Integrated Security=True;";
-        string connectionString = "Data Source=DESKTOP-4TNUEJA\\MSSQLSERVER02;Initial Catalog=VMS;Integrated Security=True;";
+        string connectionString = "Data Source=192.168.20.70,1433;Initial Catalog=vms;User ID=vms;Password=Vms@123;";
+       // string connectionString = "Data Source=localhost\\sqlexpress;Initial Catalog=VMS;Integrated Security=True;";
+       // string connectionString = "Data Source=DESKTOP-4TNUEJA\\MSSQLSERVER02;Initial Catalog=VMS;Integrated Security=True;";
 
         public HomeController()
         {
@@ -56,6 +56,28 @@ namespace VMS.Controllers
                 }
             }
             return count;
+        }
+
+        [System.Web.Services.WebMethod]
+        public static List<string> GetFilteredUsers(string prefix)
+        {
+            string connectionString = "Data Source=192.168.20.70,1433;Initial Catalog=vms;User ID=vms;Password=Vms@123;";
+
+            List<string> filteredUsers = new List<string>();
+
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                string query = "SELECT Name FROM Employ_Registration WHERE Name LIKE @Prefix + '%'";
+                SqlCommand cmd = new SqlCommand(query, conn);
+                cmd.Parameters.AddWithValue("@Prefix", prefix);
+                conn.Open();
+                SqlDataReader dr = cmd.ExecuteReader();
+                while (dr.Read())
+                {
+                    filteredUsers.Add(dr["Name"].ToString());
+                }
+            }
+            return filteredUsers;
         }
 
         //public void GenerateQRcode(string token)

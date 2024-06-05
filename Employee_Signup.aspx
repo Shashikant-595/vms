@@ -1,16 +1,6 @@
-﻿﻿﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Employee_Signup.aspx.cs" Inherits="VMS.Employee_Signup" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Employee_Signup.aspx.cs" Inherits="VMS.Employee_Signup" %>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
-    <link href="Content/bootstrap.min.css" rel="stylesheet" />
-    <title style="font: bold">SIGN UP</title>
-    <link rel="icon" href="https://foreselastomech.com/wp-content/uploads/2019/03/FORES-Logo.png">
-    <script src="Scripts/bootstrap.min.js"></script>
-    <script type="text/javascript">
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"><link href="Content/bootstrap.min.css" rel="stylesheet"SIGN UP</title><link rel="icon" href="https://foreselastomech.com/wp-content/uploads/2019/03/FORES-Logo.png"><script src="Scripts/bootstrap.min.js"></script><script type="text/javascript">
         $(document).ready(function () {
             $("#<%= txteName.ClientID %>").keyup(function () {
                var prefix = $(this).val();
@@ -47,8 +37,7 @@
             $("#suggestions").hide();
             __doPostBack('<%= txteName.ClientID %>', '');
         }
-    </script>
-    <style>
+    </script><style>
         body {
             font-family: 'Poppins', sans-serif;
             margin: 0;
@@ -186,11 +175,14 @@
         #suggestions .list-group-item:hover {
             background: #eee;
         }
-
+       
     </style>
-</head>
-<body>
-    <form id="form1" runat="server">
+
+
+                </head>
+    <body>
+        
+        <form id="form1" runat="server">
                 <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
         <asp:UpdatePanel ID="UpdatePanel1" runat="server">
             <ContentTemplate>
@@ -233,7 +225,13 @@
         <div class="container " style="margin-left: 200px">
             <div class="form-group col-sm-3 mt-5">
                 <asp:Label ID="lbleName" runat="server" Text="Employee Name : "></asp:Label>
+               
+                
                 <asp:TextBox ID="txteName" runat="server" CssClass="form-control" required OnTextChanged="txteName_TextChanged"  AutoPostBack="True"></asp:TextBox>
+               
+
+                
+                
                 <ul id="suggestions"class="list-group mt-1" ></ul>
             </div>
              <div>
@@ -266,8 +264,19 @@
             <div class="form-group col-sm-3">
                 <asp:Label ID="Label3" runat="server" Text="Department: "></asp:Label>
                 <asp:DropDownList ID="ddlDepartment" runat="server" CssClass="form-control" onchange="showOtherOption(this)">
-                    <asp:ListItem Text="SELECT OPTION" Value="IT"></asp:ListItem>
-                    <asp:ListItem Text="COATING" Value="General"></asp:ListItem>
+                   
+                    <asp:ListItem Text="IT & SAP" Value="IT & SAP"></asp:ListItem>
+                    <asp:ListItem Text="MOULDING" Value="MOULDING"></asp:ListItem>
+                    <asp:ListItem Text="COATING" Value="COATING"></asp:ListItem>
+                    <asp:ListItem Text="QUALITY" Value="QUALITY"></asp:ListItem>
+                    <asp:ListItem Text="STORES" Value="STORES"></asp:ListItem>
+                    <asp:ListItem Text="ACCOUNT" Value="ACCOUNT"></asp:ListItem>
+                    <asp:ListItem Text="HR" Value="HR"></asp:ListItem>
+                    <asp:ListItem Text="MARKETING" Value="MARKETING"></asp:ListItem>
+                    <asp:ListItem Text="PPC & DISPACH" Value="PPC & DISPACH"></asp:ListItem>
+                    <asp:ListItem Text="PURCHASE" Value="PURCHASE"></asp:ListItem>
+                    <asp:ListItem Text="PLANT MANAGEMENT" Value="PLANT MANAGEMENT"></asp:ListItem>
+                    <asp:ListItem Text="SECURIRTY DEPARTMENT" Value="General"></asp:ListItem>
                     <asp:ListItem Text="Other (Please Specify)" Value="Other"></asp:ListItem>
                 </asp:DropDownList>
                 <input type="text" id="txtDepartment" class="form-control" style="display: none;" placeholder="Department">
@@ -280,7 +289,7 @@
             <div class="form-group  col-sm-3">
                 <asp:Label ID="Label4" runat="server" Text="User-Type"></asp:Label>
                 <asp:DropDownList ID="usertype" runat="server" CssClass="form-control">
-                    <asp:ListItem Enabled="true">SELECT OPTION</asp:ListItem>
+                   
                     <asp:ListItem Enabled="true">SupperAdmin</asp:ListItem>
                     <asp:ListItem Enabled="true">Admin</asp:ListItem>
                     <asp:ListItem Enabled="true">User</asp:ListItem>
@@ -300,28 +309,16 @@
     </Triggers>
 </asp:UpdatePanel>
                         <div class="col-md-4" style="margin-top: -530px; margin-left:650px; height: 580px; width:900px; overflow: auto;">
-<asp:GridView ID="GridView2" runat="server" AutoGenerateColumns="False" CssClass="table table-bordered" Width="300px">
-    <Columns>
-            <asp:BoundField DataField="Name" HeaderText="Name" ItemStyle-Width="100" />
-            <asp:BoundField DataField="Mobile_No" HeaderText="Mobile No" ItemStyle-Width="100" />
-            <asp:BoundField DataField="Email" HeaderText="Email" ItemStyle-Width="150" />
-            <asp:BoundField DataField="Employee_ID" HeaderText="Employee ID" ItemStyle-Width="100" />
-            <asp:BoundField DataField="Department" HeaderText="Department" ItemStyle-Width="100" />
-            <asp:BoundField DataField="password" HeaderText="Password" ItemStyle-Width="100" />
-            <asp:BoundField DataField="user_type" HeaderText="User Type" ItemStyle-Width="100" />
-        </Columns>
-    </asp:GridView>
 </div>
     </form>
     <script src="Scripts/bootstrap.min.js"></script>
     <script src="Scripts/jquery-3.7.1.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="/Scripts/jquery.signalR-2.4.2.min.js"></script>
-    <script src="/signalr/hubs"></script>
-
+   
 
     <script>
-        function togglePasswordVisibility() {
+        function togglePasswordVisibility()
+        {
             var passwordField = document.getElementById("<%= txtpassword.ClientID %>");
             var icon = document.getElementById("eyeIcon");
 
@@ -334,7 +331,8 @@
             }
         }
         // Add event listener to show the text box when hovering over the user ID icon
-        document.addEventListener("DOMContentLoaded", function () {
+        document.addEventListener("DOMContentLoaded", function ()
+        {
             var userIdIcon = document.getElementById("userIdIcon");
             var userIdTextBox = document.getElementById("userIdTextBox");
             userIdIcon.addEventListener("mouseover", function () {
@@ -344,24 +342,22 @@
                 userIdTextBox.style.display = "none";
             });
         });
-
+        // Add event listeners to all text boxes (except email) to capitalize all letters when typed
+        document.addEventListener("DOMContentLoaded", function ()
+        {
+            var textboxes = document.querySelectorAll('input[type="text"]:not(#txteemail)');
+            textboxes.forEach(function (textbox) {
+                textbox.addEventListener("input", function () {
+                    // Get the current value of the textbox
+                    var currentValue = this.value;
+                    // Convert the value to uppercase
+                    var newValue = currentValue.toUpperCase();
+                    // Update the textbox value with the uppercase text
+                    this.value = newValue;
+                });
+            });
+        });
     </script>
 
 </body>
 </html>
-<script>
-    // Add event listeners to all text boxes (except email) to capitalize all letters when typed
-    document.addEventListener("DOMContentLoaded", function () {
-        var textboxes = document.querySelectorAll('input[type="text"]:not(#txteemail)');
-        textboxes.forEach(function (textbox) {
-            textbox.addEventListener("input", function () {
-                // Get the current value of the textbox
-                var currentValue = this.value;
-                // Convert the value to uppercase
-                var newValue = currentValue.toUpperCase();
-                // Update the textbox value with the uppercase text
-                this.value = newValue;
-            });
-        });
-    });
-</script>

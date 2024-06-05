@@ -28,8 +28,9 @@ namespace VMS
 
     public partial class Registration : System.Web.UI.Page
     {
-        private string connectionString = "Data Source=DESKTOP-4TNUEJA\\MSSQLSERVER02;Initial Catalog=VMS;Integrated Security=True;";
-        //private string connectionString = "Data Source=192.168.20.70,1433;Initial Catalog=vms;User ID=vms;Password=Vms@123;";
+        // string connectionString = "Data Source=localhost\\sqlexpress;Initial Catalog=VMS;Integrated Security=True;";
+
+        private string connectionString = "Data Source=192.168.20.70,1433;Initial Catalog=vms;User ID=vms;Password=Vms@123;";
 
         private readonly object recipientNumber;
         private String SENDER_EMAIL = "softsupport@foresgroup.com";
@@ -42,7 +43,7 @@ namespace VMS
         private readonly Timer timer = new Timer();
         protected void Page_Load(object sender, EventArgs e)
         {
-            BindGridView();
+            //BindGridView();
 
             // Check if the user is logged in as Admin
             if (Session["User_type"] != null && Session["User_type"].ToString().Trim() == "SupperAdmin")
@@ -77,7 +78,7 @@ namespace VMS
                 // Check if Session variables are not null
                 if (Session["name"] != null && Session["passmail"] != null && Session["User_id"] != null)
                 {
-                    string connectionString = "Data Source=DESKTOP-4TNUEJA\\MSSQLSERVER02;Initial Catalog=VMS;Integrated Security=True;";
+                  
                     string employeename = Session["name"].ToString();
                     string employymail = Session["passmail"].ToString();
                     string EmployeeMob = Session["User_id"].ToString();
@@ -149,7 +150,7 @@ namespace VMS
         public void PrintQRCode(List<string> values)
         {
             int qrCodeSize = 90; // Adjust the QR code size as needed
-            int paperWidth = 300; // Adjust to the width of your paper
+            int paperWidth = 350; // Adjust to the width of your paper
             int paperHeight = 350; // Adjust to the height of your paper to fit the QR code properly
             string combinedValue = string.Join("/", values);
 
@@ -202,7 +203,7 @@ namespace VMS
 
 
                     // Add the text elements at the bottom
-                    g.DrawString("FORES ELASTOMECH INDIAN PVT,LTD", new Font("Verdana", 9, FontStyle.Bold), Brushes.DarkSlateGray, 30, 8);
+                    g.DrawString("FORES ELASTOMECH INDIA PVT,LTD", new Font("Verdana", 9, FontStyle.Bold), Brushes.DarkSlateGray, 30, 8);
                     g.DrawString("VISITOR GATE PASS", new Font("Verdana", 9, FontStyle.Bold), Brushes.DarkSlateGray, 60, 30);
                     g.DrawString("Name: " + values[3], new Font("Verdana", 9, FontStyle.Bold), Brushes.Black, 15, yOffset + 60);
                     g.DrawString("Meeting Date: " + values[5], new Font("Verdana", 9, FontStyle.Bold), Brushes.Black, 15, yOffset + 75);
@@ -344,26 +345,26 @@ namespace VMS
             }
         }
 
-        private void BindGridView()
-        {
-            using (SqlConnection con = new SqlConnection(connectionString))
-            {
-                SqlCommand cmd = new SqlCommand("SELECT token, Whometo_Visit, Mobile_No, Meeting_Subject, Date_Time, Name, Email, Company, IN_time, OUT_time, confirmation, Employee_mob, Total_Visitor FROM [Record]", con);
-                try
-                {
-                    con.Open();
-                    SqlDataAdapter da = new SqlDataAdapter(cmd);
-                    DataTable dt = new DataTable();
-                    da.Fill(dt);
-                    GridView1.DataSource = dt;
-                    GridView1.DataBind();
-                }
-                catch (Exception ex)
-                {
-                    Response.Write("<script>alert('Error: " + ex.Message + "');</script>");
-                }
-            }
-        }
+        //private void BindGridView()
+        //{
+        //    using (SqlConnection con = new SqlConnection(connectionString))
+        //    {
+        //        SqlCommand cmd = new SqlCommand("SELECT token, Whometo_Visit, Mobile_No, Meeting_Subject, Date_Time, Name, Email, Company, IN_time, OUT_time, confirmation, Employee_mob, Total_Visitor FROM [Record]", con);
+        //        try
+        //        {
+        //            con.Open();
+        //            SqlDataAdapter da = new SqlDataAdapter(cmd);
+        //            DataTable dt = new DataTable();
+        //            da.Fill(dt);
+        //            GridView1.DataSource = dt;
+        //            GridView1.DataBind();
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            Response.Write("<script>alert('Error: " + ex.Message + "');</script>");
+        //        }
+        //    }
+        //}
 
         protected void txtName_TextChanged(object sender, EventArgs e)
         {

@@ -17,15 +17,16 @@ namespace VMS
 
     public partial class Employee_Signup : System.Web.UI.Page
     {
-        string connectionString = "Data Source=DESKTOP-4TNUEJA\\MSSQLSERVER02;Initial Catalog=vms;Integrated Security=True;";
-        //string connectionString = "Data Source=192.168.20.70,1433;Initial Catalog=vms;User ID=vms;Password=Vms@123;";
+        // string connectionString = "Data Source=localhost\\sqlexpress;Initial Catalog=VMS;Integrated Security=True;";
+
+        string connectionString = "Data Source=192.168.20.70,1433;Initial Catalog=vms;User ID=vms;Password=Vms@123;";
 
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
             {
                 Btn_edit.Visible = false; // Hide the "Edit" button on initial page load
-                LoadEmployeeData();
+
                 if (Session["User_id"] != null)
                 {
                     // Retrieve the User_id session variable and set it as the text of the userIdInput textbox
@@ -44,6 +45,9 @@ namespace VMS
                 Response.Redirect("Authenticate_User.aspx");
             }
         }
+
+      
+
 
         protected void Btn_save_Click(object sender, EventArgs e)
         {
@@ -73,9 +77,7 @@ namespace VMS
                 string alertMessage = "alert('Employee registered successfully.');";
                 ScriptManager.RegisterStartupScript(this, GetType(), "alert", alertMessage, true);
 
-                // To redirect after a delay to allow the alert to be shown
-                ScriptManager.RegisterStartupScript(this, GetType(), "redirect",
-                    "setTimeout(function() { window.location.href = 'Registration.aspx'; }, 1000);", true);
+               
             }
             catch (Exception ex)
             {
@@ -94,6 +96,7 @@ namespace VMS
                 {
                     string query = "UPDATE Employ_Registration SET ";
                     List<string> fieldsToUpdate = new List<string>();
+
                     if (!string.IsNullOrEmpty(txteName.Text))
                     {
                         fieldsToUpdate.Add("Name = @Name");
@@ -118,13 +121,16 @@ namespace VMS
                     {
                         fieldsToUpdate.Add("user_type = @UserType");
                     }
+
                     if (fieldsToUpdate.Count > 0)
                     {
                         query += string.Join(", ", fieldsToUpdate);
-                        query += " WHERE Name = @Name";
+                        query += " WHERE Name = @OriginalName";
+
                         using (SqlConnection connection = new SqlConnection(connectionString))
                         {
                             SqlCommand command = new SqlCommand(query, connection);
+
                             if (!string.IsNullOrEmpty(txteName.Text))
                             {
                                 command.Parameters.AddWithValue("@Name", txteName.Text);
@@ -149,14 +155,15 @@ namespace VMS
                             {
                                 command.Parameters.AddWithValue("@UserType", usertype.SelectedItem.Text);
                             }
-                            command.Parameters.AddWithValue("@Name", name);
+                            command.Parameters.AddWithValue("@OriginalName", name);
+
                             connection.Open();
                             int rowsAffected = command.ExecuteNonQuery();
+
                             if (rowsAffected > 0)
                             {
                                 // Handle if update successful
                                 ScriptManager.RegisterStartupScript(this, GetType(), "alert", "alert('Employee details updated successfully.');", true);
-
                             }
                             else
                             {
@@ -174,10 +181,11 @@ namespace VMS
                 else
                 {
                     // Handle if name does not exist
-                    ScriptManager.RegisterStartupScript(this, GetType(), "alert", "alert('Name does not exist.');", true);
+                    ScriptManager.RegisterStartupScript(this, GetType(), "alert", "alert('Employee does not exist.');", true);
                 }
             }
         }
+
         private bool IsNameExists(string name)
         {
             bool result = false;
@@ -234,19 +242,19 @@ namespace VMS
                 Response.Write("An error occurred: " + ex.Message);
             }
         }
-        private void LoadEmployeeData()
-        {
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                string query = "SELECT * FROM Employ_Registration";
-                SqlCommand command = new SqlCommand(query, connection);
+        //private void LoadEmployeeData()
+        //{
+        //    using (SqlConnection connection = new SqlConnection(connectionString))
+        //    {
+        //        string query = "SELECT * FROM Employ_Registration";
+        //        SqlCommand command = new SqlCommand(query, connection);
 
-                connection.Open();
-                SqlDataReader reader = command.ExecuteReader();
-                GridView2.DataSource = reader;
-                GridView2.DataBind();
-            }
-        }
+        //        connection.Open();
+        //        SqlDataReader reader = command.ExecuteReader();
+        //        GridView2.DataSource = reader;
+        //        GridView2.DataBind();
+        //    }
+        //}
         private void SendEmployeeDataToClients()
         {
             using (SqlConnection connection = new SqlConnection(connectionString))

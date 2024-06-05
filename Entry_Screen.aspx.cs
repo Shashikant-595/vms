@@ -14,8 +14,13 @@ namespace VMS
 
     public partial class Entry_Screen : System.Web.UI.Page
     {
+        private static string connectionString = "Data Source=192.168.20.70,1433;Initial Catalog=vms;User ID=vms;Password=Vms@123;";
+        //public static string connectionString = "Data Source=localhost\\sqlexpress;Initial Catalog=VMS;Integrated Security=True;";
         protected void Page_Load(object sender, EventArgs e)
         {
+            scanQrLink.Visible = false; 
+            visitorCountInput.Visible = false;
+            visitorCountLabel.Visible = false;
             if (!IsPostBack)
             {
                 if (Session["User_id"] != null)
@@ -101,7 +106,7 @@ namespace VMS
 
         private static void UpdateVisitorCountInDatabase(int newVisitorCount, string token)
         {
-            string connectionString = "Data Source=DESKTOP-4TNUEJA\\MSSQLSERVER02;Initial Catalog=VMS;Integrated Security=True;";
+           
             string updateQuery = "UPDATE Record SET Total_Visitor = @NewVisitorCount WHERE Token = @LastToken";
 
             try
@@ -134,6 +139,11 @@ namespace VMS
             {
                 Console.WriteLine("Failed to update visitor count: " + ex.Message);
             }
+        }
+
+        protected void scannertxt_TextChanged(object sender, EventArgs e)
+        {
+
         }
 
 
