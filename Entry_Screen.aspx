@@ -57,6 +57,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            z-index: 2; 
         }
 
             .icon-sidebar a {
@@ -197,10 +198,6 @@
                 <i class='fas fa-check sidebar-icon'></i>
                 <span>Confirm</span>
             </a>
-            <a href="#" id="scanQrLink" class="sidebar-link" runat="server" onclick="openCamera()">
-                <i class='fas fa-qrcode sidebar-icon'></i>
-                <span>Scan QR</span>
-            </a>
             <br />
             <br />
             <br />
@@ -223,49 +220,25 @@
             <asp:Label ID="visitorCountLabel" runat="server" CssClass="mr-2 font-weight-bold" AssociatedControlID="visitorCountInput" Text="Number of Visitors:"></asp:Label>
             <asp:TextBox ID="visitorCountInput" runat="server" Type="Number" CssClass="form-control rounded" Style="border-radius: 8px; height: 30px; width: 100px;" placeholder="Enter number" required></asp:TextBox>
         </div>
-        <div class="auto-style2" style="margin-top: 190px; margin-right: 120px; padding: 5%; border-radius: 20px; box-shadow: 0 0 20px rgb(0, 0, 0);">
-            <div class="auto-style1">
-                <div class="form-group row">
-                    <h2>VISITOR INFORMATION</h2>
-                    <div class="form-group row">
-                        <label for="txtName" class="col-sm-2 col-form-label">Name</label>
-                        <div class="col-sm-10">
-                            <asp:TextBox ID="txtName" runat="server" CssClass="form-control" required Font-Size="Medium"></asp:TextBox>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="txtMbNo" class="col-sm-2 col-form-label fs-5">Mobile No</label>
-                        <div class="col-sm-10">
-                            <asp:TextBox ID="txtMbNo" runat="server" CssClass="form-control fs-5" required></asp:TextBox>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="txtEmail" class="col-sm-2 col-form-label fs-5">Email</label>
-                        <div class="col-sm-10">
-                            <asp:TextBox ID="txtEmail" runat="server" CssClass="form-control fs-5" required Font-Size="Medium"></asp:TextBox>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="txtCompany" class="col-sm-2 col-form-label fs-5">Company</label>
-                        <div class="col-sm-10">
-                            <asp:TextBox ID="txtCompany" runat="server" CssClass="form-control fs-5" required Font-Size="Medium"></asp:TextBox>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="txtMeeting" class="col-sm-2 col-form-label fs-5">Meeting Subject</label>
-                        <div class="col-sm-10">
-                            <asp:TextBox ID="txtMeeting" runat="server" CssClass="form-control fs-5" Font-Size="Medium"></asp:TextBox>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="datetimepicker" class="col-sm-2 col-form-label fs-5">Meeting Date and Time</label>
-                        <div class="col-sm-10">
-                            <asp:TextBox ID="datetimepicker" runat="server" CssClass="form-control fs-5" Font-Size="Medium"></asp:TextBox>
-                        </div>
-                    </div>
-                </div>
-            </div>
+    <div class="auto-style1" >
+        <div class="form-group row" style="margin-left:330px; margin-top:420px; overflow-y: auto;max-height: 300px;">
+            <asp:GridView ID="GridView1" runat="server" CssClass="table table-striped" AutoGenerateColumns="False">
+                <Columns>
+                    <asp:BoundField DataField="Name" HeaderText="Name" />
+                    <asp:BoundField DataField="Mobile_No" HeaderText="Mobile No" />
+                    <asp:BoundField DataField="Email" HeaderText="Email" />
+                    <asp:BoundField DataField="Company" HeaderText="Company" />
+                    <asp:BoundField DataField="Meeting_Subject" HeaderText="Meeting Subject" />
+                    <asp:BoundField DataField="Date_Time" HeaderText="Meeting Date" DataFormatString="{0:dd-MM-yyyy HH:mm}" />
+                    <asp:BoundField DataField="IN_time" HeaderText="In Time" DataFormatString="{0:HH:mm}" />
+                    <asp:BoundField DataField="OUT_time" HeaderText="Out Time" DataFormatString="{0:HH:mm}" />
+                    <asp:BoundField DataField="confirmation" HeaderText="Confirmation" />
+                    <asp:BoundField DataField="Whometo_Visit" HeaderText="Whom to Visit" />
+                    <asp:BoundField DataField="Total_Visitor" HeaderText="Total Visitor"/>
+                </Columns>
+            </asp:GridView>
         </div>
+    </div>
 
     </form>
     <script>
@@ -390,24 +363,7 @@
             console.log("Text changed heresc sc scs cs c   : " + code);
             var dataFromQR = splitQRCodeData(code); // Assuming splitQRCodeData is defined elsewhere
 
-            if (txtName && dataFromQR.length > 3) {
-                txtName.value = dataFromQR[3] || '';
-            }
-            if (txtMbNo && dataFromQR.length > 2) {
-                txtMbNo.value = dataFromQR[2] || '';
-            }
-            if (txtEmail && dataFromQR.length > 1) {
-                txtEmail.value = dataFromQR[1] || '';
-            }
-            if (txtCompany && dataFromQR.length > 4) {
-                txtCompany.value = dataFromQR[4] || '';
-            }
-            if (txtMeeting && dataFromQR.length > 0) {
-                txtMeeting.value = dataFromQR[0] || '';
-            }
-            if (datetimepicker && dataFromQR.length > 5) {
-                datetimepicker.value = dataFromQR[5] || '';
-            }
+           
             saveQRDataToDatabase(code);
             // Assuming saveQRDataToDatabase is defined elsewhere
             scannertxt.value = "";
@@ -467,7 +423,8 @@
                         video.style.width = '40%';
                         video.style.height = '40%';
                         video.style.objectFit = 'cover';
-                        video.style.zIndex = '9999';
+                        video.style.zIndex = '1'; 
+
 
                         // Attach the stream to the video element
                         video.srcObject = stream;

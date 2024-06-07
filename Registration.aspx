@@ -167,19 +167,18 @@
             margin-top: 900px;
             background-color: red;
         }
-         .checkbox-unchecked input[type="checkbox"] {
-    width: 40px;
-    height: 40px;
-    background-color: red;
-}
 
-.checkbox-checked input[type="checkbox"] {
-    width: 40px;
-    height: 40px;
-    background-color: green;
-}
+        .checkbox-unchecked input[type="checkbox"] {
+            width: 40px;
+            height: 40px;
+            background-color: red;
+        }
 
-
+        .checkbox-checked input[type="checkbox"] {
+            width: 40px;
+            height: 40px;
+            background-color: green;
+        }
     </style>
 </head>
 <body>
@@ -212,8 +211,8 @@
                         <br />
                         <br />
                         <br />
-                        <a href="Authenticate_User.aspx" class="logout-btn">
-                            <i class="fas fa-sign-out-alt"></i>
+                        <a href="#" class="logout-btn">
+                            <i class="fas fa-sign-out-alt" id="logoutBtn"></i>
                             <span>Logout</span>
                         </a>
                     </div>
@@ -244,7 +243,7 @@
                 <div class="col-md-3">
                     <div class="form-group">
                         <asp:Label ID="lblMbNo" runat="server" Text="Mobile No :" AssociatedControlID="txtMbNo"></asp:Label>
-                        <asp:TextBox ID="txtMbNo" runat="server"  CssClass="form-control" required></asp:TextBox>
+                        <asp:TextBox ID="txtMbNo" runat="server" CssClass="form-control" required></asp:TextBox>
                         <asp:RegularExpressionValidator ID="regexMobile" runat="server" ControlToValidate="txtMbNo"
                             ValidationExpression="^[0-9]{10}$"
                             ErrorMessage="Please enter a valid 10-digit mobile number."
@@ -381,7 +380,7 @@
             </div>
 
             <div class="col-md-6">
-               <%-- <div class="col-md-8" style="margin-top: -440px; margin-left:260px; height: 580px; width:1100px; overflow: auto;">
+                <%-- <div class="col-md-8" style="margin-top: -440px; margin-left:260px; height: 580px; width:1100px; overflow: auto;">
                     <asp:GridView ID="GridView1" runat="server" CssClass="table table-bordered table-hover table-sm" AutoGenerateColumns="False" OnRowDataBound="GridView1_RowDataBound">
                         <Columns>
                             <asp:BoundField DataField="token" HeaderText="Token" />
@@ -448,6 +447,35 @@
                 });
             });
         });
+
+        document.querySelector(".logout-btn").addEventListener("click", function (event) {
+            event.preventDefault(); // Prevent default navigation
+
+            // Send an asynchronous POST request to the server for logout
+            fetch('/Registration.aspx', { // Replace with your actual logout handler URL
+                method: 'POST'
+            })
+                .then(response => {
+                    if (response.ok) {
+                        // Logout successful, clear session information (client-side)
+                        sessionStorage.clear(); // Clear session storage for client-side data
+
+                        // Replace the current URL in the browser history with the login page
+                        history.replaceState(null, null, '/Authenticate_User.aspx');
+
+                        // Redirect to login page
+                        window.location.href = '/Authenticate_User.aspx';
+                    } else {
+                        console.error('Logout failed with status:', response.status);
+                        // Handle logout failure (optional: display error message)
+                    }
+                })
+                .catch(error => {
+                    console.error('Error logging out:', error);
+                    // Handle network errors (optional: display error message)
+                });
+        });
+
     </script>
 </body>
 </html>

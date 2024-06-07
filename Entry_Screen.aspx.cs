@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
@@ -14,13 +15,15 @@ namespace VMS
 
     public partial class Entry_Screen : System.Web.UI.Page
     {
-        private static string connectionString = "Data Source=192.168.20.70,1433;Initial Catalog=vms;User ID=vms;Password=Vms@123;";
-        //public static string connectionString = "Data Source=localhost\\sqlexpress;Initial Catalog=VMS;Integrated Security=True;";
+        //private static string connectionString = "Data Source=192.168.20.70,1433;Initial Catalog=vms;User ID=vms;Password=Vms@123;";
+        public static string connectionString = "Data Source=DESKTOP-4TNUEJA\\MSSQLSERVER02;Initial Catalog=VMS;Integrated Security=True;";
         protected void Page_Load(object sender, EventArgs e)
         {
-            scanQrLink.Visible = false; 
+            
             visitorCountInput.Visible = false;
             visitorCountLabel.Visible = false;
+            // Populate the GridView with today's visitor information
+            PopulateVisitorInformation();
             if (!IsPostBack)
             {
                 if (Session["User_id"] != null)
@@ -40,7 +43,7 @@ namespace VMS
                     System.Diagnostics.Trace.WriteLine($"gvfadcdfffffffffffff  " + Session["User_type"]);
 
                     // HR and IT head 
-                    scanQrLink.Visible = true;
+                    
                     confirmLink.Visible = true;
                     registrationLink.Visible = true;
                     newVisitorLink.Visible = true;
@@ -49,7 +52,7 @@ namespace VMS
                 if (Session["User_type"] != null && Session["User_type"].ToString().Trim() == "Admin")
                 {
                     // only invote to visitors
-                    scanQrLink.Visible = false;
+                   
                     confirmLink.Visible = true;
                     registrationLink.Visible = true;
                     newVisitorLink.Visible = true;
@@ -58,14 +61,49 @@ namespace VMS
                 if (Session["User_type"] != null && Session["User_type"].ToString().Trim() == "User")
                 {
                     // Hide the View button
-                    scanQrLink.Visible = true;
+                    
                     confirmLink.Visible = false;
                     registrationLink.Style["display"] = "none";
                     newVisitorLink.Style["display"] = "none";
                     employeelink.Style["display"] = "none";
                 }
+                
             }
         }
+
+        private void PopulateVisitorInformation()
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+               string query = @"
+            SELECT 
+                Name, 
+                Mobile_No, 
+                Email, 
+                Company, 
+                Meeting_Subject, 
+                CONVERT(varchar, Date_Time, 103) AS Date_Time, -- Format as dd/MM/yyyy
+                ISNULL(CONVERT(varchar, IN_time, 108), '') AS IN_time, -- Handle null values
+                ISNULL(CONVERT(varchar, OUT_time, 108), '') AS OUT_time, -- Handle null values
+                ISNULL(CONVERT(varchar, confirmation, 108), '') AS confirmation, -- Handle null values
+                Whometo_Visit, 
+                Total_Visitor 
+            FROM 
+                Record 
+            WHERE 
+                CAST(Date_Time AS DATE) = CAST(GETDATE() AS DATE)";
+
+                SqlCommand command = new SqlCommand(query, connection);
+                SqlDataAdapter adapter = new SqlDataAdapter(command);
+                DataTable dataTable = new DataTable();
+                adapter.Fill(dataTable);
+
+                GridView1.DataSource = dataTable;
+                GridView1.DataBind();
+            }
+        }
+
+
         //private void CheckVisitorCount()
         //{
         //    string connectionString = ConfigurationManager.ConnectionStrings["MyConnectionString"].ConnectionString;

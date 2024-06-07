@@ -19,9 +19,9 @@ namespace VMS.Controllers
     
     public class HomeController : Controller
     {
-        string connectionString = "Data Source=192.168.20.70,1433;Initial Catalog=vms;User ID=vms;Password=Vms@123;";
+       // string connectionString = "Data Source=192.168.20.70,1433;Initial Catalog=vms;User ID=vms;Password=Vms@123;";
        // string connectionString = "Data Source=localhost\\sqlexpress;Initial Catalog=VMS;Integrated Security=True;";
-       // string connectionString = "Data Source=DESKTOP-4TNUEJA\\MSSQLSERVER02;Initial Catalog=VMS;Integrated Security=True;";
+       public static string connectionString = "Data Source=DESKTOP-4TNUEJA\\MSSQLSERVER02;Initial Catalog=VMS;Integrated Security=True;";
 
         public HomeController()
         {
@@ -61,8 +61,7 @@ namespace VMS.Controllers
         [System.Web.Services.WebMethod]
         public static List<string> GetFilteredUsers(string prefix)
         {
-            string connectionString = "Data Source=192.168.20.70,1433;Initial Catalog=vms;User ID=vms;Password=Vms@123;";
-
+        
             List<string> filteredUsers = new List<string>();
 
             using (SqlConnection conn = new SqlConnection(connectionString))
@@ -283,7 +282,7 @@ namespace VMS.Controllers
                             return Content("****VISITOR ENTRY SUCCESSFUL****", "text/plain");
                         }
 
-                        if (!reader.IsDBNull(2) && reader.GetBoolean(2))
+                        if (!reader.IsDBNull(2))
                         {
                             reader.Close();
                             SqlCommand commandUpdateOutTime = new SqlCommand(queryUpdateOutTime, connection);
@@ -326,13 +325,15 @@ namespace VMS.Controllers
             var tokenfromqr = qrData.Split('/');
             System.Diagnostics.Trace.WriteLine($"array length: {tokenfromqr.Length}");
             string Token = tokenfromqr[9];
+            TimeSpan currentTime = DateTime.Now.TimeOfDay;
+            string formattedTime = currentTime.ToString("hh\\:mm");
 
             try
             {
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
                     string queryCheck = "SELECT IN_time, confirmation, Employee_mob FROM Record WHERE token = @token";
-                    string queryUpdateConfirmation = "UPDATE Record SET confirmation = 1 WHERE token = @token";
+                    string queryUpdateConfirmation = "UPDATE Record SET confirmation = @confirmationDate WHERE token = @token";
 
                     connection.Open();
                     SqlCommand commandCheck = new SqlCommand(queryCheck, connection);
@@ -351,6 +352,7 @@ namespace VMS.Controllers
                                 reader.Close();
                                 SqlCommand commandUpdateConfirmation = new SqlCommand(queryUpdateConfirmation, connection);
                                 commandUpdateConfirmation.Parameters.AddWithValue("@token", Token);
+                                commandUpdateConfirmation.Parameters.AddWithValue("@confirmationDate", formattedTime); // Set current system date
                                 commandUpdateConfirmation.ExecuteNonQuery();
                                 System.Diagnostics.Trace.WriteLine($"Confirmation updated for token: {Token}");
 
